@@ -17,7 +17,7 @@ import java.util.List;
 public class CoGame {
     private int id;
     
-    private int currentWave = 0;
+    private int currentWaveId = 0;
     
     private GameState state;
     
@@ -37,8 +37,17 @@ public class CoGame {
         state = GameState.StartMenu;
         map = new Map();
         waves = new ArrayList<Wave>();
-        player1 = new Player(1, "Speler 1");
-        player2 = new Player(2, "Speler 2");
+        player1 = new Player(1, "Speler 1", this);
+        player2 = new Player(2, "Speler 2", this);
+    }
+    
+    public Wave getCurrentWave() {
+        for (Wave wave : waves) {
+            if (wave.getNumber() == currentWaveId) {
+                return wave;
+            }
+        }
+        return null;
     }
     
     public int getId () {
@@ -66,8 +75,8 @@ public class CoGame {
 //    }
 
     public Wave nextWave() {
-        currentWave++;
-        Wave wave = new Wave(currentWave);
+        currentWaveId++;
+        Wave wave = new Wave(currentWaveId);
         waves.add(wave);
         return wave;
     }

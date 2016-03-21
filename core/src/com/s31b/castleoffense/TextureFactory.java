@@ -16,7 +16,7 @@ public class TextureFactory {
     
     private static final HashMap cache = new HashMap();
     
-    public static Texture getTextsture(String name) {
+    public static Texture getTextture(String name) {
         if(!cache.containsKey(name))
         {
             cache.put(name, new Texture(name + ".png"));

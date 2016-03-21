@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game.entity;
 
+import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
 import java.awt.image.BufferedImage;
 
@@ -13,11 +14,14 @@ public class Offensive extends Entity {
     private final int movementSpeed;
     private final int killReward;
     
-    public Offensive(EntityType type, String name, String descr, BufferedImage sprite, Player owner, float price, int hp, int speed, int reward) {
+    private Tile spawnPosition;
+    
+    public Offensive(EntityType type, String name, String descr, BufferedImage sprite, Player owner, float price, int hp, int speed, int reward, Tile spawnPosition) {
         super(type, name, descr, sprite, price, owner);
         hitpoints = hp;
         movementSpeed = speed;
         killReward = reward;
+        this.spawnPosition = spawnPosition;
     }
 
     public int getHitpoints() {

@@ -1,7 +1,7 @@
 package com.s31b.castleoffense.game;
 
+import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
-import com.s31b.castleoffense.game.entity.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,16 +32,7 @@ public class Wave {
         return this.number;
     }
     
-    public void addOffensive(Entity entity) {
-        entities.add(entity);
-    }
-    
-    /**
-     * Adds a defensive entity to the current wave
-     * @param entity entity to be added, if entity isn't defensive this could go wrong.
-     * @param tile tile that entity is placed on
-     */
-    public void addDefensive(Entity entity, Tile tile) {
+    public void addEntity(Entity entity) {
         entities.add(entity);
     }
     
