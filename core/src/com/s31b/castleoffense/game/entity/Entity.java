@@ -1,13 +1,13 @@
-package com.s31b.logic.classes;
+package com.s31b.castleoffense.game.entity;
 
-import com.s31b.logic.interfaces.Pricable;
+import com.s31b.castleoffense.player.Player;
 import java.awt.image.BufferedImage;
 
 /**
  *
  * @author Goos
  */
-abstract public class Entity implements Pricable {
+abstract public class Entity implements Priceable {
     private static int nextId = 0;
     
     private final int id;

@@ -1,4 +1,4 @@
-package com.s31b.logic.enums;
+package com.s31b.castleoffense.game;
 
 /**
  *

@@ -1,4 +1,4 @@
-package com.s31b.logic.classes;
+package com.s31b.castleoffense.map;
 
 import java.awt.image.BufferedImage;
 

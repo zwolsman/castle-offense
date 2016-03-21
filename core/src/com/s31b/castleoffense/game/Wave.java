@@ -1,5 +1,7 @@
-package com.s31b.logic.classes;
+package com.s31b.castleoffense.game;
 
+import com.s31b.castleoffense.map.Tile;
+import com.s31b.castleoffense.game.entity.Entity;
 import java.util.ArrayList;
 import java.util.List;
 

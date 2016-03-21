@@ -1,5 +1,6 @@
-package com.s31b.logic.classes;
+package com.s31b.castleoffense.game;
 
+import com.s31b.castleoffense.game.CoGame;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

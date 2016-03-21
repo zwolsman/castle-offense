@@ -1,5 +1,6 @@
-package com.s31b.logic.classes;
+package com.s31b.castleoffense.game.entity;
 
+import com.s31b.castleoffense.player.Player;
 import java.awt.image.BufferedImage;
 
 /**

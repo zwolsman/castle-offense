@@ -1,6 +1,7 @@
-package com.s31b.logic.classes;
+package com.s31b.castleoffense.game;
 
-import com.s31b.logic.enums.GameState;
+import com.s31b.castleoffense.map.Map;
+import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
