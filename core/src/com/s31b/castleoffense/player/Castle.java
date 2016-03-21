@@ -1,4 +1,4 @@
-package com.s31b.castleoffense.game;
+package com.s31b.castleoffense.player;
 
 import com.s31b.castleoffense.player.Player;
 import java.awt.image.BufferedImage;

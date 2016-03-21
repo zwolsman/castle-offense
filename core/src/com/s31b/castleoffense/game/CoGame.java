@@ -1,8 +1,10 @@
 package com.s31b.castleoffense.game;
 
+import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,6 +22,7 @@ public class CoGame {
     
     private List<Map> maps;
     private List<Wave> waves;
+    private List<Defensive> towers;
     
     private Player player1;
     private Player player2;
@@ -66,6 +69,14 @@ public class CoGame {
         Wave wave = new Wave(currentWave);
         waves.add(wave);
         return wave;
+    }
+    
+    public void addTower(Defensive tower) {
+        towers.add(tower);
+    }
+    
+    public List<Defensive> getAllTowers() {
+        return Collections.unmodifiableList(towers);
     }
     
     /**
