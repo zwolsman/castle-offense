@@ -63,7 +63,6 @@ public class Wave {
     }
     
     public void display() {
-        // displayWave weghalen uit CoGame?
         throw new UnsupportedOperationException();
     }
 }

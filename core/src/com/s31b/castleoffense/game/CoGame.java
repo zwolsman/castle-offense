@@ -80,15 +80,6 @@ public class CoGame {
     }
     
     /**
-     * Displays a given wave to all players
-     * @param wave wave to be displayed
-     */
-    public void displayWave (Wave wave) {
-        // TODO: logic to display wave
-        throw new UnsupportedOperationException();
-    }
-    
-    /**
      * Ends the given wave
      * @param wave wave to be ended
      */

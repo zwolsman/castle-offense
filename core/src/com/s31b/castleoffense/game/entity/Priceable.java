@@ -5,12 +5,6 @@ package com.s31b.castleoffense.game.entity;
  * @author Goos
  */
 public interface Priceable {
-    /**
-     * Removes currency from buying player
-     * @return true if payment was made, otherwise false
-     */
-    boolean Buy();
-    
+    // every child should implement a float variable called price
     float getPrice();
-    void setPrice(float price);
 }

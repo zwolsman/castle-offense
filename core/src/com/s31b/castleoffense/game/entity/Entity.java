@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 abstract public class Entity implements Priceable {
     private static int nextId = 0;
     
+    private final EntityType type;
+    
     private final int id;
     private final String name;
     private final String description;
@@ -19,9 +21,10 @@ abstract public class Entity implements Priceable {
     
     private Player owner;
     
-    public Entity(String name, String descr, BufferedImage sprite, float price, Player owner) {
+    public Entity(EntityType type, String name, String descr, BufferedImage sprite, float price, Player owner) {
         nextId++;
         this.id = nextId;
+        this.type = type;
         this.name = name;
         this.description = descr;
         this.sprite = sprite;
@@ -50,17 +53,7 @@ abstract public class Entity implements Priceable {
     }
 
     @Override
-    public boolean Buy() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public float getPrice() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setPrice(float price) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.price;
     }
 }

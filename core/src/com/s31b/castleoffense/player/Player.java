@@ -1,5 +1,7 @@
 package com.s31b.castleoffense.player;
 
+import com.s31b.castleoffense.game.entity.*;
+
 /**
  *
  * @author Goos
@@ -20,6 +22,14 @@ public class Player {
         points = 0;
         gold = 100;
     }
+    
+    /**
+     * Removes currency from buying player
+     * @return true if payment was made, otherwise false
+     */
+    /*public boolean BuyEntity(EntityType type) {
+        
+    }*/
     
     public void addPoints(int ammount) {
         points += ammount;
