@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
@@ -20,7 +21,7 @@ public class CoGame {
     
     private GameState state;
     
-    private List<Map> maps;
+    private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
     
@@ -34,7 +35,7 @@ public class CoGame {
     
     public void initializeGame() {
         state = GameState.StartMenu;
-        maps = new ArrayList<Map>();
+        map = new Map();
         waves = new ArrayList<Wave>();
         player1 = new Player(1, "Speler 1");
         player2 = new Player(2, "Speler 2");
@@ -60,9 +61,9 @@ public class CoGame {
         this.state = GameState.Ended;
     }
 
-    public void addMap(Map map) {
-        maps.add(map);
-    }
+//    public void addMap(Map map) {
+//        maps.add(map);
+//    }
 
     public Wave nextWave() {
         currentWave++;
@@ -95,5 +96,9 @@ public class CoGame {
     public void endWave (Wave wave) {
         // TODO: logic to end wave
         throw new UnsupportedOperationException();
+    }
+    
+    public void draw(SpriteBatch batch) {
+        map.draw(batch);
     }
 }

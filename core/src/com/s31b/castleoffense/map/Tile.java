@@ -20,6 +20,31 @@ public class Tile {
         this.sprite = sprite;
     }
 
+    private int x, y;
+    private TileType type;
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public TileType getType() {
+        return type;
+    }
+    public Tile(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+        this.type = TileType.Dirt;
+    }
+    public Tile(int x, int y, TileType type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+    }
     public boolean isWalkable() {
         return walkable;
     }
