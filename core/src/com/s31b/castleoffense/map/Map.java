@@ -76,7 +76,7 @@ public class Map {
                     System.out.println("TILE IS NULL; x: " + x + " y:" + y);
                     continue;
                 }
-                Texture t = TextureFactory.getTextsture(tile.getType().name().toLowerCase());
+                Texture t = TextureFactory.getTexture(tile.getType().name().toLowerCase());
                 batch.draw(t, ingameX, ingameY);
                 
                //font.draw
