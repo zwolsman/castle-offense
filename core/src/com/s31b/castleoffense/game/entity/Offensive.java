@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game.entity;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.s31b.castleoffense.player.Player;
 import java.awt.image.BufferedImage;
 
@@ -8,7 +9,7 @@ import java.awt.image.BufferedImage;
  * @author GoosLaptop
  */
 public class Offensive extends Entity {
-
+    
     private final int hitpoints;
     private final int movementSpeed;
     private final int killReward;
@@ -47,4 +48,7 @@ public class Offensive extends Entity {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public void Update(){
+        
+    }
 }
