@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game.entity;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
 import java.awt.image.BufferedImage;
