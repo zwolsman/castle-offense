@@ -17,8 +17,11 @@ public class Wave {
     
     private List<Entity> entities;
     
-    public Wave(int number) {
+    private CoGame game;
+    
+    public Wave(int number, CoGame game) {
         this.number = number;
+        this.game = game;
         initWave();
     }
     
@@ -54,6 +57,17 @@ public class Wave {
     }
     
     public void display() {
-        throw new UnsupportedOperationException();
+        // display current wave
+        for (Entity entity : entities) {
+            if (entity instanceof Offensive) {
+                // spawn entity one by one from spawnposition after last offensive has been spawned
+            }
+            else if (entity instanceof Defensive) {
+                // spawn entity on its position
+            }
+        }
+        
+        // after displaying start a new wave
+        game.nextWave();
     }
 }

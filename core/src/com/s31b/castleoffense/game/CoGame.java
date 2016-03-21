@@ -17,7 +17,7 @@ import java.util.List;
 public class CoGame {
     private int id;
     
-    private int currentWaveId = 0;
+    private int currentWaveId;
     
     private GameState state;
     
@@ -30,15 +30,17 @@ public class CoGame {
     
     public CoGame (int id) {
         this.id = id;
+        state = GameState.StartMenu;
         initializeGame();
     }
     
     public void initializeGame() {
-        state = GameState.StartMenu;
         map = new Map();
         waves = new ArrayList<Wave>();
         player1 = new Player(1, "Speler 1", this);
         player2 = new Player(2, "Speler 2", this);
+        currentWaveId = 0;
+        nextWave();
     }
     
     public Wave getCurrentWave() {
@@ -63,7 +65,8 @@ public class CoGame {
     }
     
     public void restartGame () {
-        this.state = GameState.StartMenu;
+        this.state = GameState.InGame;
+        initializeGame(); // removes all data of current game and starts over in wave 1
     }
     
     public void endGame () {
@@ -76,7 +79,7 @@ public class CoGame {
 
     public Wave nextWave() {
         currentWaveId++;
-        Wave wave = new Wave(currentWaveId);
+        Wave wave = new Wave(currentWaveId, this);
         waves.add(wave);
         return wave;
     }
@@ -87,15 +90,6 @@ public class CoGame {
     
     public List<Defensive> getAllTowers() {
         return Collections.unmodifiableList(towers);
-    }
-    
-    /**
-     * Ends the given wave
-     * @param wave wave to be ended
-     */
-    public void endWave (Wave wave) {
-        // TODO: logic to end wave
-        throw new UnsupportedOperationException();
     }
     
     public void draw(SpriteBatch batch) {
