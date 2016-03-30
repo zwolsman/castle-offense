@@ -52,6 +52,10 @@ abstract public class Entity implements Priceable {
         return sprite;
     }
 
+    public Player getOwner() {
+        return owner;
+    }
+    
     @Override
     public float getPrice() {
         return this.price;
