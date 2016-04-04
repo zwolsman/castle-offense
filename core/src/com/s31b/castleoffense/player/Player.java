@@ -11,12 +11,13 @@ import com.s31b.castleoffense.map.Tile;
  * @author Goos
  */
 public class Player {
+
     private final int id;
     private String name;
     private int points;
     private int gold;
     private Tile offensiveSpawnPosition;
-    
+
     private CoGame game;
 
     public Player(int id, String name, CoGame game) {
@@ -25,15 +26,16 @@ public class Player {
         this.game = game;
         initPlayer();
     }
-    
+
     private void initPlayer() {
         points = 0;
         gold = 100;
         offensiveSpawnPosition = new Tile(1, 1); // change to castle door tile
     }
-    
+
     /**
-     * Removes currency from buying player 
+     * Removes currency from buying player
+     *
      * @return bought offensive entity, or null if not enough money
      */
     public boolean BuyOffensiveEntity(EntityType type) {
@@ -41,17 +43,20 @@ public class Player {
         if (price < this.gold) {
             this.gold -= price;
             Offensive entity = (Offensive) EntityFactory.buyEntity(type, this);
-            if (entity == null) return false;
-            
-            game.getCurrentWave().addOffensive(entity);
+            if (entity == null) {
+                return false;
+            }
+
+            game.getCurrentWave().addEntity(entity);
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
-     * Removes currency from buying player 
+     * Removes currency from buying player
+     *
      * @return bought defensive entity, or null if not enough money
      */
     public boolean BuyDefensiveEntity(EntityType type, Tile location) {
@@ -64,14 +69,14 @@ public class Player {
             game.getCurrentWave().addDefensive(entity);
             return true;
         }
-        
+
         return false;
     }
-    
+
     public void addPoints(int ammount) {
         points += ammount;
     }
-    
+
     public void addGold(int ammount) {
         gold += ammount;
     }
@@ -95,8 +100,12 @@ public class Player {
     public int getGold() {
         return gold;
     }
-    
-    public Vector2 getOffensiveSpawnPosition(){
-        return new Vector2(offensiveSpawnPosition.getX(),offensiveSpawnPosition.getY());
+
+    public Tile getOffensiveSpawnPosition() {
+        return offensiveSpawnPosition;
+    }
+
+    public CoGame getGame() {
+        return this.game;
     }
 }

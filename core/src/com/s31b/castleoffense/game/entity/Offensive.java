@@ -7,6 +7,8 @@ import static com.s31b.castleoffense.game.Clock.Delta;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,15 +19,28 @@ public class Offensive extends Entity {
     private int hitpoints;
     private final int movementSpeed;
     private final int killReward;
-    private Vector2 currentPosition;
-    private boolean first = true;
-    
+    private final ArrayList<Tile> path;
+
+    private Tile currentTile;
+
     public Offensive(EntityType type, String name, String descr, Texture sprite, Player owner, float price, int hp, int speed, int reward) {
         super(type, name, descr, sprite, price, owner);
+        List<Tile> walkables = owner.getGame().getMap().getAllWalkableTiles();
         hitpoints = hp;
         movementSpeed = speed;
         killReward = reward;
-        currentPosition = owner.getOffensiveSpawnPosition();
+        this.currentTile = owner.getOffensiveSpawnPosition();
+        path = new ArrayList<Tile>();
+        path.add(currentTile);
+        walkables.remove(currentTile);
+        while (!walkables.isEmpty()) {
+            for (Tile t : walkables) {
+                if (Math.abs(Math.abs(t.getX() - currentTile.getX()) - Math.abs(t.getY() - currentTile.getY())) == 1) {
+                    path.add(t);
+                    walkables.remove(t);
+                }
+            }
+        }
     }
 
     public int getHitpoints() {
@@ -39,17 +54,24 @@ public class Offensive extends Entity {
     public int getKillReward() {
         return killReward;
     }
-    
-    public void removeHealth(int ammount) {
-        hitpoints -= ammount;
+
+    public Tile getPosition() {
+        return this.currentTile;
     }
-    
-    public void update(){
-        if(first){
-            first = false;
-        }
-        else{
-            currentPosition.x += Delta() * movementSpeed;
-        }
+
+    public Tile getNextPostition() {
+        return path.get(path.indexOf(currentTile) + 1);
+    }
+
+    public void SetNextPosition() {
+        currentTile = path.get(path.indexOf(currentTile) + 1);
+    }
+
+    public void removeHealth(int amount) {
+        hitpoints -= amount;
+    }
+
+    public void update() {
+        currentTile = getNextPostition();
     }
 }
