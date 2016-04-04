@@ -43,7 +43,7 @@ public class Player {
             Offensive entity = (Offensive) EntityFactory.buyEntity(type, this, offensiveSpawnPosition);
             if (entity == null) return false;
             
-            game.getCurrentWave().addEntity(entity);
+            game.getCurrentWave().addOffensive(entity);
             return true;
         }
         
@@ -61,7 +61,7 @@ public class Player {
             Defensive entity = (Defensive) EntityFactory.buyEntity(type, this, location);
             if (entity == null) return false;
             
-            game.getCurrentWave().addEntity(entity);
+            game.getCurrentWave().addDefensive(entity);
             return true;
         }
         

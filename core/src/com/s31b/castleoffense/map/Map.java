@@ -27,7 +27,7 @@ public class Map {
 			  "00100000000001000",
 			  "00100000000001000",
 			  "00111111111111000",
-			  "00000000000000000",};
+			  "00000000000000000"};
     public Map() {
         tiles = new Tile[Globals.TILES_X][Globals.TILES_Y];
    

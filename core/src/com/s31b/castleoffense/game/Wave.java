@@ -1,9 +1,9 @@
 package com.s31b.castleoffense.game;
 
 import com.s31b.castleoffense.game.entity.*;
-import com.s31b.castleoffense.map.Tile;
 import java.util.ArrayList;
 import java.util.List;
+import static com.s31b.castleoffense.game.Clock.*;
 
 /**
  *
@@ -12,12 +12,14 @@ import java.util.List;
 public class Wave {
     private int number;
     
-    private boolean player1done;
-    private boolean player2done;
+    private boolean player1done, player2done, waveDone;
     
-    private List<Entity> entities;
+    private List<Defensive> defEntities;
+    private List<Offensive> offEntities;
     
-    private CoGame game;
+    private final CoGame game;
+    
+    private float timeSinceLastSpawn, spawnTime;
     
     public Wave(int number, CoGame game) {
         this.number = number;
@@ -26,17 +28,25 @@ public class Wave {
     }
     
     private void initWave() {
-        entities = new ArrayList<Entity>();
+        defEntities = new ArrayList<Defensive>();
+        offEntities = new ArrayList<Offensive>();
         player1done = false;
         player2done = false;
+        waveDone = false;
+        spawnTime = 2;
     }
     
     public int getNumber() {
         return this.number;
     }
     
-    public void addEntity(Entity entity) {
-        entities.add(entity);
+    
+    public void addDefensive(Defensive entity) {
+        defEntities.add(entity);
+    }
+    
+    public void addOffensive(Offensive entity) {
+        offEntities.add(entity);
     }
     
     public void endWave(int playerId) {
@@ -52,22 +62,32 @@ public class Wave {
         }
         
         if (player1done && player2done) {
-            display();
+            waveDone = true;
         }
     }
     
-    public void display() {
-        // display current wave
-        for (Entity entity : entities) {
-            if (entity instanceof Offensive) {
-                // spawn entity one by one from spawnposition after last offensive has been spawned
+    public void update() {
+        if (waveDone) {
+            // display current wave
+
+            for (Defensive entity : defEntities) {
+                // add towers to game
+                game.addTower(entity);
             }
-            else if (entity instanceof Defensive) {
-                // spawn entity on its position
+
+            for (Offensive entity : offEntities) {
+                // draw entities with delay
+                timeSinceLastSpawn += Delta();
+                
+                if (timeSinceLastSpawn > spawnTime) {
+                    entity.update();
+                    entity.draw();
+                    timeSinceLastSpawn = 0;
+                }
             }
+
+            // after displaying start a new wave
+            game.nextWave();
         }
-        
-        // after displaying start a new wave
-        game.nextWave();
     }
 }
