@@ -64,7 +64,7 @@ public class Map {
     }
 
     BitmapFont font = new BitmapFont(); 
-    public void draw(SpriteBatch batch) {
+    public void draw() {
 
         for(int x = 0; x < Globals.TILES_X; x++) {
             for(int y = 0; y < Globals.TILES_Y; y++)
@@ -77,11 +77,11 @@ public class Map {
                     continue;
                 }
                 Texture t = TextureFactory.getTexture(tile.getType().name().toLowerCase());
-                batch.draw(t, ingameX, ingameY);
+                Globals.SPRITE_BATCH.draw(t, ingameX, ingameY);
                 
                //font.draw
                 
-                font.draw(batch, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
             }
         }
 

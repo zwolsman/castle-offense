@@ -92,7 +92,7 @@ public class CoGame {
         return Collections.unmodifiableList(towers);
     }
     
-    public void draw(SpriteBatch batch) {
-        map.draw(batch);
+    public void draw() {
+        map.draw();
     }
 }
