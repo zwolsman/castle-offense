@@ -10,30 +10,30 @@ import java.util.List;
 
 /**
  *
- * @author Goos
- * CoGame is short for Castle Offense Game
- * this is because "Game" is a default libGDX class
+ * @author Goos CoGame is short for Castle Offense Game this is because "Game"
+ * is a default libGDX class
  */
 public class CoGame {
+
     private int id;
-    
+
     private int currentWaveId;
-    
+
     private GameState state;
-    
+
     private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
-    
+
     private Player player1;
     private Player player2;
-    
-    public CoGame (int id) {
+
+    public CoGame(int id) {
         this.id = id;
         state = GameState.StartMenu;
         initializeGame();
     }
-    
+
     public void initializeGame() {
         map = new Map();
         waves = new ArrayList<Wave>();
@@ -42,7 +42,7 @@ public class CoGame {
         currentWaveId = 0;
         nextWave();
     }
-    
+
     public Wave getCurrentWave() {
         for (Wave wave : waves) {
             if (wave.getNumber() == currentWaveId) {
@@ -51,48 +51,51 @@ public class CoGame {
         }
         return null;
     }
-    
-    public int getId () {
+
+    public int getId() {
         return this.id;
     }
-    
-    public void startGame () {
+
+    public void startGame() {
         this.state = GameState.InGame;
     }
-    
-    public void pauseGame () {
+
+    public void pauseGame() {
         this.state = GameState.Paused;
     }
-    
-    public void restartGame () {
+
+    public void restartGame() {
         this.state = GameState.InGame;
         initializeGame(); // removes all data of current game and starts over in wave 1
     }
-    
-    public void endGame () {
+
+    public void endGame() {
         this.state = GameState.Ended;
     }
 
 //    public void addMap(Map map) {
 //        maps.add(map);
 //    }
-
     public Wave nextWave() {
         currentWaveId++;
         Wave wave = new Wave(currentWaveId, this);
         waves.add(wave);
         return wave;
     }
-    
+
     public void addTower(Defensive tower) {
         towers.add(tower);
     }
-    
+
     public List<Defensive> getAllTowers() {
         return Collections.unmodifiableList(towers);
     }
-    
+
     public void draw(SpriteBatch batch) {
         map.draw(batch);
+    }
+
+    public Map getMap() {
+        return this.map;
     }
 }
