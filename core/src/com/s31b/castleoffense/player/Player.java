@@ -64,11 +64,9 @@ public class Player {
         if (price < this.gold) {
             this.gold -= price;
             Defensive entity = (Defensive) EntityFactory.buyEntity(type, this);
-            if (entity == null) {
-                return false;
-            }
-
-            game.getCurrentWave().addEntity(entity);
+            if (entity == null) return false;
+            
+            game.getCurrentWave().addDefensive(entity);
             return true;
         }
 
