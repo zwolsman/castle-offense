@@ -95,4 +95,8 @@ public class CoGame {
     public void draw() {
         map.draw();
     }
+    
+    public Map getMap() {
+        return this.map;
+    }
 }
