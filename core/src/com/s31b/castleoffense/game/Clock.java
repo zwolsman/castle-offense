@@ -48,7 +48,7 @@ public class Clock {
     
     public static void ChangeMultiplier(int change){
         if(multiplier + change > -1 && multiplier + change < 7){
-           multiplier += change; 
+           multiplier += change;
         }
     }
     
