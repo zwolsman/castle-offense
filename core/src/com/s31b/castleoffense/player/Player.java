@@ -47,7 +47,7 @@ public class Player {
                 return false;
             }
 
-            game.getCurrentWave().addEntity(entity);
+            game.getCurrentWave().addOffensive(entity);
             return true;
         }
 

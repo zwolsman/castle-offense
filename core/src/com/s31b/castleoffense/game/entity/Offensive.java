@@ -2,6 +2,7 @@ package com.s31b.castleoffense.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import static com.s31b.castleoffense.game.Clock.Delta;
 import com.s31b.castleoffense.map.Tile;
@@ -73,5 +74,11 @@ public class Offensive extends Entity {
 
     public void update() {
         currentTile = getNextPostition();
+    }
+    
+    public void draw(SpriteBatch batch){
+        batch.begin();
+        batch.draw(super.getSprite(), currentTile.getX(), currentTile.getY());
+        batch.end();
     }
 }

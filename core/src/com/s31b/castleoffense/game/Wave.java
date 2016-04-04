@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game;
 
+import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.entity.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,7 @@ public class Wave {
                 
                 if (timeSinceLastSpawn > spawnTime) {
                     entity.update();
-                    entity.draw();
+                    entity.draw(Globals.SPRITE_BATCH);
                     timeSinceLastSpawn = 0;
                 }
             }

@@ -68,9 +68,7 @@ abstract public class Entity implements Priceable {
 
     }
     
-    public void draw(SpriteBatch batch, Tile tile){
-        batch.begin();
-        batch.draw(sprite, tile.getX(), tile.getY());
-        batch.end();
+    public void draw(SpriteBatch batch){
+
     }
 }

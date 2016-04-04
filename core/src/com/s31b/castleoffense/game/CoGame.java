@@ -1,7 +1,10 @@
 package com.s31b.castleoffense.game;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.entity.Defensive;
+import com.s31b.castleoffense.game.entity.EntityType;
+import com.s31b.castleoffense.game.entity.Offensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
@@ -41,6 +44,7 @@ public class CoGame {
         player2 = new Player(2, "Speler 2", this);
         currentWaveId = 0;
         nextWave();
+        testDraw();
     }
     
     public Wave getCurrentWave() {
@@ -98,5 +102,9 @@ public class CoGame {
     
     public Map getMap() {
         return this.map;
+    }
+    
+    public void testDraw(){
+        getCurrentWave().addOffensive((Offensive)EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
     }
 }
