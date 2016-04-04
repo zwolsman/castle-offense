@@ -2,7 +2,6 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import java.util.ArrayList;
@@ -59,6 +58,19 @@ public class Map {
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
                 tempTiles.add(tiles[x][y]);
+            }
+        }
+        return Collections.unmodifiableList(tempTiles);
+    }
+    
+    public List<Tile> getAllWalkableTiles() {
+
+        List<Tile> tempTiles = new ArrayList<Tile>();
+        for (int x = 0; x < Globals.TILES_X; x++) {
+            for (int y = 0; y < Globals.TILES_Y; y++) {
+                if (tiles[x][y].isWalkable()) {
+                    tempTiles.add(tiles[x][y]);
+                }
             }
         }
         return Collections.unmodifiableList(tempTiles);
