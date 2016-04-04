@@ -17,7 +17,7 @@ public class Map {
     private Tile[][] tiles;
 	private static final String tempMask[] = {
 			  "00000000002222200",
-			  "11100000002030200",
+			  "11100000002020200",
 			  "00100000002212200",
 			  "00100000000010000",
 			  "00100111111110000",
@@ -68,12 +68,13 @@ public class Map {
         List<Tile> tempTiles = new ArrayList<Tile>();
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
+                System.out.println(x + ", " + y);                
                 if (tiles[x][y].isWalkable()) {
                     tempTiles.add(tiles[x][y]);
                 }
             }
         }
-        return Collections.unmodifiableList(tempTiles);
+        return tempTiles;
     }
 
     BitmapFont font = new BitmapFont(); 

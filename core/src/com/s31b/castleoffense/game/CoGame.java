@@ -62,6 +62,8 @@ public class CoGame {
     
     public void startGame () {
         this.state = GameState.InGame;
+        
+        
     }
     
     public void pauseGame () {

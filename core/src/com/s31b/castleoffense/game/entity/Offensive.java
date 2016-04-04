@@ -33,14 +33,23 @@ public class Offensive extends Entity {
         this.currentTile = owner.getOffensiveSpawnPosition();
         path = new ArrayList<Tile>();
         path.add(currentTile);
-        walkables.remove(currentTile);
-        while (!walkables.isEmpty()) {
+        walkables.remove(currentTile);        
+        while (walkables.size() > 0) {
+            Tile tempTile = null;
             for (Tile t : walkables) {
                 if (Math.abs(Math.abs(t.getX() - currentTile.getX()) - Math.abs(t.getY() - currentTile.getY())) == 1) {
                     path.add(t);
-                    walkables.remove(t);
+                    //walkables.remove(t);
+                    tempTile = t;
+                    currentTile = t;
                 }
             }
+            if(tempTile != null){
+                
+                walkables.remove(tempTile);
+                System.out.println(walkables.size());
+            }
+            
         }
     }
 

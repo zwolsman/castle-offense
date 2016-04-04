@@ -22,6 +22,8 @@ public class CastleOffense extends ApplicationAdapter {
             camera.setToOrtho(false);
             //camera.setToOrtho(false,1,h / w);
             game = new CoGame(0);
+            
+            game.startGame();
 	}
 
 	@Override
