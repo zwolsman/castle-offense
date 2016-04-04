@@ -1,7 +1,10 @@
 package com.s31b.castleoffense.game.entity;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import static com.s31b.castleoffense.game.Clock.Delta;
+import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -15,13 +18,13 @@ abstract public class Entity implements Priceable {
     private final int id;
     private final String name;
     private final String description;
-    private final BufferedImage sprite;
-    
+    private final Texture sprite;
+    private boolean first = true;
     private final float price;
     
     private Player owner;
     
-    public Entity(EntityType type, String name, String descr, BufferedImage sprite, float price, Player owner) {
+    public Entity(EntityType type, String name, String descr, Texture sprite, float price, Player owner) {
         nextId++;
         this.id = nextId;
         this.type = type;
@@ -48,7 +51,7 @@ abstract public class Entity implements Priceable {
         return description;
     }
 
-    public BufferedImage getSprite() {
+    public Texture getSprite() {
         return sprite;
     }
 
@@ -59,5 +62,15 @@ abstract public class Entity implements Priceable {
     @Override
     public float getPrice() {
         return this.price;
+    }
+
+    public void update(){
+
+    }
+    
+    public void draw(SpriteBatch batch, Tile tile){
+        batch.begin();
+        batch.draw(sprite, tile.getX(), tile.getY());
+        batch.end();
     }
 }

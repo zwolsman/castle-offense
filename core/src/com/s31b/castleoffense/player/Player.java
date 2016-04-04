@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.player;
 
+import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
@@ -14,7 +15,6 @@ public class Player {
     private String name;
     private int points;
     private int gold;
-    
     private Tile offensiveSpawnPosition;
     
     private CoGame game;
@@ -40,7 +40,7 @@ public class Player {
         float price = EntityFactory.getEntityPriceByType(type);
         if (price < this.gold) {
             this.gold -= price;
-            Offensive entity = (Offensive) EntityFactory.buyEntity(type, this, offensiveSpawnPosition);
+            Offensive entity = (Offensive) EntityFactory.buyEntity(type, this);
             if (entity == null) return false;
             
             game.getCurrentWave().addEntity(entity);
@@ -58,7 +58,7 @@ public class Player {
         float price = EntityFactory.getEntityPriceByType(type);
         if (price < this.gold) {
             this.gold -= price;
-            Defensive entity = (Defensive) EntityFactory.buyEntity(type, this, location);
+            Defensive entity = (Defensive) EntityFactory.buyEntity(type, this);
             if (entity == null) return false;
             
             game.getCurrentWave().addEntity(entity);
@@ -96,4 +96,7 @@ public class Player {
         return gold;
     }
     
+    public Vector2 getOffensiveSpawnPosition(){
+        return new Vector2(offensiveSpawnPosition.getX(),offensiveSpawnPosition.getY());
+    }
 }
