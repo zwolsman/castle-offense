@@ -2,6 +2,7 @@ package com.s31b.castleoffense.game.entity;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import static com.s31b.castleoffense.game.Clock.Delta;
 import com.s31b.castleoffense.map.Tile;
@@ -31,14 +32,23 @@ public class Offensive extends Entity {
         this.currentTile = owner.getOffensiveSpawnPosition();
         path = new ArrayList<Tile>();
         path.add(currentTile);
-        walkables.remove(currentTile);
-        while (!walkables.isEmpty()) {
+        walkables.remove(currentTile);        
+        while (walkables.size() > 0) {
+            Tile tempTile = null;
             for (Tile t : walkables) {
                 if (Math.abs(Math.abs(t.getX() - currentTile.getX()) - Math.abs(t.getY() - currentTile.getY())) == 1) {
                     path.add(t);
-                    walkables.remove(t);
+                    //walkables.remove(t);
+                    tempTile = t;
+                    currentTile = t;
                 }
             }
+            if(tempTile != null){
+                
+                walkables.remove(tempTile);
+                System.out.println(walkables.size());
+            }
+            
         }
     }
 
@@ -72,5 +82,11 @@ public class Offensive extends Entity {
 
     public void update() {
         currentTile = getNextPostition();
+    }
+    
+    public void draw(SpriteBatch batch){
+        batch.begin();
+        batch.draw(super.getSprite(), currentTile.getX(), currentTile.getY());
+        batch.end();
     }
 }

@@ -63,14 +63,4 @@ abstract public class Entity implements Priceable {
     public float getPrice() {
         return this.price;
     }
-
-    public void update(){
-
-    }
-    
-    public void draw(SpriteBatch batch, Tile tile){
-        batch.begin();
-        batch.draw(sprite, tile.getX(), tile.getY());
-        batch.end();
-    }
 }

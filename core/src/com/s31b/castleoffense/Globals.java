@@ -5,6 +5,8 @@
  */
 package com.s31b.castleoffense;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  *
  * @author fhict
@@ -27,4 +29,7 @@ public class Globals {
     public static int MOVEMENT_SPEED = 1;
     // Base Offensive Killreward
     public static int KILL_REWARD = 5;
+    
+    //Sprite Batch
+    public static SpriteBatch SPRITE_BATCH = new SpriteBatch();
 }

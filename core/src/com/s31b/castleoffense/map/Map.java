@@ -2,7 +2,6 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class Map {
     private Tile[][] tiles;
 	private static final String tempMask[] = {
 			  "00000000002222200",
-			  "11100000002030200",
+			  "11100000002020200",
 			  "00100000002212200",
 			  "00100000000010000",
 			  "00100111111110000",
@@ -63,23 +62,23 @@ public class Map {
         }
         return Collections.unmodifiableList(tempTiles);
     }
-
+    
     public List<Tile> getAllWalkableTiles() {
 
         List<Tile> tempTiles = new ArrayList<Tile>();
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
+                System.out.println(x + ", " + y);                
                 if (tiles[x][y].isWalkable()) {
                     tempTiles.add(tiles[x][y]);
                 }
             }
         }
-        return Collections.unmodifiableList(tempTiles);
+        return tempTiles;
     }
 
-    BitmapFont font = new BitmapFont();
-
-    public void draw(SpriteBatch batch) {
+    BitmapFont font = new BitmapFont(); 
+    public void draw() {
 
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
@@ -90,12 +89,12 @@ public class Map {
                     continue;
                 }
                 Texture t = TextureFactory.getTexture(tile.getType().name().toLowerCase());
-                batch.draw(t, ingameX, ingameY);
-
-                //font.draw
-                font.draw(batch, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                Globals.SPRITE_BATCH.draw(t, ingameX, ingameY);
+                
+               //font.draw
+                
+                font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
             }
         }
-
     }
 }

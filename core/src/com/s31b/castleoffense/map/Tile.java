@@ -7,17 +7,27 @@ import java.awt.image.BufferedImage;
  * @author GoosLaptop
  */
 public class Tile {
+
     private int ownerId;
-    private boolean walkable;
     private boolean buildable;
-    
+
     private BufferedImage sprite;
 
-    public Tile(int ownerId, boolean walkable, boolean buildable, BufferedImage sprite) {
+    public Tile(int ownerId, boolean buildable, BufferedImage sprite) {
         this.ownerId = ownerId;
-        this.walkable = walkable;
-        this.buildable = buildable;
         this.sprite = sprite;
+    }
+
+    public Tile(int x, int y) {
+        this.x = x;
+        this.y = y;
+        this.type = TileType.Dirt;
+    }
+
+    public Tile(int x, int y, TileType type) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
     }
 
     private int x, y;
@@ -34,23 +44,9 @@ public class Tile {
     public TileType getType() {
         return type;
     }
-    public Tile(int x, int y)
-    {
-        this.x = x;
-        this.y = y;
-        this.type = TileType.Dirt;
-    }
-    public Tile(int x, int y, TileType type) {
-        this.x = x;
-        this.y = y;
-        this.type = type;
-    }
-    public boolean isWalkable() {
-        return walkable;
-    }
 
-    public void setWalkable(boolean walkable) {
-        this.walkable = walkable;
+    public boolean isWalkable() {
+        return type == TileType.Path;
     }
 
     public boolean isBuildable() {
@@ -68,5 +64,5 @@ public class Tile {
     public BufferedImage getSprite() {
         return sprite;
     }
-    
+
 }
