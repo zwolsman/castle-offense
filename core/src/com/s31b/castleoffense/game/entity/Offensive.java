@@ -3,6 +3,7 @@ package com.s31b.castleoffense.game.entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.s31b.castleoffense.map.Tile;
+import com.s31b.castleoffense.player.Castle;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Offensive extends Entity {
     private final int movementSpeed;
     private final int killReward;
     private final ArrayList<Tile> path;
+    //private final Castle destinationCastle;
 
     private Tile currentTile;
 
@@ -27,6 +29,9 @@ public class Offensive extends Entity {
         killReward = reward;
         this.currentTile = owner.getOffensiveSpawnPosition();
         path = generatePath();
+//        if (owner.getId() == 1) {
+//            destinationCastle = 
+//        }
     }
     
     private ArrayList<Tile> generatePath() {
@@ -77,11 +82,11 @@ public class Offensive extends Entity {
     }
 
     public Tile getNextPostition() {
-        return path.get(path.indexOf(currentTile) + 1);
-    }
-
-    public void SetNextPosition() {
-        currentTile = path.get(path.indexOf(currentTile) + 1);
+        try {
+            return path.get(path.indexOf(currentTile) + 1);
+        } catch(IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public void removeHealth(int amount) {
@@ -90,6 +95,15 @@ public class Offensive extends Entity {
 
     public void update() {
         currentTile = getNextPostition();
+        if (currentTile != null) {
+            // move the offensive entity to the next tile
+            
+            // TODO: Marvin
+            
+        } else {
+            // the entity has reached an enemy castle
+            
+        }
     }
     
     public void draw(SpriteBatch batch){
