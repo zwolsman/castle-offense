@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import static com.s31b.castleoffense.game.Clock.Delta;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
