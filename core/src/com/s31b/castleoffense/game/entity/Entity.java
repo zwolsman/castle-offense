@@ -13,16 +13,16 @@ import com.s31b.castleoffense.player.Player;
 abstract public class Entity implements Priceable {
     private static int nextId = 0;
     
-    private final EntityType type;
+    protected final EntityType type;
     
-    private final int id;
-    private final String name;
-    private final String description;
-    private final Texture sprite;
+    protected final int id;
+    protected final String name;
+    protected final String description;
+    protected final Texture sprite;
     private boolean first = true;
-    private final float price;
+    protected final float price;
     
-    private Player owner;
+    protected Player owner;
     
     public Entity(EntityType type, String name, String descr, Texture sprite, float price, Player owner) {
         nextId++;
