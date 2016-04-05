@@ -1,7 +1,6 @@
 package com.s31b.castleoffense.player;
 
-import com.s31b.castleoffense.player.Player;
-import java.awt.image.BufferedImage;
+import com.badlogic.gdx.graphics.Texture;
 
 /**
  *
@@ -9,14 +8,14 @@ import java.awt.image.BufferedImage;
  */
 public class Castle {
     private int hitpoints;
-    private BufferedImage sprite;
-    
+    private Texture sprite;    
     private Player owner;
 
-    public Castle(int hp, BufferedImage sprite, Player owner) {
+    public Castle(int hp, Texture sprite, Player owner) {
         this.hitpoints = hp;
         this.sprite = sprite;
         this.owner = owner;
+        initCastle();
     }
     
     private void initCastle() {
@@ -31,13 +30,11 @@ public class Castle {
         return hitpoints;
     }
 
-    public BufferedImage getSprite() {
+    public Texture getSprite() {
         return sprite;
     }
 
     public Player getOwner() {
         return owner;
     }
-    
-    
 }

@@ -70,7 +70,8 @@ public class Wave {
     public void update() {
         if (waveDone) {
             // display current wave
-
+            Clock.Update();
+            
             for (Defensive entity : defEntities) {
                 // add towers to game
                 game.addTower(entity);
