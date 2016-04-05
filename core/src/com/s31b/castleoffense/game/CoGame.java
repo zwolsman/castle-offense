@@ -10,7 +10,6 @@ import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import static java.util.Collections.list;
 import java.util.List;
 
 /**

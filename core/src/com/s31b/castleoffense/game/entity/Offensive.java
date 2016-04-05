@@ -93,8 +93,6 @@ public class Offensive extends Entity {
     }
     
     public void draw(SpriteBatch batch){
-        batch.begin();
         batch.draw(super.getSprite(), currentTile.getX(), currentTile.getY());
-        batch.end();
     }
 }
