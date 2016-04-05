@@ -8,7 +8,9 @@ import com.s31b.castleoffense.game.entity.Offensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import static java.util.Collections.list;
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ public class CoGame {
     private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
-    
+    private List<Player> players;
     private Player player1;
     private Player player2;
     
@@ -37,11 +39,22 @@ public class CoGame {
         initializeGame();
     }
     
+    public Player getPlayerById(int id){
+        for(Player tempPlayer : players){
+            if(tempPlayer.getId() == id){
+                return tempPlayer;
+            }
+        }
+        return null;
+    }
+    
     public void initializeGame() {
         map = new Map();
         waves = new ArrayList<Wave>();
         player1 = new Player(1, "Speler 1", this);
         player2 = new Player(2, "Speler 2", this);
+        players =  Arrays.asList(player1, player2);
+        
         currentWaveId = 0;
         nextWave();
         testDraw();

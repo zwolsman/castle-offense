@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.s31b.castleoffense.game.CoGame;
+import com.s31b.castleoffense.game.entity.EntityType;
 import com.s31b.castleoffense.ui.gameMenu;
 
 public class CastleOffense extends ApplicationAdapter {
@@ -21,7 +22,7 @@ public class CastleOffense extends ApplicationAdapter {
         
 	@Override
 	public void create () {
-                batch = new SpriteBatch();
+                batch = Globals.SPRITE_BATCH;
                 skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
                 
                 float w = Gdx.graphics.getWidth();
@@ -40,8 +41,10 @@ public class CastleOffense extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 batch.setProjectionMatrix(camera.combined);
-                batch.begin(); 
+                batch.begin();
+                //game.getCurrentWave().addOffensive(EntityFactory.buyEntity(EntityType.Offensive_Npc1, player));
                 game.draw();
+                
                 batch.end();
                 menu.render();
 	}
