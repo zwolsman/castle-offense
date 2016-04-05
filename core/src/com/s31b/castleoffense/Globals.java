@@ -5,6 +5,7 @@
  */
 package com.s31b.castleoffense;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -29,6 +30,10 @@ public class Globals {
     public static int MOVEMENT_SPEED = 1;
     // Base Offensive Killreward
     public static int KILL_REWARD = 5;
+    
+    // Castle properties
+    public static int CASTLE_HP = 10;
+    public static Texture CASTLE_SPRITE; // TODO: add castle sprite
     
     //Sprite Batch
     public static SpriteBatch SPRITE_BATCH = new SpriteBatch();
