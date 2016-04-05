@@ -18,7 +18,7 @@ public class Offensive extends Entity {
     private final int movementSpeed;
     private final int killReward;
     private final ArrayList<Tile> path;
-    //private final Castle destinationCastle;
+    private final Castle destinationCastle;
 
     private Tile currentTile;
 
@@ -29,9 +29,11 @@ public class Offensive extends Entity {
         killReward = reward;
         this.currentTile = owner.getOffensiveSpawnPosition();
         path = generatePath();
-//        if (owner.getId() == 1) {
-//            destinationCastle = 
-//        }
+        if (owner.getId() == 1) {
+            destinationCastle = owner.getGame().getPlayerById(2).getCastle();
+        } else {
+            destinationCastle = owner.getGame().getPlayerById(1).getCastle();
+        }
     }
     
     private ArrayList<Tile> generatePath() {
@@ -94,6 +96,8 @@ public class Offensive extends Entity {
     }
 
     public void update() {
+        // TODO: implement movementspeed
+        
         currentTile = getNextPostition();
         if (currentTile != null) {
             // move the offensive entity to the next tile
@@ -102,7 +106,7 @@ public class Offensive extends Entity {
             
         } else {
             // the entity has reached an enemy castle
-            
+            destinationCastle.lostHitpoints(1);
         }
     }
     

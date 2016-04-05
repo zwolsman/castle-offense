@@ -17,6 +17,8 @@ public class Player {
     private int points;
     private int gold;
     private Tile offensiveSpawnPosition;
+    
+    private Castle castle;
 
     private CoGame game;
 
@@ -31,6 +33,7 @@ public class Player {
         points = 0;
         gold = 100;
         offensiveSpawnPosition = new Tile(1, 1); // change to castle door tile
+        castle = new Castle(this);
     }
 
     /**
@@ -89,6 +92,10 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    public Castle getCastle() {
+        return this.castle;
     }
 
     public int getId() {
