@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.s31b.castleoffense.game.Clock;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.EntityType;
 import com.s31b.castleoffense.game.entity.Offensive;
@@ -36,12 +37,15 @@ public class CastleOffense extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+            Clock.Update();
+            
 		Gdx.gl.glClearColor(1, 1, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 batch.setProjectionMatrix(camera.combined);
                 batch.begin();
-                game.getCurrentWave().addOffensive((Offensive)EntityFactory.buyEntity(EntityType.Offensive_Npc1, game.getPlayerById(1)));
-                
+                game.getCurrentWave().endWave(1);
+                game.getCurrentWave().endWave(2);
+                game.update();
                 game.draw();
                 
                 batch.end();

@@ -70,7 +70,6 @@ public class Wave {
     public void update() {
         if (waveDone) {
             // display current wave
-            Clock.Update();
             
             for (Defensive entity : defEntities) {
                 // add towers to game
@@ -82,14 +81,21 @@ public class Wave {
                 timeSinceLastSpawn += Delta();
                 
                 if (timeSinceLastSpawn > spawnTime) {
-                    entity.update();
-                    entity.draw(Globals.SPRITE_BATCH);
+                    entity.update();                    
                     timeSinceLastSpawn = 0;
                 }
             }
-
-            // after displaying start a new wave
-            game.nextWave();
         }
+    }
+    
+    public void draw(){
+            for (Defensive entity : defEntities) {
+                // add towers to game
+                
+            }
+
+            for (Offensive entity : offEntities) {
+                entity.draw(Globals.SPRITE_BATCH);
+            }
     }
 }

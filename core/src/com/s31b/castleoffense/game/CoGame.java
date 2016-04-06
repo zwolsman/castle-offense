@@ -54,8 +54,7 @@ public class CoGame {
         player2 = new Player(2, "Speler 2", this);
         players =  Arrays.asList(player1, player2);
         
-        currentWaveId = 0;
-        nextWave();
+        currentWaveId = nextWave().getNumber();
         testDraw();
     }
     
@@ -110,8 +109,13 @@ public class CoGame {
         return Collections.unmodifiableList(towers);
     }
     
+    public void update(){
+        getCurrentWave().update();        
+    }
+    
     public void draw() {
         map.draw();
+        getCurrentWave().draw();
     }
     
     public Map getMap() {
