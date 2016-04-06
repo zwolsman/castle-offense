@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.map;
 
+import com.s31b.castleoffense.Globals;
 import java.awt.image.BufferedImage;
 
 /**
@@ -65,4 +66,21 @@ public class Tile {
         return sprite;
     }
 
+    public boolean contains(int x, int y) {
+
+        int ingameX = getX() * Globals.TILE_WIDTH;
+        int ingameY = getY() * Globals.TILE_HEIGHT;
+        return x >= ingameX && x <= ingameX + Globals.TILE_WIDTH && y >= ingameY && y <= ingameY + Globals.TILE_HEIGHT;
+    }
+
+    public boolean isAtOrigin(int x, int y) {
+        int ingameX = getX() * Globals.TILE_WIDTH;
+        int ingameY = getY() * Globals.TILE_HEIGHT;
+        return ingameX == x && ingameY == y;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("X: %d, Y: %d, type: %s", getX(), getY(), getType());
+    }
 }
