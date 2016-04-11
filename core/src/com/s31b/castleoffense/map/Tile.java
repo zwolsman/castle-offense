@@ -64,8 +64,8 @@ public class Tile {
 
     public BufferedImage getSprite() {
         return sprite;
-    }
-
+    }    
+    
     public boolean contains(int x, int y) {
 
         int ingameX = getX() * Globals.TILE_WIDTH;

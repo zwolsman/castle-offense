@@ -2,6 +2,7 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -10,12 +11,14 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import static javax.swing.Spring.height;
+import static javax.swing.Spring.width;
 
 /**
  *
  * @author Goos
  */
-public class Map implements MouseListener {
+public class Map {
     private Tile selectedTile;
     private Tile[][] tiles;
     private static final String tempMask[] = {
@@ -117,31 +120,11 @@ public class Map implements MouseListener {
         return this.selectedTile;
     } 
     
-    @Override
-    public void mouseClicked(MouseEvent me) {
+    public void mouseClicked(int x, int y) {
         for(Tile item : getAllTiles()){
-            if(item.getX() != me.getX() && item.getY()!= me.getY())continue;
-            selectedTile = item;         
+            if(item.contains(x, y))continue;
+            selectedTile = item;
+            System.out.println(item.toString());
         }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent me) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

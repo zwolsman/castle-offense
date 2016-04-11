@@ -90,13 +90,13 @@ public class Offensive extends Entity {
         //currentTile = getNextPostition();
         Tile tempTile = getNextPosition();
         if (tempTile == null) {
-            System.out.println("I AM EMPTY");
+            //System.out.println("I AM EMPTY");
             return;
         }
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
-        System.out.println("movement distance: " + Double.toString(distance));
-        System.out.println(tempTile.toString());
-        System.out.println(currentTile.toString());
+        //System.out.println("movement distance: " + Double.toString(distance));
+        //System.out.println(tempTile.toString());
+        //System.out.println(currentTile.toString());
         if (tempTile.getX() == currentTile.getX()) { //Ik beweeg verticaal
 
             if (currentTile.getY() > tempTile.getY()) //Naar beneden
@@ -150,8 +150,8 @@ public class Offensive extends Entity {
         if (!isSpawned()) {
             return;
         }
-        System.out.println("Drawing at " + currentTile.toString());
-        System.out.println("ingameX: " + Integer.toString(ingameX) + " IngameY: " + Integer.toString(ingameY));
+        //System.out.println("Drawing at " + currentTile.toString());
+        //System.out.println("ingameX: " + Integer.toString(ingameX) + " IngameY: " + Integer.toString(ingameY));
         batch.draw(super.getSprite(), ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
     }
 
@@ -161,7 +161,7 @@ public class Offensive extends Entity {
 
     public void spawn() {
         this.currentTile = owner.getOffensiveSpawnPosition();
-        System.out.println("Spawned!");
+        //System.out.println("Spawned!");
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }

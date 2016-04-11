@@ -7,6 +7,7 @@ package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -85,6 +86,9 @@ public class gameMenu extends ApplicationAdapter {
                 stage.addActor(main);
                 stage.addActor(endWave);
                 stage.addActor(surrender);
+                if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+                    
+                }
                 stage.act(Gdx.graphics.getDeltaTime());
                 stage.draw();
 	}
