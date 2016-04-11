@@ -22,7 +22,7 @@ public class TextureFactory {
 
     public static Texture getTexture(String name) {
 
-        if (name == "") {
+        if ("".equals(name)) {
             return null;
         }
         if (!name.endsWith(".png")) {
@@ -81,7 +81,7 @@ public class TextureFactory {
                 }
             }
             System.out.println(textureName);
-            if (textureName == "") {
+            if ("".equals(textureName)) {
                 System.out.println("No texture found for" + tile.toString());
                 return null;
             }
