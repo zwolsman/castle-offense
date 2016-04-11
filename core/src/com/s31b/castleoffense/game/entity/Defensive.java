@@ -36,6 +36,10 @@ public class Defensive extends Entity {
     }
     
     public void draw() {
-        Globals.SPRITE_BATCH.draw(super.getSprite(), position.getX(), position.getY(), Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+        Globals.SPRITE_BATCH.draw(
+                super.getSprite(), 
+                position.getX() * Globals.TILE_WIDTH, 
+                position.getY() * Globals.TILE_HEIGHT, 
+                Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
     }
 }
