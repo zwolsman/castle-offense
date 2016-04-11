@@ -2,7 +2,6 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
-import java.awt.image.BufferedImage;
 
 /**
  *

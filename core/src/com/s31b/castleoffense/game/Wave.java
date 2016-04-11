@@ -5,7 +5,6 @@ import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.entity.*;
 import java.util.ArrayList;
 import java.util.List;
-import static com.s31b.castleoffense.game.Clock.*;
 
 /**
  *
@@ -75,8 +74,10 @@ public class Wave {
     }
 
     public void update() {
-        if (!waveDone) return;
-        
+        if (!waveDone) {
+            return;
+        }
+
         spawnWave();
 
         for (Offensive entity : offEntities) {
@@ -87,7 +88,9 @@ public class Wave {
     }
 
     public void draw() {
-        if (!waveDone) return;
+        if (!waveDone) {
+            return;
+        }
 
         for (Offensive entity : offEntities) {
             entity.draw(Globals.SPRITE_BATCH);

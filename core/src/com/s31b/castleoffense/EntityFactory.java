@@ -1,10 +1,7 @@
 package com.s31b.castleoffense;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.game.entity.*;
-import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
 
 /**
