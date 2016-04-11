@@ -71,7 +71,7 @@ public class Player {
                 return false;
             }
 
-            game.getCurrentWave().addDefensive(entity);
+            game.addTower(entity);
             return true;
         }
 

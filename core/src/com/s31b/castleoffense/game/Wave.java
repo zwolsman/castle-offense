@@ -17,7 +17,6 @@ public class Wave {
 
     private boolean player1done, player2done, waveDone;
 
-    private List<Defensive> defEntities;
     private List<Offensive> offEntities;
 
     private final CoGame game;
@@ -31,7 +30,6 @@ public class Wave {
     }
 
     private void initWave() {
-        defEntities = new ArrayList<Defensive>();
         offEntities = new ArrayList<Offensive>();
         player1done = false;
         player2done = false;
@@ -41,11 +39,6 @@ public class Wave {
 
     public int getNumber() {
         return this.number;
-    }
-
-    public void addDefensive(Defensive entity) {
-        defEntities.add(entity);
-        System.out.println("Defensive added to wave");
     }
 
     public void addOffensive(Offensive entity) {
@@ -65,12 +58,6 @@ public class Wave {
         }
 
         if (player1done && player2done) {
-            
-            for (Defensive entity : defEntities) {
-                // add towers to game
-                game.addTower(entity);
-            }
-            
             waveDone = true;
         }
     }

@@ -165,7 +165,9 @@ public class GameMenu implements Screen {
         tabs.add(tab1);
         tabs.add(tab2);
     }
-
+    
+    private int tempCounter = 0;
+    
     private Table getDefensive(){
         Table contentDef = new Table();
         defLabel = new Label("Tower", skin);
@@ -176,10 +178,11 @@ public class GameMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 
+                // TODO: this should be player.BuyDefensiveEntity()
                 Defensive entity = (Defensive)EntityFactory.buyEntity(EntityType.Defensive_Tower1, player);
-                entity.setPosition(new Tile(0, 4));
-                game.getCurrentWave().addDefensive(entity);
-                // TODO: add defensive unit to listview
+                tempCounter++;
+                entity.setPosition(new Tile(tempCounter, 0));
+                game.addTower(entity);
             };
         });
         buyDef.setPosition(370, 10);
@@ -201,7 +204,11 @@ public class GameMenu implements Screen {
         buyOff.addListener( new ClickListener() {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.getCurrentWave().addOffensive((Offensive)EntityFactory.buyEntity(EntityType.Offensive_Npc1, player));
+                
+                // TODO: this should be player.BuyOffensiveEntity()
+                Offensive entity = (Offensive)EntityFactory.buyEntity(EntityType.Offensive_Npc1, player);
+                game.getCurrentWave().addOffensive(entity);
+                // TODO: Add offensive to some kind of listview
             };
         });
         buyOff.setPosition(370, 10);
