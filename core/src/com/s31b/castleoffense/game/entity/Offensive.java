@@ -91,8 +91,7 @@ public class Offensive extends Entity {
         //currentTile = getNextPostition();
         Tile tempTile = getNextPosition();
         if (tempTile == null) {
-            // tempTile = currentTile;
-            System.out.println("I AM EMPTY");
+            //System.out.println("I AM EMPTY");
             return;
         }
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
@@ -195,6 +194,9 @@ public class Offensive extends Entity {
 
     public void spawn() {
         this.currentTile = owner.getOffensiveSpawnPosition();
+
+        //System.out.println("Spawned!");
+
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }
