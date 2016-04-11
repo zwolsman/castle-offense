@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.player.Player;
 
 /**
+ * A class that is used for everything that will be drawned in the game. Eg
+ * towers, attacking npc's
  *
  * @author Goos
  */

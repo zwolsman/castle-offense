@@ -6,6 +6,7 @@ import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 
 /**
+ * A player instance
  *
  * @author Goos
  */

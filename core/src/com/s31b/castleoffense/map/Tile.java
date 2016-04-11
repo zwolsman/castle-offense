@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
 
 /**
+ * A tile for the map
  *
  * @author GoosLaptop
  */
@@ -18,12 +19,27 @@ public class Tile {
 //        this.ownerId = ownerId;
 //        this.sprite = sprite;
 //    }
+    /**
+     * Create a grass tile at a specific position
+     *
+     * @param x The X of the tile (0 - Globals.TILES_X)
+     * @param y The Y of the tile (0 - Globals.TILES_Y)
+     *
+     */
     public Tile(int x, int y) {
         this.x = x;
         this.y = y;
         this.type = TileType.Grass;
     }
 
+    /**
+     * Create a tile at a specific position
+     *
+     * @param x The X of the tile (0 - Globals.TILES_X)
+     * @param y The Y of the tile (0 - Globals.TILES_Y)
+     * @param type The type of the tile
+     * @param m The map the tile will be used on
+     */
     public Tile(int x, int y, TileType type, Map m) {
         this.x = x;
         this.y = y;
@@ -69,10 +85,15 @@ public class Tile {
     public Map getMap() {
         return map;
     }
-//    public BufferedImage getSprite() {
-//        return sprite;
-//    }
 
+    /**
+     * Calculates if a given point (x,y) is in the tile. The x and y need to be
+     * relative to the screen, not to the grid
+     *
+     * @param x The X position on the screen
+     * @param y The Y position on the scren
+     * @return TRUE if it is in the bounds otherwise false
+     */
     public boolean contains(int x, int y) {
 
         int ingameX = getX() * Globals.TILE_WIDTH;
@@ -80,6 +101,13 @@ public class Tile {
         return x >= ingameX && x <= ingameX + Globals.TILE_WIDTH && y >= ingameY && y <= ingameY + Globals.TILE_HEIGHT;
     }
 
+    /**
+     * Calculates of a given point is at the origin of the tile (Left bottom)
+     *
+     * @param x The X position on the screen
+     * @param y The Y position on the sceen
+     * @return
+     */
     public boolean isAtOrigin(int x, int y) {
         int ingameX = getX() * Globals.TILE_WIDTH;
         int ingameY = getY() * Globals.TILE_HEIGHT;

@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * The map for a game.
  *
  * @author Goos
  */
@@ -16,6 +17,7 @@ public class Map {
 
     private Tile selectedTile;
     private Tile[][] tiles;
+    //A temporary map, will be dynamic later
     private static final String tempMask[] = {
         "00000000002222200",
         "11100000002020200",
@@ -32,10 +34,12 @@ public class Map {
 
     public Map() {
         tiles = new Tile[Globals.TILES_X][Globals.TILES_Y];
-
         initMap();
     }
 
+    /**
+     * Initializes a map from a string.
+     */
     private void initMap() {
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
@@ -50,11 +54,17 @@ public class Map {
         }
     }
 
+    //Not implement yet
     public void createPlayfield() {
         // instantiate the playfield
         throw new UnsupportedOperationException();
     }
 
+    /**
+     * Get all the tiles of the map
+     *
+     * @return A List of tiles
+     */
     public List<Tile> getAllTiles() {
 
         List<Tile> tempTiles = new ArrayList<Tile>();
@@ -66,6 +76,11 @@ public class Map {
         return Collections.unmodifiableList(tempTiles);
     }
 
+    /**
+     * Get a list of tiles that a unit can possibly walk on
+     *
+     * @return A list of walkable tiles
+     */
     public List<Tile> getAllWalkableTiles() {
 
         List<Tile> tempTiles = new ArrayList<Tile>();
@@ -80,6 +95,12 @@ public class Map {
         return tempTiles;
     }
 
+    /**
+     * Get a 2D array of tiles that a unit can possibly walk on. If a unit can
+     * not move on it it will be a null value in the 2D array
+     *
+     * @return A 2D array of walkable tiles
+     */
     public Tile[][] getAllWalkableTiles2D() {
         Tile[][] temp = new Tile[Globals.TILES_X][Globals.TILES_Y];
         for (int x = 0; x < Globals.TILES_X; x++) {
@@ -91,8 +112,6 @@ public class Map {
         }
         return temp;
     }
-
-    BitmapFont font = new BitmapFont();
 
     public void draw() {
 

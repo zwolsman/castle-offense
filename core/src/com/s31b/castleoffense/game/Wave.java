@@ -40,10 +40,22 @@ public class Wave {
         return this.number;
     }
 
+    /**
+     * Adds an offensive entity to the wave that will be attacking the other
+     * players castle
+     *
+     * @param entity A class that is derrived from the Offensive class
+     */
     public void addOffensive(Offensive entity) {
         offEntities.add(entity);
     }
 
+    /**
+     * Ends the wave. If both players ended the wave the wave will be played.
+     * End wave means end of turn
+     *
+     * @param playerId
+     */
     public void endWave(int playerId) {
         switch (playerId) {
             case 1:
@@ -61,6 +73,9 @@ public class Wave {
         }
     }
 
+    /**
+     * Spawn the wave with spawn delay for each offensive entity
+     */
     private void spawnWave() {
         // entity.update();
         for (Offensive entity : offEntities) {

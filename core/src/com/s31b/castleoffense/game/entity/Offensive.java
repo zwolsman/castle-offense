@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * An attacking unit
  *
  * @author GoosLaptop
  */
@@ -30,6 +31,20 @@ public class Offensive extends Entity {
 
     private Tile currentTile = null;
 
+    /**
+     * Initialize a new offensive object
+     *
+     * @param type The type of the entity.
+     * @param name The name of the entity
+     * @param descr The description of the name
+     * @param sprite The Texture for the NPC
+     * @param owner The player who bought it so it will not attack own units and
+     * turrets won't kill it
+     * @param price The price the player bought paid for it
+     * @param hp The hp (Hitpoints) of the unit
+     * @param speed The speed of the unit. Must be positive
+     * @param reward The reward the player gets in gold
+     */
     public Offensive(EntityType type, String name, String descr, Texture sprite, Player owner, float price, int hp, int speed, int reward) {
         super(type, name, descr, sprite, price, owner);
         hitpoints = hp;
@@ -59,6 +74,12 @@ public class Offensive extends Entity {
         return this.currentTile;
     }
 
+    /**
+     * Calculates the next available position to move to. Will return null if
+     * there will not be one
+     *
+     * @return A tile if it found one, null if it did not
+     */
     public Tile getNextPosition() {
         Tile[][] walkableTiles = owner.getGame().getMap().getAllWalkableTiles2D();
         for (int[] corner : corners) {
@@ -83,6 +104,10 @@ public class Offensive extends Entity {
         hitpoints -= amount;
     }
 
+    /**
+     * Calculates the next position to move to. Will use the speed of the unit
+     * for movement
+     */
     public void update() {
         //Tile temp = getNextPostition();
         //currentTile = getNextPostition();
@@ -142,53 +167,15 @@ public class Offensive extends Entity {
 //TODO make this dynamic
         Texture t = TextureFactory.getTexture("zoimbie1_hold_" + direction.toString().toLowerCase());
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
-//
-//        String t = "zoimbie1_hold_right";
-//        switch (direction) {
-//            case Down:
-//                t = "zoimbie1_hold_down";
-//                break;
-//            case Up:
-//                t = "zoimbie1_hold_up";
-//                break;
-//            case Left:
-//                t = "zoimbie1_hold_left";
-//                break;
-//            case Right:
-//                //
-//                break;
-//        }
-//        TextureRegion region = new TextureRegion(TextureFactory.getTexture(t), ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
-//        System.out.println(direction);
-//        batch.draw(region, ingameX, ingameY);
-        // batch.draw(region, ingameX, ingameY, region.getRegionWidth() / 2.0f, region.getRegionHeight() / 2.0f, region.getRegionWidth(), region.getRegionHeight(), 1f, 1f, 90.0f, true);
-
-//        switch (direction) {
-//            case Down:
-//                //draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation)
-//                // batch.draw(region, (float)ingameX, (float)ingameY, (float)Globals.TILE_WIDTH, (float)Globals.TILE_HEIGHT, 1.0f,1.0f, 90.0f);
-//                //batch.draw(region, inagemX, (float)ingameY, (float)Globals.TILE_WIDTH, (float)Globals.TILE_HEIGHT, (float)Globals.TILE_WIDTH, Gl, price, price, price, true);
-//
-//                batch.draw(region, ingameX, ingameY, (Gdx.graphics.getWidth() - region.getRegionWidth()) / 2.0f, (Gdx.graphics.getHeight() - region.getRegionHeight()) / 2.0f, region.getRegionWidth(), region.getRegionHeight(), 1f, 1f, 90.0f, true);
-//
-//                //batch.draw(sprite,(Gdx.graphics.getWidth() - sprite.getRegionWidth()) / 2.0f,(Gdx.graphics.getHeight() - sprite.getRegionHeight()) / 2.0f,sprite.getRegionWidth()/2.0f,sprite.getRegionHeight()/2.0f, sprite.getRegionWidth(), sprite.getRegionHeight(), 1f, 1f,count, false);
-//                region.flip(false, true);
-//                break;
-//            case Up:
-//                batch.draw(region, ingameX, ingameY, region.getRegionWidth() / 2.0f, region.getRegionHeight() / 2.0f, region.getRegionWidth(), region.getRegionHeight(), 1f, 1f, 270.0f, true);
-//            case Right:
-//                batch.draw(super.getSprite(), ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
-//            default:
-//                //batch.draw(super.getSprite(), ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
-//                break;
-//        }
-        //batch.draw(super.getSprite(), ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
     }
 
     public boolean isSpawned() {
         return currentTile != null;
     }
 
+    /**
+     * Spawn the unit on the offensive spawn position
+     */
     public void spawn() {
         this.currentTile = owner.getOffensiveSpawnPosition();
 
@@ -198,6 +185,11 @@ public class Offensive extends Entity {
     }
 }
 
+/**
+ * The direction a unit can move to.
+ *
+ * @author fhict
+ */
 enum Direction {
     Up,
     Down,

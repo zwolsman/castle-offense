@@ -6,6 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.ui.GameMenu;
 
+/**
+ * Game instance of our game (Castle of Clans) aka CoC
+ *
+ * @author fhict
+ */
 public class CastleOffense extends Game {
 
     Skin skin;
@@ -13,6 +18,9 @@ public class CastleOffense extends Game {
     OrthographicCamera camera;
     GameMenu menu;
 
+    /**
+     * Overriden method for creating the game.
+     */
     @Override
     public void create() {
         game = new CoGame(0);

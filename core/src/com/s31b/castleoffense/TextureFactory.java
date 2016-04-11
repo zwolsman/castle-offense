@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.s31b.castleoffense;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -12,6 +7,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 /**
+ * Creates and caches the texture's dynamicly
  *
  * @author fhict
  */
@@ -20,6 +16,12 @@ public class TextureFactory {
     private static final HashMap cache = new HashMap();
     private static final Random rng = new Random();
 
+    /**
+     * Get a texture by name. It will apend .png if needed.
+     *
+     * @param name the name of the texture (with or without .png)
+     * @return The texture if found otherwise there will be an exception thrown
+     */
     public static Texture getTexture(String name) {
 
         if ("".equals(name)) {
@@ -35,6 +37,13 @@ public class TextureFactory {
         return (Texture) cache.get(name);
     }
 
+    /**
+     * Get a texture based on a tile. You can only use TileType.Grass and
+     * TileType.Path
+     *
+     * @param tile The tile that will need to load
+     * @return The texture for the tile
+     */
     public static Texture getTexture(Tile tile) {
 
         if (tile.getTexture() == null) {
@@ -91,12 +100,5 @@ public class TextureFactory {
 
         return tile.getTexture();
 
-    }
-
-    enum Direction {
-        Up,
-        Down,
-        Left,
-        Right
     }
 }
