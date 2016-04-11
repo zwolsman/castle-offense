@@ -122,6 +122,10 @@ public class CoGame {
 
     public void testDraw() {
         getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
+        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
+        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
+        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
+
 //        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
 //        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
 //        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));

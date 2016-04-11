@@ -28,6 +28,7 @@ public class TextureFactory {
         if (!name.endsWith(".png")) {
             name = name + ".png";
         }
+
         if (!cache.containsKey(name)) {
             cache.put(name, new Texture(name));
         }

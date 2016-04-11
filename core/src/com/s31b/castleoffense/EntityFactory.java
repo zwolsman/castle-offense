@@ -44,7 +44,7 @@ public class EntityFactory {
                 return new Defensive(type, "Tower 1", "Basic lvl 1 tower", new Texture("badlogic.jpg"),
                         player, getEntityPriceByType(type), Globals.DAMAGE_PER_SECOND, Globals.DEFENSIVE_RANGE);
             case Offensive_Npc1:
-                return new Offensive(type, "Zombie 1", "Basic lvl 1 monster", TextureFactory.getTexture("zoimbie1_hold"),
+                return new Offensive(type, "Zombie 1", "Basic lvl 1 monster", TextureFactory.getTexture("zoimbie1_hold_right"),
                         player, getEntityPriceByType(type), Globals.OFFENSIVE_HITPOINTS, Globals.MOVEMENT_SPEED,
                         Globals.KILL_REWARD);
             default:
