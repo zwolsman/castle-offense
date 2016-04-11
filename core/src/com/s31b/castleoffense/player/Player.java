@@ -1,6 +1,5 @@
 package com.s31b.castleoffense.player;
 
-import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;

@@ -5,7 +5,6 @@
  */
 package com.s31b.castleoffense.ui;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,6 +21,7 @@ import com.s31b.castleoffense.game.GameManager;
  * @author Nick
  */
 public class mainMenu implements Screen {
+
     GameManager gm;
     OrthographicCamera camera;
     TextButton buttonPlay;
@@ -30,34 +30,37 @@ public class mainMenu implements Screen {
     Skin skin;
     Stage stage;
 
-    public mainMenu(){
+    public mainMenu() {
         this.stage = new Stage();
         this.gm = new GameManager();
         this.skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         this.create();
     }
-        
-    public void create () {
+
+    public void create() {
         buttonPlay = new TextButton("Play", skin);
-        buttonPlay.addListener( new ClickListener() {              
+        buttonPlay.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 gm.createGame();
-            };
+            }
+        ;
         });
         buttonInfo = new TextButton("Info", skin);
-        buttonInfo.addListener( new ClickListener() {              
+        buttonInfo.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               // TODO: Go to the info page
-            };
+                // TODO: Go to the info page
+            }
+        ;
         });
         buttonQuit = new TextButton("Quit", skin);
-        buttonQuit.addListener( new ClickListener() {              
+        buttonQuit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.exit(0);
-            };
+            }
+        ;
         });
 
         Gdx.input.setInputProcessor(stage);

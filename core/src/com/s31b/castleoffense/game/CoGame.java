@@ -1,10 +1,6 @@
 package com.s31b.castleoffense.game;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.entity.Defensive;
-import com.s31b.castleoffense.game.entity.EntityType;
-import com.s31b.castleoffense.game.entity.Offensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
@@ -54,7 +50,7 @@ public class CoGame {
         player1 = new Player(1, "Speler 1", this);
         player2 = new Player(2, "Speler 2", this);
         players = Arrays.asList(player1, player2);
-        
+
         currentWaveId = 0;
         currentWaveId = nextWave().getNumber();
     }
@@ -116,7 +112,7 @@ public class CoGame {
     public void draw() {
         map.draw();
         getCurrentWave().draw();
-        
+
         for (Defensive tower : towers) {
             tower.draw();
         }

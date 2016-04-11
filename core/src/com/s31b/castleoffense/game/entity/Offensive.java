@@ -3,7 +3,6 @@ package com.s31b.castleoffense.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.map.Tile;
@@ -196,7 +195,6 @@ public class Offensive extends Entity {
         this.currentTile = owner.getOffensiveSpawnPosition();
 
         //System.out.println("Spawned!");
-
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }

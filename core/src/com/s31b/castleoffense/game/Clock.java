@@ -5,8 +5,6 @@
  */
 package com.s31b.castleoffense.game;
 
-import com.badlogic.gdx.utils.TimeUtils;
-
 /**
  *
  * @author Cornee Geenen
