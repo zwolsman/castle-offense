@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.s31b.castleoffense.game.Clock;
 import com.s31b.castleoffense.game.CoGame;
-import com.s31b.castleoffense.game.entity.EntityType;
-import com.s31b.castleoffense.game.entity.Offensive;
 import com.s31b.castleoffense.ui.GameMenu;
 
 public class CastleOffense extends ApplicationAdapter {

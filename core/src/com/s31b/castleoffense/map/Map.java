@@ -2,18 +2,24 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import static javax.swing.Spring.height;
+import static javax.swing.Spring.width;
 
 /**
  *
  * @author Goos
  */
 public class Map {
-
+    private Tile selectedTile;
     private Tile[][] tiles;
     private static final String tempMask[] = {
         "00000000002222200",
@@ -42,7 +48,9 @@ public class Map {
                 if (type == TileType.Unknown) {
                     continue;
                 }
-                tiles[x][y] = new Tile(x, y, type);
+                tiles[x][y] = new Tile(x, y, type, this);
+                System.out.println(tiles[x][y]);
+
             }
         }
     }
@@ -98,15 +106,37 @@ public class Map {
                 int ingameX = x * Globals.TILE_WIDTH, ingameY = y * Globals.TILE_HEIGHT;
                 Tile tile = tiles[x][y];
                 if (tile == null) {
-                    System.out.println("TILE IS NULL; x: " + x + " y:" + y);
+                    //System.out.println("TILE IS NULL; x: " + x + " y:" + y);
                     continue;
                 }
-                Texture t = TextureFactory.getTexture(tile.getType().name().toLowerCase());
-                Globals.SPRITE_BATCH.draw(t, ingameX, ingameY);
+
+                Texture t = null;
+                if (tile.getType() == TileType.Grass || tile.getType() == TileType.Path) {
+                    t = TextureFactory.getTexture(tile);
+                } else {
+                    t = TextureFactory.getTexture(tile.getType().name().toLowerCase());
+                }
+
+                if (t == null) {
+                    continue;
+                }
+                Globals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 
                 //font.draw
-                font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                //font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
             }
+        }
+    }
+
+    public Tile getSelectedTile(){
+        return this.selectedTile;
+    } 
+    
+    public void mouseClicked(int x, int y) {
+        for(Tile item : getAllTiles()){
+            if(item.contains(x, y))continue;
+            selectedTile = item;
+            System.out.println(item.toString());
         }
     }
 }

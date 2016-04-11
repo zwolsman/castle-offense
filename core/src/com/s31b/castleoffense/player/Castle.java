@@ -23,7 +23,7 @@ public class Castle {
         hitpoints = 10;
     }
     
-    public void lostHitpoints(int ammount) {
+    public void loseHitpoints(int ammount) {
         hitpoints -= ammount;
     }
 
