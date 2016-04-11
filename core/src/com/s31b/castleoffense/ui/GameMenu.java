@@ -7,7 +7,11 @@ package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,7 +26,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
+import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
@@ -32,7 +38,8 @@ import com.s31b.castleoffense.player.*;
  *
  * @author Nick
  */
-public class GameMenu extends ApplicationAdapter {
+public class GameMenu implements Screen {
+    private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
     private TextButton endWave;
@@ -44,16 +51,16 @@ public class GameMenu extends ApplicationAdapter {
     private Table main;
     private Label defLabel;
     private Label offLabel;
-    
+    private Batch batch;
     private Player player;
         
-    public GameMenu(CoGame game, Player player) {
+    public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
+        this.co = castleoffense;
         this.game = game;
         this.player = player;
         this.create();
     }
     
-    @Override
     public void create () {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
@@ -84,18 +91,37 @@ public class GameMenu extends ApplicationAdapter {
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
 
+        batch = Globals.SPRITE_BATCH;
+        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+
+        camera = new OrthographicCamera(w, h);
+        camera.setToOrtho(false);
+
+        game.getCurrentWave().endWave(2);             
+        
         Gdx.input.setInputProcessor(stage);
     }
-
+    
     @Override
-    public void render () {                
+    public void render(float delta) {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         stage.addActor(main);
         stage.addActor(endWave);
         stage.addActor(surrender);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+       
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);          
+            
+        game.update();
+        game.draw();
+        
+        batch.end();
     }
-
+    
     private void getTabPages(){
         main = new Table();
         main.setSize(500, 150);
@@ -158,8 +184,8 @@ public class GameMenu extends ApplicationAdapter {
         });
         buyDef.setPosition(370, 10);
         buyDef.setSize(100, 40);
-
-        contentDef.background(skin.newDrawable("white", 1,0,0,1)); 
+        
+        contentDef.background(skin.newDrawable("white", Color.GRAY)); 
         contentDef.addActor(buyDef);
         contentDef.addActor(defLabel);
         return contentDef;
@@ -181,10 +207,40 @@ public class GameMenu extends ApplicationAdapter {
         buyOff.setPosition(370, 10);
         buyOff.setSize(100, 40);
 
-        contentOff.background(skin.newDrawable("white", 1,0,0,1)); 
+        contentOff.background(skin.newDrawable("white", Color.GRAY)); 
         contentOff.addActor(buyOff);
         contentOff.addActor(offLabel);
         return contentOff;
+    }
+
+    @Override
+    public void show() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void resize(int i, int i1) {
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void pause() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void resume() {
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void hide() {
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void dispose() {
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
         
 }
