@@ -10,7 +10,7 @@ package com.s31b.castleoffense.map;
  * @author fhict
  */
 public enum TileType {
-    Dirt,
+    Grass,
     Path,
     Castle,
     Unknown
