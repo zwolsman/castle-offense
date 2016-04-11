@@ -50,12 +50,12 @@ public class CoGame {
     public void initializeGame() {
         map = new Map();
         waves = new ArrayList<Wave>();
+        towers = new ArrayList<Defensive>();
         player1 = new Player(1, "Speler 1", this);
         player2 = new Player(2, "Speler 2", this);
         players = Arrays.asList(player1, player2);
 
         currentWaveId = nextWave().getNumber();
-        testDraw();
     }
 
     public Wave getCurrentWave() {
@@ -73,7 +73,6 @@ public class CoGame {
 
     public void startGame() {
         this.state = GameState.InGame;
-
     }
 
     public void pauseGame() {
@@ -87,6 +86,8 @@ public class CoGame {
 
     public void endGame() {
         this.state = GameState.Ended;
+        System.out.println("Game ended!");
+        System.exit(0);
     }
 
 //    public void addMap(Map map) {
@@ -114,17 +115,13 @@ public class CoGame {
     public void draw() {
         map.draw();
         getCurrentWave().draw();
+        
+        for (Defensive tower : towers) {
+            tower.draw();
+        }
     }
 
     public Map getMap() {
         return this.map;
-    }
-
-    public void testDraw() {
-        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
-//        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
-//        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
-//        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
-//        getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player1));
     }
 }

@@ -45,6 +45,7 @@ public class Wave {
 
     public void addDefensive(Defensive entity) {
         defEntities.add(entity);
+        System.out.println("Defensive added to wave");
     }
 
     public void addOffensive(Offensive entity) {
@@ -64,21 +65,17 @@ public class Wave {
         }
 
         if (player1done && player2done) {
+            
+            for (Defensive entity : defEntities) {
+                // add towers to game
+                game.addTower(entity);
+            }
+            
             waveDone = true;
-            // Lambda Runnable
-
-// start the thread
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    spawnWave();
-                }
-            }).start();
         }
     }
 
     private void spawnWave() {
-        //                entity.update();
         for (Offensive entity : offEntities) {
             timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
 
@@ -90,29 +87,19 @@ public class Wave {
     }
 
     public void update() {
-        // if (waveDone) {
-        // display current wave
-
-        for (Defensive entity : defEntities) {
-            // add towers to game
-            game.addTower(entity);
-        }
+        if (!waveDone) return;
+        
+        spawnWave();
 
         for (Offensive entity : offEntities) {
-            // draw entities with delay
             if (entity.isSpawned()) {
                 entity.update();
             }
-
         }
-        //}
     }
 
     public void draw() {
-        for (Defensive entity : defEntities) {
-            // add towers to game
-
-        }
+        if (!waveDone) return;
 
         for (Offensive entity : offEntities) {
             entity.draw(Globals.SPRITE_BATCH);
