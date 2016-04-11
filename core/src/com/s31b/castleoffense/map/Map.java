@@ -42,7 +42,9 @@ public class Map {
                 if (type == TileType.Unknown) {
                     continue;
                 }
-                tiles[x][y] = new Tile(x, y, type);
+                tiles[x][y] = new Tile(x, y, type, this);
+                System.out.println(tiles[x][y]);
+
             }
         }
     }
@@ -98,15 +100,37 @@ public class Map {
                 int ingameX = x * Globals.TILE_WIDTH, ingameY = y * Globals.TILE_HEIGHT;
                 Tile tile = tiles[x][y];
                 if (tile == null) {
-                    System.out.println("TILE IS NULL; x: " + x + " y:" + y);
+                    //System.out.println("TILE IS NULL; x: " + x + " y:" + y);
                     continue;
                 }
-                Texture t = TextureFactory.getTexture(tile.getType().name().toLowerCase());
-                Globals.SPRITE_BATCH.draw(t, ingameX, ingameY);
+
+                Texture t = null;
+                if (tile.getType() == TileType.Grass || tile.getType() == TileType.Path) {
+                    t = TextureFactory.getTexture(tile);
+                } else {
+                    t = TextureFactory.getTexture(tile.getType().name().toLowerCase());
+                }
+
+                if (t == null) {
+                    continue;
+                }
+                Globals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 
                 //font.draw
-                font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                //font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
             }
         }
+    }
+
+    public Tile[][] getAdjacentTile(Tile tile) {
+        Tile[][] adjacentTiles = new Tile[3][3];
+
+        adjacentTiles[1][1] = tile;
+        int[][] corners = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        //Up
+        for (int[] corner : corners) {
+            int x = tile.getX() - (corner[0]);
+        }
+        return tiles;
     }
 }
