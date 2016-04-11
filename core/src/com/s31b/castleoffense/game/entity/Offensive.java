@@ -73,7 +73,6 @@ public class Offensive extends Entity {
             if (usedTiles.contains(walkableTiles[curX][curY])) {
                 continue;
             }
-            //usedTiles.add(walkableTiles[curX][curY]);
             return walkableTiles[curX][curY];
         }
         return null;
@@ -94,9 +93,9 @@ public class Offensive extends Entity {
             return;
         }
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
-        System.out.println("movement distance: " + Double.toString(distance));
-        System.out.println(tempTile.toString());
-        System.out.println(currentTile.toString());
+//        System.out.println("movement distance: " + Double.toString(distance));
+//        System.out.println(tempTile.toString());
+//        System.out.println(currentTile.toString());
         if (tempTile.getX() == currentTile.getX()) { //Ik beweeg verticaal
 
             if (currentTile.getY() > tempTile.getY()) //Naar beneden
@@ -130,28 +129,13 @@ public class Offensive extends Entity {
             ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
             ingameX += distance;
         }
-
-        // ingameX += Gdx.graphics.getDeltaTime() * movementSpeed; // * movementspeed
-//
-//
-//            if (currentTile != null) {
-//                System.out.println(currentTile.toString());
-//
-//                // move the offensive entity to the next tile
-//                currentTile = temp;
-//                // TODO: Marvin
-//            } else {
-//                // the entity has reached an enemy castle
-//                destinationCastle.lostHitpoints(1);
-//            }
     }
 
     public void draw(SpriteBatch batch) {
         if (!isSpawned()) {
             return;
         }
-        System.out.println("Drawing at " + currentTile.toString());
-        System.out.println("ingameX: " + Integer.toString(ingameX) + " IngameY: " + Integer.toString(ingameY));
+
         batch.draw(super.getSprite(), ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
     }
 
@@ -161,7 +145,6 @@ public class Offensive extends Entity {
 
     public void spawn() {
         this.currentTile = owner.getOffensiveSpawnPosition();
-        System.out.println("Spawned!");
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }
