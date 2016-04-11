@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
  */
 public class Tile {
 
-    private int ownerId;
     private boolean buildable;
     private Texture texture;
     private Map map;
@@ -58,10 +57,6 @@ public class Tile {
 
     public void setBuildable(boolean buildable) {
         this.buildable = buildable;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
     }
 
     public Texture getTexture() {

@@ -107,7 +107,6 @@ public class Offensive extends Entity {
 
             }
             if (currentTile.getY() < tempTile.getY()) { //Naar boven
-                distance = distance;
                 direction = Direction.Up;
             }
 
@@ -120,7 +119,6 @@ public class Offensive extends Entity {
             ingameY += distance;
         } else if (tempTile.getY() == currentTile.getY()) {
             if (currentTile.getX() < tempTile.getX()) { //Naar rechts
-                distance = distance;
                 direction = Direction.Right;
             }
             if (currentTile.getX() > tempTile.getX()) { //Naar links
@@ -196,7 +194,6 @@ public class Offensive extends Entity {
         this.currentTile = owner.getOffensiveSpawnPosition();
 
         //System.out.println("Spawned!");
-
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }

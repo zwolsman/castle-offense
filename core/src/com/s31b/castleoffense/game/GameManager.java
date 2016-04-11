@@ -10,34 +10,35 @@ import java.util.List;
  * @author Goos
  */
 public class GameManager {
-    
+
     // GameManager is a singleton class, there can only ever be 1 instance of it.
     private static GameManager instance = null;
-    
-    private final int playerRowAmount = 2;
-    private final int goldPerWave = 1000;
-    private final int tilesPerRegion = 400;
-    private final int prepareDurationInMs = 60000;
-    private final int windowWidth = 640;
-    private final int windowHeight = 480;
-    
-    private static int nextGameId;
+
+    private static final int playerRowAmount = 2;
+    private static final int goldPerWave = 1000;
+    private static final int tilesPerRegion = 400;
+    private static final int prepareDurationInMs = 60000;
+    private static final int windowWidth = 640;
+    private static final int windowHeight = 480;
+
+    private static int nextGameId = 0;
     private final List<CoGame> allGames;
-    
-    public GameManager () {
+
+    public GameManager() {
         //instance = this; // to make sure instance won't be null again;
-        nextGameId = 0;
         allGames = new ArrayList<CoGame>();
     }
-    
-    public static GameManager getInstance() {
+
+    public synchronized static GameManager getInstance() {
         // if instance is null this is the first time the game manager gets called
         // create the ONE gamemanager instance
-        if (instance == null) instance = new GameManager();
+        if (instance == null) {
+            instance = new GameManager();
+        }
         return instance;
     }
-    
-    public CoGame createGame() {
+
+    public synchronized CoGame createGame() {
         nextGameId++;
         CoGame game = new CoGame(nextGameId);
         allGames.add(game);
@@ -67,8 +68,8 @@ public class GameManager {
     public int getWindowHeight() {
         return windowHeight;
     }
-    
-    public List<CoGame> getAllGames () {
+
+    public List<CoGame> getAllGames() {
         return Collections.unmodifiableList(allGames);
     }
 }

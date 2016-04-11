@@ -20,7 +20,7 @@ import com.s31b.castleoffense.game.GameManager;
  *
  * @author Nick
  */
-public class mainMenu extends ApplicationAdapter {
+public class MainMenu extends ApplicationAdapter {
         GameManager gm;
         OrthographicCamera camera;
         TextButton buttonPlay;

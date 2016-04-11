@@ -152,7 +152,7 @@ public class GameMenu extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 
-                // TODO: this should be player.BuyDefensiveEntity()
+                // TODO: this should be player.buyDefensiveEntity()
                 Defensive entity = (Defensive)EntityFactory.buyEntity(EntityType.Defensive_Tower1, player);
                 tempCounter++;
                 entity.setPosition(new Tile(tempCounter, 0));
@@ -179,7 +179,7 @@ public class GameMenu extends ApplicationAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 
-                // TODO: this should be player.BuyOffensiveEntity()
+                // TODO: this should be player.buyOffensiveEntity()
                 Offensive entity = (Offensive)EntityFactory.buyEntity(EntityType.Offensive_Npc1, player);
                 game.getCurrentWave().addOffensive(entity);
                 // TODO: Add offensive to some kind of listview
