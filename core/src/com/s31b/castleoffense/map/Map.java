@@ -2,8 +2,11 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,8 +15,8 @@ import java.util.List;
  *
  * @author Goos
  */
-public class Map {
-
+public class Map implements MouseListener {
+    private Tile selectedTile;
     private Tile[][] tiles;
     private static final String tempMask[] = {
         "00000000002222200",
@@ -108,5 +111,37 @@ public class Map {
                 font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
             }
         }
+    }
+
+    public Tile getSelectedTile(){
+        return this.selectedTile;
+    } 
+    
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        for(Tile item : getAllTiles()){
+            if(item.getX() != me.getX() && item.getY()!= me.getY())continue;
+            selectedTile = item;         
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

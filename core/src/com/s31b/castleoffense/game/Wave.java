@@ -78,7 +78,7 @@ public class Wave {
     }
 
     private void spawnWave() {
-        //                entity.update();
+        // entity.update();
         for (Offensive entity : offEntities) {
             timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
 
