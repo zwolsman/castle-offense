@@ -1,12 +1,12 @@
 package com.s31b.castleoffense.player;
 
-import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 
 /**
+ * A player instance
  *
  * @author Goos
  */
@@ -41,7 +41,7 @@ public class Player {
      *
      * @return bought offensive entity, or null if not enough money
      */
-    public boolean BuyOffensiveEntity(EntityType type) {
+    public boolean buyOffensiveEntity(EntityType type) {
         float price = EntityFactory.getEntityPriceByType(type);
         if (price < this.gold) {
             this.gold -= price;
@@ -62,7 +62,7 @@ public class Player {
      *
      * @return bought defensive entity, or null if not enough money
      */
-    public boolean BuyDefensiveEntity(EntityType type, Tile location) {
+    public boolean buyDefensiveEntity(EntityType type, Tile location) {
         float price = EntityFactory.getEntityPriceByType(type);
         if (price < this.gold) {
             this.gold -= price;

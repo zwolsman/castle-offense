@@ -5,7 +5,6 @@ import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.entity.*;
 import java.util.ArrayList;
 import java.util.List;
-import static com.s31b.castleoffense.game.Clock.*;
 
 /**
  *
@@ -41,10 +40,22 @@ public class Wave {
         return this.number;
     }
 
+    /**
+     * Adds an offensive entity to the wave that will be attacking the other
+     * players castle
+     *
+     * @param entity A class that is derrived from the Offensive class
+     */
     public void addOffensive(Offensive entity) {
         offEntities.add(entity);
     }
 
+    /**
+     * Ends the wave. If both players ended the wave the wave will be played.
+     * End wave means end of turn
+     *
+     * @param playerId
+     */
     public void endWave(int playerId) {
         switch (playerId) {
             case 1:
@@ -62,6 +73,9 @@ public class Wave {
         }
     }
 
+    /**
+     * Spawn the wave with spawn delay for each offensive entity
+     */
     private void spawnWave() {
         // entity.update();
         for (Offensive entity : offEntities) {
@@ -75,8 +89,10 @@ public class Wave {
     }
 
     public void update() {
-        if (!waveDone) return;
-        
+        if (!waveDone) {
+            return;
+        }
+
         spawnWave();
 
         for (Offensive entity : offEntities) {
@@ -87,7 +103,9 @@ public class Wave {
     }
 
     public void draw() {
-        if (!waveDone) return;
+        if (!waveDone) {
+            return;
+        }
 
         for (Offensive entity : offEntities) {
             entity.draw(Globals.SPRITE_BATCH);

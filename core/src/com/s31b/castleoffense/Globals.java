@@ -24,18 +24,18 @@ public class Globals {
     // Base DPS
     public static final int DAMAGE_PER_SECOND = 10;
     // Base Range
-    public static int DEFENSIVE_RANGE = 5;
+    public static final int DEFENSIVE_RANGE = 5;
     // Base Offensive Hitpoints
-    public static int OFFENSIVE_HITPOINTS = 25;
+    public static final int OFFENSIVE_HITPOINTS = 25;
     // Base Movement Speed
-    public static int MOVEMENT_SPEED = 100;
+    public static final int MOVEMENT_SPEED = 100;
     // Base Offensive Killreward
-    public static int KILL_REWARD = 5;
+    public static final int KILL_REWARD = 5;
 
     // Castle properties
-    public static int CASTLE_HP = 10;
+    public static final int CASTLE_HP = 10;
     public static Texture CASTLE_SPRITE; // TODO: add castle sprite
 
     //Sprite Batch
-    public static SpriteBatch SPRITE_BATCH = new SpriteBatch();
+    public static final SpriteBatch SPRITE_BATCH = new SpriteBatch();
 }

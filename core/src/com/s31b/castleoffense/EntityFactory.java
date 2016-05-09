@@ -1,13 +1,11 @@
 package com.s31b.castleoffense;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.game.entity.*;
-import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
 
 /**
+ * Creates the enteties used in the game
  *
  * @author GoosLaptop
  */
@@ -35,7 +33,6 @@ public class EntityFactory {
      *
      * @param type type of entity
      * @param player player that wants to buy entity
-     * @param tile tile that entity will spawn on
      * @return newly bought Entity object
      */
     public static Entity buyEntity(EntityType type, Player player) {

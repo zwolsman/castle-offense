@@ -1,10 +1,6 @@
 package com.s31b.castleoffense.game;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.entity.Defensive;
-import com.s31b.castleoffense.game.entity.EntityType;
-import com.s31b.castleoffense.game.entity.Offensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
@@ -38,6 +34,12 @@ public class CoGame {
         initializeGame();
     }
 
+    /**
+     * Gets a player instance if found, will return null if not found
+     *
+     * @param id the id of the player
+     * @return
+     */
     public Player getPlayerById(int id) {
         for (Player tempPlayer : players) {
             if (tempPlayer.getId() == id) {
@@ -47,6 +49,9 @@ public class CoGame {
         return null;
     }
 
+    /**
+     * Initializes the game
+     */
     public void initializeGame() {
         map = new Map();
         waves = new ArrayList<Wave>();
@@ -54,11 +59,16 @@ public class CoGame {
         player1 = new Player(1, "Speler 1", this);
         player2 = new Player(2, "Speler 2", this);
         players = Arrays.asList(player1, player2);
-        
+
         currentWaveId = 0;
         currentWaveId = nextWave().getNumber();
     }
 
+    /**
+     * Get the current wave that is being made by the player
+     *
+     * @return The wave
+     */
     public Wave getCurrentWave() {
         for (Wave wave : waves) {
             if (wave.getNumber() == currentWaveId) {
@@ -72,28 +82,46 @@ public class CoGame {
         return this.id;
     }
 
+    /**
+     * Starts a game
+     */
     public void startGame() {
         this.state = GameState.InGame;
     }
 
+    /**
+     * Pauses a game
+     */
     public void pauseGame() {
         this.state = GameState.Paused;
     }
 
+    /**
+     * Restarts a game
+     */
     public void restartGame() {
         this.state = GameState.InGame;
         initializeGame(); // removes all data of current game and starts over in wave 1
     }
 
+    /**
+     * Ends a game
+     */
     public void endGame() {
         this.state = GameState.Ended;
         System.out.println("Game ended!");
         System.exit(0);
     }
-
+//TODO: implent multiple maps.
 //    public void addMap(Map map) {
 //        maps.add(map);
 //    }
+
+    /**
+     * Gets the next wave and updates the id of the wave
+     *
+     * @return
+     */
     public Wave nextWave() {
         currentWaveId++;
         Wave wave = new Wave(currentWaveId, this);
@@ -101,10 +129,20 @@ public class CoGame {
         return wave;
     }
 
+    /**
+     * Add a tower to the game ofr a specific player
+     *
+     * @param tower The tower that the player bought
+     */
     public void addTower(Defensive tower) {
         towers.add(tower);
     }
 
+    /**
+     * Get all the towers of a game
+     *
+     * @return A list of towers
+     */
     public List<Defensive> getAllTowers() {
         return Collections.unmodifiableList(towers);
     }
@@ -113,15 +151,23 @@ public class CoGame {
         getCurrentWave().update();
     }
 
+    /**
+     * Draws the game on the screen using the Global spritebatch
+     */
     public void draw() {
         map.draw();
         getCurrentWave().draw();
-        
+
         for (Defensive tower : towers) {
             tower.draw();
         }
     }
 
+    /**
+     * Gets the current loaded map
+     *
+     * @return The map that the player sees
+     */
     public Map getMap() {
         return this.map;
     }
