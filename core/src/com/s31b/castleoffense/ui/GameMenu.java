@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
@@ -93,7 +94,7 @@ public class GameMenu implements Screen {
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
 
-        batch = Globals.SPRITE_BATCH;
+        batch = TextureGlobals.SPRITE_BATCH;
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         camera = new OrthographicCamera(w, h);

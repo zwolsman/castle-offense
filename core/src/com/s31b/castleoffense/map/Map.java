@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
+import com.s31b.castleoffense.TextureGlobals;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -134,7 +135,7 @@ public class Map {
                 if (t == null) {
                     continue;
                 }
-                Globals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+                TextureGlobals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 
                 //font.draw
                 //font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);

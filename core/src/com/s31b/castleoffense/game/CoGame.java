@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game;
 
+import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
