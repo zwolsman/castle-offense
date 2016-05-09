@@ -9,17 +9,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.ui.GameMenu;
+import com.s31b.castleoffense.ui.MainMenu;
 
 public class CastleOffense extends Game {
     Skin skin;
     CoGame game;
     OrthographicCamera camera;
     GameMenu menu;
+    MainMenu mainMenu;
 
     @Override
     public void create () {
         game = new CoGame(0);
-        this.setScreen(new GameMenu(this, game, game.getPlayerById(1)));
+        //this.setScreen(new GameMenu(this, game, game.getPlayerById(1)));
+        this.setScreen(new MainMenu(this, game));
     }
 
     @Override
