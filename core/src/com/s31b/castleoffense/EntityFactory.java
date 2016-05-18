@@ -38,10 +38,10 @@ public class EntityFactory {
     public static Entity buyEntity(EntityType type, Player player) {
         switch (type) {
             case Defensive_Tower1:
-                return new Defensive(type, "Tower 1", "Basic lvl 1 tower", new Texture("badlogic.jpg"),
+                return new Defensive(type, "Tower 1", "Basic lvl 1 tower", "badlogic",
                         player, getEntityPriceByType(type), Globals.DAMAGE_PER_SECOND, Globals.DEFENSIVE_RANGE);
             case Offensive_Npc1:
-                return new Offensive(type, "Zombie 1", "Basic lvl 1 monster", TextureFactory.getTexture("zoimbie1_hold_right"),
+                return new Offensive(type, "Zombie 1", "Basic lvl 1 monster", "zoimbie1_hold_right",
                         player, getEntityPriceByType(type), Globals.OFFENSIVE_HITPOINTS, Globals.MOVEMENT_SPEED,
                         Globals.KILL_REWARD);
             default:

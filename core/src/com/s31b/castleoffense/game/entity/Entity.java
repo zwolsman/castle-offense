@@ -18,13 +18,13 @@ abstract public class Entity implements Priceable {
     protected final int id;
     protected final String name;
     protected final String description;
-    protected final Texture sprite;
+    protected final String sprite;
     private boolean first = true;
     protected final float price;
 
     protected Player owner;
 
-    public Entity(EntityType type, String name, String descr, Texture sprite, float price, Player owner) {
+    public Entity(EntityType type, String name, String descr, String sprite, float price, Player owner) {
         nextId++;
         this.id = nextId;
         this.type = type;
@@ -51,7 +51,7 @@ abstract public class Entity implements Priceable {
         return description;
     }
 
-    public Texture getSprite() {
+    public String getSprite() {
         return sprite;
     }
 

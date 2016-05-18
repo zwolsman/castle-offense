@@ -108,7 +108,7 @@ public class MongoDB implements IDataBase {
                     try {
                         return method.invoke(o, null);
                     } catch (Exception e) {
-                        System.out.println(e.getMessage());
+                        System.out.println(e);
                     }
                 }
             }
