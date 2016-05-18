@@ -5,25 +5,19 @@
  */
 package com.s31b.castleoffense.ui;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
-import com.s31b.castleoffense.game.GameManager;
 
 /**
  *
@@ -31,9 +25,10 @@ import com.s31b.castleoffense.game.GameManager;
  */
 public class MainMenu implements Screen {
     private OrthographicCamera camera;
-    private TextButton buttonPlay;
-    private TextButton buttonInfo;
-    private TextButton buttonQuit;
+    private imageButton buttonPlay;
+    private imageButton buttonInfo;
+    private imageButton buttonQuit;
+    private Image background;
     private Skin skin;
     private Stage stage;
     private CastleOffense co;
@@ -48,25 +43,23 @@ public class MainMenu implements Screen {
     public void create () {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-        //Image img = new Image(new Texture(Gdx.files.internal("GUIMenu/buttonMain.jpg")));
-        
-        buttonPlay = new TextButton("Play", skin);
-        //buttonPlay.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("GUIMenu/buttonMain.jpg")))));
+        background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));  
+       
+        buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")));
         buttonPlay.addListener( new ClickListener() {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                co.setScreen(new GameMenu(co, game, game.getPlayerById(1)));
-                // set new screen
+                co.setScreen(new GameMenu(co, game, game.getPlayerById(1))); 
             };
         });
-        buttonInfo = new TextButton("Info", skin);
+        buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")));
         buttonInfo.addListener( new ClickListener() {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
                co.setScreen(new InfoScreen(co, game));
             };
         });
-        buttonQuit = new TextButton("Quit", skin);
+        buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")));
         buttonQuit.addListener( new ClickListener() {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -98,10 +91,11 @@ public class MainMenu implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.addActor(background);
         stage.addActor(buttonPlay);
         stage.addActor(buttonInfo);
         stage.addActor(buttonQuit);
-
+        System.out.println(stage.getActors().size);
         stage.draw();
     }
     
