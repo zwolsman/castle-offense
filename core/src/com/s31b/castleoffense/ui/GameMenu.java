@@ -10,6 +10,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -27,7 +29,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
-import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
@@ -43,10 +44,13 @@ public class GameMenu implements Screen {
     private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
-    private TextButton endWave;
-    private TextButton surrender;
-    private TextButton buyOff;
-    private TextButton buyDef;
+    private imageButton endWave;
+    private imageButton surrender;
+    private imageButton buyOff;
+    private imageButton buyDef;
+    private Image backgroundTabOff;
+    private Image backgroundTabDef;
+    private Image background;
     private Skin skin;
     public Stage stage;
     private Table main;
@@ -65,8 +69,17 @@ public class GameMenu implements Screen {
     public void create() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-
-        endWave = new TextButton("End wave", skin);
+        
+        background = new Image(new Texture(Gdx.files.internal("GUIMenu/sky.jpg")));
+        background.setPosition(0, 370);
+        background.setWidth(700);
+        
+        backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
+        backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
+        backgroundTabOff.setSize(500, 120);
+        backgroundTabDef.setSize(500, 120);
+        
+        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")));
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,7 +88,7 @@ public class GameMenu implements Screen {
         ;
         });
 
-        surrender = new TextButton("surrender", skin);
+        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")));
         surrender.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -86,8 +99,10 @@ public class GameMenu implements Screen {
         });
 
         getTabPages();
-        endWave.setPosition(600, 500);
-        surrender.setPosition(505, 500);
+        endWave.setSize(100, 100);
+        endWave.setPosition(550, 470);
+        surrender.setSize(100, 100);
+        surrender.setPosition(550, 530);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -110,6 +125,7 @@ public class GameMenu implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.addActor(background);
         stage.addActor(main);
         stage.addActor(endWave);
         stage.addActor(surrender);
@@ -128,7 +144,7 @@ public class GameMenu implements Screen {
     private void getTabPages() {
         main = new Table();
         main.setSize(500, 150);
-        main.setPosition(0, 490);
+        main.setPosition(10, 490);
 
         // Create the tab buttons
         HorizontalGroup group = new HorizontalGroup();
@@ -173,10 +189,11 @@ public class GameMenu implements Screen {
 
     private Table getDefensive() {
         Table contentDef = new Table();
+        contentDef.addActor(backgroundTabDef);
         defLabel = new Label("Tower", skin);
         defLabel.setPosition(main.getWidth() / 3, 80);
 
-        buyDef = new TextButton("Buy", skin);
+        buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
         buyDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -189,10 +206,9 @@ public class GameMenu implements Screen {
             }
         ;
         });
-        buyDef.setPosition(370, 10);
+        buyDef.setPosition(350, 10);
         buyDef.setSize(100, 40);
 
-        contentDef.background(skin.newDrawable("white", Color.GRAY));
         contentDef.addActor(buyDef);
         contentDef.addActor(defLabel);
         return contentDef;
@@ -200,11 +216,12 @@ public class GameMenu implements Screen {
 
     private Table getOffensive() {
         Table contentOff = new Table();
+        contentOff.addActor(backgroundTabOff);
         offLabel = new Label("Zombie", skin);
         offLabel.setPosition(50, 50);
         offLabel.setPosition(main.getWidth() / 3, 80);
 
-        buyOff = new TextButton("Buy", skin);
+        buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
         buyOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -216,10 +233,9 @@ public class GameMenu implements Screen {
             }
         ;
         });
-        buyOff.setPosition(370, 10);
+        buyOff.setPosition(350, 10);
         buyOff.setSize(100, 40);
 
-        contentOff.background(skin.newDrawable("white", Color.GRAY));
         contentOff.addActor(buyOff);
         contentOff.addActor(offLabel);
         return contentOff;
