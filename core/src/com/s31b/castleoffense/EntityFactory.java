@@ -5,7 +5,7 @@ import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
 
 /**
- * Creates the enteties used in the game
+ * Creates the entities used in the game
  *
  * @author GoosLaptop
  */
