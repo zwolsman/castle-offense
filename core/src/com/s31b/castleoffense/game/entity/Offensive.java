@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
+import com.s31b.castleoffense.data.OffensiveDAO;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Castle;
 import com.s31b.castleoffense.player.Player;
@@ -50,11 +51,22 @@ public class Offensive extends Entity {
         hitpoints = hp;
         movementSpeed = speed;
         killReward = reward;
+        destinationCastle = determineCastle(owner);
+    }
 
+    public Offensive(OffensiveDAO data, Player owner) {
+        super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
+        hitpoints = data.getHP();
+        movementSpeed = data.getSpeed();
+        killReward = data.getReward();
+        destinationCastle = determineCastle(owner);
+    }
+
+    private Castle determineCastle(Player owner) {
         if (owner.getId() == 1) {
-            destinationCastle = owner.getGame().getPlayerById(2).getCastle();
+            return owner.getGame().getPlayerById(2).getCastle();
         } else {
-            destinationCastle = owner.getGame().getPlayerById(1).getCastle();
+            return owner.getGame().getPlayerById(1).getCastle();
         }
     }
 

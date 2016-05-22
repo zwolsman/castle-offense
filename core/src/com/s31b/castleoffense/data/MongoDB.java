@@ -15,6 +15,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bson.Document;
 
 /**
@@ -27,6 +29,8 @@ public class MongoDB implements IDataBase {
     MongoDatabase db;
 
     public MongoDB() {
+        Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        mongoLogger.setLevel(Level.SEVERE);
         mongoClient = new MongoClient("lensert.com", 27017);
         db = mongoClient.getDatabase("castleoffense");
     }

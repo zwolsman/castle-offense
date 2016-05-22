@@ -69,16 +69,16 @@ public class GameMenu implements Screen {
     public void create() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-        
+
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/sky.jpg")));
         background.setPosition(0, 370);
         background.setWidth(700);
-        
+
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabOff.setSize(500, 120);
         backgroundTabDef.setSize(500, 120);
-        
+
         endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")));
         endWave.addListener(new ClickListener() {
             @Override
@@ -199,7 +199,7 @@ public class GameMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
 
                 // TODO: this should be player.BuyDefensiveEntity()
-                Defensive entity = (Defensive) EntityFactory.buyEntity(EntityType.Defensive_Tower1, player);
+                Defensive entity = (Defensive) EntityFactory.buyEntity(EntityType.Tower_Yellow, player);
                 tempCounter++;
                 entity.setPosition(new Tile(tempCounter, 0));
                 game.addTower(entity);
@@ -227,7 +227,7 @@ public class GameMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
 
                 // TODO: this should be player.BuyOffensiveEntity()
-                Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.Offensive_Npc1, player);
+                Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.Military, player);
                 game.getCurrentWave().addOffensive(entity);
                 // TODO: Add offensive to some kind of listview
             }

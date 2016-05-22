@@ -1,9 +1,9 @@
 package com.s31b.castleoffense.game.entity;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
+import com.s31b.castleoffense.data.DefensiveDAO;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
 
@@ -23,6 +23,13 @@ public class Defensive extends Entity {
         super(type, name, descr, sprite, price, owner);
         damagePerSecond = dps;
         this.range = range;
+        position = new Tile(0, 0);
+    }
+
+    public Defensive(DefensiveDAO data, Player owner) {
+        super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
+        damagePerSecond = data.getDPS();
+        this.range = data.getRange();
         position = new Tile(0, 0);
     }
 
