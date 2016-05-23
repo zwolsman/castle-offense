@@ -36,8 +36,17 @@ public class EntityFactory {
      * @param type type to get price of
      * @return price of given type
      */
-    public static float getEntityPriceByType(EntityType type) {
-        return Globals.PRICE_DEFENSIVE * type.getMultiplyFactor();
+    public static int getEntityPriceByType(EntityType type) {
+        for (EntityDAO e : CONS_ENTITIES) {
+            if (e.getType().equals(type.name())) {
+                if (e.getClass() == DefensiveDAO.class){
+                    return ((DefensiveDAO) e).getPrice();
+                } else if (e.getClass() == OffensiveDAO.class) {
+                    return ((OffensiveDAO) e).getPrice();
+                }
+            }
+        }
+        return -1;
     }
 
     /**
