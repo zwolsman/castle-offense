@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,6 +26,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.TextureGlobals;
+import com.s31b.castleoffense.data.DefensiveDAO;
+import com.s31b.castleoffense.data.OffensiveDAO;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
@@ -46,9 +47,11 @@ public class GameMenu implements Screen {
     private Skin skin;
     private Batch batch;
     private Player player;
-    private List<Defensive> defList;
-    private List<Offensive> offList;
+    private List<DefensiveDAO> defList;
+    private List<OffensiveDAO> offList;
     private int countOff = 0;
+    private int countDefList = 0;
+    private int countOffList = 0;
     private imageButton endWave;
     private imageButton surrender;
     private imageButton buyOff;
@@ -82,8 +85,8 @@ public class GameMenu implements Screen {
         this.co = castleoffense;
         this.game = game;
         this.player = player;
-//        this.defList = EntityFactory.getAllDefensive();
-//        this.offList = EntityFactory.getAllOffensive();
+        this.defList = EntityFactory.getAllDefensives();
+        this.offList = EntityFactory.getAllOffensives();
         this.create();
     }
 
@@ -123,7 +126,7 @@ public class GameMenu implements Screen {
         backgroundTabOff.setSize(500, 150);
         backgroundTabDef.setSize(500, 150);
 
-        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")));
+        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")));
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -134,7 +137,7 @@ public class GameMenu implements Screen {
         ;
         });
 
-        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")));
+        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")));
         surrender.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -243,13 +246,8 @@ public class GameMenu implements Screen {
     private Table getDefensive() {
         Table contentDef = new Table();
         contentDef.addActor(backgroundTabDef);
+        DefensiveDAO d = defList.get(0);
         
-        Defensive db = (Defensive)EntityFactory.buyEntity(EntityType.Tower_Blue, player);
-        Defensive dg = (Defensive)EntityFactory.buyEntity(EntityType.Tower_Green, player);
-//        defList.add(db);
-//        defList.add(dg);
-        
-        Defensive d = (Defensive)EntityFactory.buyEntity(EntityType.Tower_Blue, player);
         defLabel = new Label(d.getName(), skin);
         defLabel.setPosition(60, 110);
         defLabel.setColor(Color.BLACK);
@@ -264,26 +262,26 @@ public class GameMenu implements Screen {
         Label defDescriptionDesc = new Label("Beschrijving: ", skin);
         defDescriptionDesc.setPosition(60, 70);
         defDescriptionDesc.setColor(Color.BLACK);
-        defDescription = new Label(d.getDescription(), skin);
+        defDescription = new Label(d.getDescr(), skin);
         defDescription.setPosition(170, 70);
         defDescription.setColor(Color.BLACK);
         
         Label defDpsDesc = new Label("DPS: ", skin);
         defDpsDesc.setPosition(60, 50);
         defDpsDesc.setColor(Color.BLACK);
-        defDps = new Label(Integer.toString(d.getDamagePerSecond()), skin);
+        defDps = new Label(Integer.toString(d.getDPS()), skin);
         defDps.setPosition(170, 50);
         defDps.setColor(Color.BLACK);
         
         Label defRangeDesc = new Label("Bereik: ", skin);
         defRangeDesc.setPosition(60, 30);
         defRangeDesc.setColor(Color.BLACK);
-        //defRange = new Label(Integer.toString(d.getRange()), skin);
-        //defRange.setPosition(170, 30);
-        //defRange.setColor(Color.BLACK);
+        defRange = new Label(Integer.toString(d.getRange()), skin);
+        defRange.setPosition(170, 30);
+        defRange.setColor(Color.BLACK);
         
         
-        buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
+        buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
         buyDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -299,11 +297,21 @@ public class GameMenu implements Screen {
         buyDef.setPosition(350, 10);
         buyDef.setSize(100, 40);
         
-        nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
+        nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
         nextDef.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y) {   
+                countDefList++;
                 
+                if(countDefList >= defList.size()){
+                    countDefList = 0;
+                }
+                
+                defLabel.setText(defList.get(countDefList).getName());
+                defPrice.setText(Integer.toString(defList.get(countDefList).getPrice()));
+                defDescription.setText(defList.get(countDefList).getDescr());
+                defDps.setText(Integer.toString(defList.get(countDefList).getDPS()));
+                defRange.setText(Integer.toString(defList.get(countDefList).getRange()));
             };
         });
         nextDef.setPosition(350, 80);
@@ -318,7 +326,7 @@ public class GameMenu implements Screen {
         contentDef.addActor(defDescriptionDesc);
         contentDef.addActor(defDps);
         contentDef.addActor(defDpsDesc);
-        //contentDef.addActor(defRange);
+        contentDef.addActor(defRange);
         contentDef.addActor(defRangeDesc);
         return contentDef;
     }
@@ -326,7 +334,8 @@ public class GameMenu implements Screen {
     private Table getOffensive() {
         Table contentOff = new Table();
         contentOff.addActor(backgroundTabOff);
-        Offensive o = (Offensive)EntityFactory.buyEntity(EntityType.Blue, player);
+        OffensiveDAO o = offList.get(0);
+        
         offLabel = new Label(o.getName(), skin);
         offLabel.setPosition(60, 110);
         offLabel.setColor(Color.BLACK);
@@ -341,7 +350,7 @@ public class GameMenu implements Screen {
         Label offDescriptionDesc = new Label("Beschrijving: ", skin);
         offDescriptionDesc.setPosition(60, 70);
         offDescriptionDesc.setColor(Color.BLACK);
-        offDescription = new Label(o.getDescription(), skin);
+        offDescription = new Label(o.getDescr(), skin);
         offDescription.setPosition(170, 70);
         offDescription.setColor(Color.BLACK);
         
@@ -349,14 +358,14 @@ public class GameMenu implements Screen {
         offSpeedDesc.setPosition(60, 50);
         offSpeedDesc.setColor(Color.BLACK);
         offSpeed = new Label("Test", skin);
-        offSpeed = new Label(Integer.toString(o.getMovementSpeed()), skin);
+        offSpeed = new Label(Integer.toString(o.getSpeed()), skin);
         offSpeed.setPosition(170, 50);
         offSpeed.setColor(Color.BLACK);
         
         Label offHpDesc = new Label("Levenspunten: ", skin);
         offHpDesc.setPosition(60, 30);
         offHpDesc.setColor(Color.BLACK);
-        offHp = new Label(Integer.toString(o.getHitpoints()), skin);
+        offHp = new Label(Integer.toString(o.getHP()), skin);
         offHp.setPosition(170, 30);
         offHp.setColor(Color.BLACK);
         
@@ -367,7 +376,7 @@ public class GameMenu implements Screen {
         offNumber.setPosition(170, 10);
         offNumber.setColor(Color.BLACK);
 
-        buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
+        buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
         buyOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -383,7 +392,29 @@ public class GameMenu implements Screen {
         });
         buyOff.setPosition(350, 10);
         buyOff.setSize(100, 40);
-
+        
+        nextOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
+        nextOff.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {   
+                countOffList++;
+                
+                if(countOffList >= offList.size()){
+                    countOffList = 0;
+                }
+                
+                offLabel.setText(offList.get(countOffList).getName());
+                offPrice.setText(Integer.toString(offList.get(countOffList).getPrice()));
+                offDescription.setText(offList.get(countOffList).getDescr());
+                offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
+                offHp.setText(Integer.toString(offList.get(countOffList).getHP()));
+                //offNumber.setText(Integer.toString(offList.get(countOffList).getHP()));
+            };
+        });
+        nextOff.setPosition(350, 80);
+        nextOff.setSize(100, 40);
+        
+        contentOff.addActor(nextOff);
         contentOff.addActor(buyOff);
         contentOff.addActor(offLabel);
         contentOff.addActor(offPriceDesc);
