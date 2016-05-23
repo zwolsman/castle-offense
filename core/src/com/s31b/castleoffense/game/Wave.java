@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.game.entity.*;
+import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +72,9 @@ public class Wave {
 
         if (player1done && player2done) {
             waveDone = true;
+            for(Player player : game.getPlayers()){
+                player.addGold(Globals.GOLD_INCR_PER_WAVE);
+            }
         }
     }
 
@@ -111,5 +115,27 @@ public class Wave {
         for (Offensive entity : offEntities) {
             entity.draw(TextureGlobals.SPRITE_BATCH);
         }
+    }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+            return false;
+        }
+        if (other == this){
+            return true;
+        }
+        if (!(other instanceof Wave)){
+            return false;
+        }
+        Wave w = (Wave)other;
+        return 
+            this.player1done == w.player1done &&
+            this.player2done == w.player2done &&
+            this.waveDone == w.waveDone &&
+            this.game.equals(w.game) &&
+            this.number == w.number &&
+            this.spawnTime == w.spawnTime &&
+            this.timeSinceLastSpawn == w.timeSinceLastSpawn;
     }
 }

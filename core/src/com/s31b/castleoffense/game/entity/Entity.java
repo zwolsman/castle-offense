@@ -20,11 +20,11 @@ abstract public class Entity implements Priceable {
     protected final String description;
     protected final String sprite;
     private boolean first = true;
-    protected final float price;
+    protected final int price;
 
     protected Player owner;
 
-    public Entity(EntityType type, String name, String descr, String sprite, float price, Player owner) {
+    public Entity(EntityType type, String name, String descr, String sprite, int price, Player owner) {
         nextId++;
         this.id = nextId;
         this.type = type;
@@ -62,5 +62,27 @@ abstract public class Entity implements Priceable {
     @Override
     public float getPrice() {
         return this.price;
+    }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+                        return false;
+        }
+        if (other == this){
+                        return true;
+        }
+        if (!(other instanceof Entity)){
+                        return false;
+        }
+        Entity d = (Entity)other;
+        return 
+            this.description == d.description &&
+            this.id == d.id &&
+            this.name == d.name &&
+            this.owner == d.owner &&
+            this.price == d.price &&
+            this.sprite.equals(d.sprite) &&
+            this.type == d.type;
     }
 }

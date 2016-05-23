@@ -150,7 +150,15 @@ public class CoGame {
     }
 
     public void update() {
-        getCurrentWave().update();
+        boolean checkCastle;
+        for(Player player : players){
+            if(player.getCastle().getHitpoints() > 0){
+                getCurrentWave().update();
+            }
+            else {
+                endGame();
+            }
+        }     
     }
 
     /**
@@ -172,5 +180,34 @@ public class CoGame {
      */
     public Map getMap() {
         return this.map;
+    }
+    
+    public List<Player> getPlayers(){
+        return Collections.unmodifiableList(players);
+    }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+                        return false;
+        }
+        if (other == this){
+                        return true;
+        }
+        if (!(other instanceof CoGame)){
+                        return false;
+        }
+        CoGame w = (CoGame)other;
+        return 
+            this.currentWaveId == w.currentWaveId &&
+            this.id == w.id &&
+            this.map == w.map &&
+            this.player1 == w.player1 &&
+            this.player2 == w.player2 &&
+            this.players == w.players &&
+            this.state == w.state &&
+            this.towers == w.towers &&
+            this.waves == w.waves;
+
     }
 }

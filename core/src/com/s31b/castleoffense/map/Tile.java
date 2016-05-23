@@ -51,10 +51,24 @@ public class Tile {
     private TileType type;
 
     public int getX() {
+        return getX(false);
+    }
+
+    public int getX(Boolean translated) {
+        if (translated) {
+            return x * Globals.TILE_WIDTH;
+        }
         return x;
     }
 
     public int getY() {
+        return getY(false);
+    }
+
+    public int getY(Boolean translated) {
+        if (translated) {
+            return y * Globals.TILE_HEIGHT;
+        }
         return y;
     }
 
@@ -117,5 +131,23 @@ public class Tile {
     @Override
     public String toString() {
         return String.format("X: %d, Y: %d, type: %s", getX(), getY(), getType());
+    }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+                        return false;
+        }
+        if (other == this){
+                        return true;
+        }
+        if (!(other instanceof Tile)){
+                        return false;
+        }
+        Tile t = (Tile)other;
+        return this.buildable == t.buildable &
+                this.x == t.x &&
+                this.y == t.y &&
+                this.type == t.type;
     }
 }
