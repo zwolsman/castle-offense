@@ -133,7 +133,6 @@ public class Offensive extends Entity {
         }
 
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
-        System.out.println(distance);
         Vector2 centerNextTile = new Vector2(tempTile.getX(true) + Globals.TILE_WIDTH / 2, tempTile.getY(true) + Globals.TILE_HEIGHT / 2);
         Vector2 centerTile = new Vector2(currentTile.getX(true) + Globals.TILE_WIDTH / 2, currentTile.getY(true) + Globals.TILE_HEIGHT / 2);
 
