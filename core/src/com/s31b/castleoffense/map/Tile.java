@@ -51,10 +51,24 @@ public class Tile {
     private TileType type;
 
     public int getX() {
+        return getX(false);
+    }
+
+    public int getX(Boolean translated) {
+        if (translated) {
+            return x * Globals.TILE_WIDTH;
+        }
         return x;
     }
 
     public int getY() {
+        return getY(false);
+    }
+
+    public int getY(Boolean translated) {
+        if (translated) {
+            return y * Globals.TILE_HEIGHT;
+        }
         return y;
     }
 
