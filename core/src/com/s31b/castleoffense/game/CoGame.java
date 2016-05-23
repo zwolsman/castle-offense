@@ -151,7 +151,15 @@ public class CoGame {
     }
 
     public void update() {
-        getCurrentWave().update();
+        boolean checkCastle;
+        for(Player player : players){
+            if(player.getCastle().getHitpoints() > 0){
+                getCurrentWave().update();
+            }
+            else {
+                endGame();
+            }
+        }     
     }
 
     /**
@@ -161,7 +169,7 @@ public class CoGame {
         map.draw();
         getCurrentWave().draw();
 
-        for (Defensive tower : towers) {
+        for (Defensive tower : getAllTowers()) {
             tower.draw();
         }
     }
@@ -173,5 +181,9 @@ public class CoGame {
      */
     public Map getMap() {
         return this.map;
+    }
+    
+    public List<Player> getPlayers(){
+        return Collections.unmodifiableList(players);
     }
 }

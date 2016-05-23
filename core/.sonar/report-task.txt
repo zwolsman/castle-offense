@@ -1,0 +1,5 @@
+projectKey=castleOffense
+serverUrl=http://localhost:9000
+dashboardUrl=http://localhost:9000/dashboard/index/castleOffense
+ceTaskId=AVSVFqSpzesSGwP46RgZ
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AVSVFqSpzesSGwP46RgZ

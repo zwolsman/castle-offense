@@ -19,7 +19,7 @@ public class Defensive extends Entity {
 
     private Tile position;
 
-    public Defensive(EntityType type, String name, String descr, String sprite, Player owner, float price, int dps, int range) {
+    public Defensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int dps, int range) {
         super(type, name, descr, sprite, price, owner);
         damagePerSecond = dps;
         this.range = range;

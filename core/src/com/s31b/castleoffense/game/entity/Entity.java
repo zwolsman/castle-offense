@@ -20,11 +20,11 @@ abstract public class Entity implements Priceable {
     protected final String description;
     protected final String sprite;
     private boolean first = true;
-    protected final float price;
+    protected final int price;
 
     protected Player owner;
 
-    public Entity(EntityType type, String name, String descr, String sprite, float price, Player owner) {
+    public Entity(EntityType type, String name, String descr, String sprite, int price, Player owner) {
         nextId++;
         this.id = nextId;
         this.type = type;
