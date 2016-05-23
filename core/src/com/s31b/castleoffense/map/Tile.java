@@ -132,4 +132,22 @@ public class Tile {
     public String toString() {
         return String.format("X: %d, Y: %d, type: %s", getX(), getY(), getType());
     }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+                        return false;
+        }
+        if (other == this){
+                        return true;
+        }
+        if (!(other instanceof Tile)){
+                        return false;
+        }
+        Tile t = (Tile)other;
+        return this.buildable == t.buildable &
+                this.x == t.x &&
+                this.y == t.y &&
+                this.type == t.type;
+    }
 }
