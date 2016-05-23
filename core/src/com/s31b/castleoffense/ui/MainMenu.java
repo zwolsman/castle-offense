@@ -8,6 +8,7 @@ package com.s31b.castleoffense.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -32,6 +33,7 @@ public class MainMenu implements Screen {
     private imageButton buttonInfo;
     private imageButton buttonQuit;
     private Image background;
+    private Cursor customCursor;
     private Skin skin;
     private Stage stage;
     private CastleOffense co;
@@ -52,26 +54,54 @@ public class MainMenu implements Screen {
         buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")));
         buttonPlay.addListener( new ClickListener() {              
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                co.setScreen(new GameMenu(co, game, game.getPlayerById(1))); 
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
             };
             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("GUIMenu/buttonMainStart.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+                co.setScreen(new GameMenu(co, game, game.getPlayerById(1))); 
             };
         });
         buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")));
-        buttonInfo.addListener( new ClickListener() {              
+        buttonInfo.addListener( new ClickListener() {       
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
                co.setScreen(new InfoScreen(co, game));
             };
         });
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")));
-        buttonQuit.addListener( new ClickListener() {              
+        buttonQuit.addListener( new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
                 System.exit(0);
             };
         });
@@ -104,6 +134,7 @@ public class MainMenu implements Screen {
         stage.addActor(buttonPlay);
         stage.addActor(buttonInfo);
         stage.addActor(buttonQuit);
+        stage.act();
         System.out.println(stage.getActors().size);
         stage.draw();
     }

@@ -4,14 +4,15 @@ package com.s31b.castleoffense.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -47,6 +47,7 @@ public class GameMenu implements Screen {
     private Skin skin;
     private Batch batch;
     private Player player;
+    private Cursor customCursor;
     private List<DefensiveDAO> defList;
     private List<OffensiveDAO> offList;
     private int countOff = 0;
@@ -129,6 +130,16 @@ public class GameMenu implements Screen {
         endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")));
         endWave.addListener(new ClickListener() {
             @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
+            @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOff = 0;
                 offNumber.setText(Integer.toString(countOff));
@@ -139,6 +150,16 @@ public class GameMenu implements Screen {
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")));
         surrender.addListener(new ClickListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.endGame();
@@ -185,6 +206,8 @@ public class GameMenu implements Screen {
         stage.addActor(playerHp);
         stage.addActor(playerGold);
         stage.act(Gdx.graphics.getDeltaTime());
+        
+        stage.act();
         stage.draw();
 
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
@@ -204,8 +227,32 @@ public class GameMenu implements Screen {
 
         // Create the tab buttons
         HorizontalGroup group = new HorizontalGroup();
-        final Button tab1 = new TextButton("Defensive", skin, "toggle");
-        final Button tab2 = new TextButton("Offensive", skin, "toggle");
+        final imageButton tab1 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDefDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")));
+        final imageButton tab2 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOffDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")));
+        tab1.addListener(new ClickListener() {       
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
+        });
+        tab2.addListener(new ClickListener() {       
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
+        });
         group.addActor(tab1);
         group.addActor(tab2);
         main.add(group);
@@ -283,6 +330,16 @@ public class GameMenu implements Screen {
         
         buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
         buyDef.addListener(new ClickListener() {
+             @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: this should be player.BuyDefensiveEntity()
@@ -299,6 +356,16 @@ public class GameMenu implements Screen {
         
         nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
         nextDef.addListener(new ClickListener() {
+             @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
             @Override
             public void clicked(InputEvent event, float x, float y) {   
                 countDefList++;
@@ -378,6 +445,16 @@ public class GameMenu implements Screen {
 
         buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
         buyOff.addListener(new ClickListener() {
+             @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOff++;
@@ -395,6 +472,16 @@ public class GameMenu implements Screen {
         
         nextOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
         nextOff.addListener(new ClickListener() {
+             @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+                customCursor.dispose();
+            };
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            };
             @Override
             public void clicked(InputEvent event, float x, float y) {   
                 countOffList++;
