@@ -24,7 +24,9 @@ public class Server {
         try {
             HOST = InetAddress.getLocalHost();
             registry = LocateRegistry.createRegistry(PORT);
-        } catch (UnknownHostException | RemoteException ex) {
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
 
