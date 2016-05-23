@@ -2,6 +2,7 @@ package com.s31b.castleoffense.player;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.TextureGlobals;
 
 /**
  * The castle of a player
@@ -11,12 +12,10 @@ import com.s31b.castleoffense.Globals;
 public class Castle {
 
     private int hitpoints;
-    private Texture sprite;
     private Player owner;
 
     public Castle(Player owner) {
         this.hitpoints = Globals.CASTLE_HP;
-        this.sprite = Globals.CASTLE_SPRITE;
         this.owner = owner;
         initCastle();
     }
@@ -37,7 +36,7 @@ public class Castle {
     }
 
     public Texture getSprite() {
-        return sprite;
+        return TextureGlobals.CASTLE_SPRITE;
     }
 
     public Player getOwner() {

@@ -2,6 +2,7 @@ package com.s31b.castleoffense.game;
 
 import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
@@ -112,9 +113,7 @@ public class Wave {
         }
 
         for (Offensive entity : offEntities) {
-            if(entity.getHitpoints() > 0){
-                entity.draw(Globals.SPRITE_BATCH);
-            }           
+            entity.draw(TextureGlobals.SPRITE_BATCH);
         }
     }
 }

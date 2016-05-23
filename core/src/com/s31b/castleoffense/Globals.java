@@ -35,8 +35,4 @@ public class Globals {
 
     // Castle properties
     public static final int CASTLE_HP = 10;
-    public static Texture CASTLE_SPRITE; // TODO: add castle sprite
-    
-    //Sprite Batch
-    public static final SpriteBatch SPRITE_BATCH = new SpriteBatch();
 }
