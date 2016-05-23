@@ -7,25 +7,25 @@ package com.s31b.castleoffense.game.entity;
  */
 public enum EntityType {
     //Defensive
-    Tower_Green(200.0f),
-    Tower_Pink(400.0f),
-    Tower_Blue(800.0f),
-    Tower_Yellow(1600.0f),
+    Tower_Green(200),
+    Tower_Pink(400),
+    Tower_Blue(800),
+    Tower_Yellow(1600),
     //Offensive
-    Brown(5.0f),
-    Blue(10.0f),
-    Green(20.0f),
-    Black(40.0f),
-    Police(80.0f),
-    Military(200.0f);
+    Brown(5),
+    Blue(10),
+    Green(20),
+    Black(40),
+    Police(80),
+    Military(200);
 
-    private final float multiplyFactor;
+    private final int multiplyFactor;
 
-    private EntityType(float multiplyFactor) {
+    private EntityType(int multiplyFactor) {
         this.multiplyFactor = multiplyFactor;
     }
 
-    public float getMultiplyFactor() {
+    public int getMultiplyFactor() {
         return multiplyFactor;
     }
 

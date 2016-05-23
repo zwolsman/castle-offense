@@ -3,8 +3,12 @@ package com.s31b.castleoffense.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
+import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.OffensiveDAO;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Castle;
@@ -22,7 +26,6 @@ public class Offensive extends Entity {
     private int hitpoints;
     private final int movementSpeed;
     private final int killReward;
-//    private final ArrayList<Tile> path;
     private final Castle destinationCastle;
 
     private final int[][] corners = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
@@ -46,7 +49,7 @@ public class Offensive extends Entity {
      * @param speed The speed of the unit. Must be positive
      * @param reward The reward the player gets in gold
      */
-    public Offensive(EntityType type, String name, String descr, String sprite, Player owner, float price, int hp, int speed, int reward) {
+    public Offensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int hp, int speed, int reward) {
         super(type, name, descr, sprite, price, owner);
         hitpoints = hp;
         movementSpeed = speed;
@@ -121,8 +124,6 @@ public class Offensive extends Entity {
      * for movement
      */
     public void update() {
-        //Tile temp = getNextPostition();
-        //currentTile = getNextPostition();
         Tile tempTile = getNextPosition();
         if (tempTile == null) {
             // TODO
@@ -130,41 +131,59 @@ public class Offensive extends Entity {
             // remove this offensive entity from the game/wave
             return;
         }
-        float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
-//        System.out.println("movement distance: " + Double.toString(distance));
-//        System.out.println(tempTile.toString());
-//        System.out.println(currentTile.toString());
-        if (tempTile.getX() == currentTile.getX()) { //Ik beweeg verticaal
 
-            if (currentTile.getY() > tempTile.getY()) //Naar beneden
+        float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
+        System.out.println(distance);
+        Vector2 centerNextTile = new Vector2(tempTile.getX(true) + Globals.TILE_WIDTH / 2, tempTile.getY(true) + Globals.TILE_HEIGHT / 2);
+        Vector2 centerTile = new Vector2(currentTile.getX(true) + Globals.TILE_WIDTH / 2, currentTile.getY(true) + Globals.TILE_HEIGHT / 2);
+
+        if (centerTile.x == centerNextTile.x) { //Verticaal -
+
+            Vector2 centerMe = new Vector2(ingameX + (Globals.TILE_WIDTH / 2), ingameY + distance + (Globals.TILE_HEIGHT / 2));
+            if (centerTile.y > centerNextTile.y) //Naar beneden
             {
                 distance = 0 - distance;
                 direction = Direction.Down;
 
             }
-            if (currentTile.getY() < tempTile.getY()) { //Naar boven
+            if (centerTile.y < centerNextTile.y) { //Naar boven
                 direction = Direction.Up;
+                if (centerNextTile.x == centerMe.x && centerMe.y >= centerNextTile.y) {
+                    usedTiles.add(currentTile);
+                    currentTile = tempTile;
+                }
             }
 
-            if (!currentTile.contains(ingameX, ingameY + (int) distance)) {
-                usedTiles.add(currentTile);
-                currentTile = tempTile;
+            if (direction == Direction.Down) {
+                if (centerNextTile.x == centerMe.x && centerMe.y <= centerNextTile.y) {
+                    usedTiles.add(currentTile);
+                    currentTile = tempTile;
+                }
 
             }
             ingameX = currentTile.getX() * Globals.TILE_WIDTH;
             ingameY += distance;
-        } else if (tempTile.getY() == currentTile.getY()) {
-            if (currentTile.getX() < tempTile.getX()) { //Naar rechts
+        } else { //Horizontaal |
+            Vector2 centerMe = new Vector2(ingameX + (Globals.TILE_WIDTH / 2), ingameY + (Globals.TILE_HEIGHT / 2));
+            if (centerTile.x < centerNextTile.x) { //Naar rechts
                 direction = Direction.Right;
             }
-            if (currentTile.getX() > tempTile.getX()) { //Naar links
+            if (centerTile.x > centerNextTile.x) { //Naar links
                 distance = 0 - distance;
                 direction = Direction.Left;
             }
 
-            if (!currentTile.contains(ingameX + (int) distance, ingameY)) {
-                usedTiles.add(currentTile);
-                currentTile = tempTile;
+            if (direction == Direction.Right) {
+                if (centerMe.x >= centerNextTile.x && centerNextTile.y == centerMe.y) {
+                    usedTiles.add(currentTile);
+                    currentTile = tempTile;
+                }
+            }
+            if (direction == Direction.Left) {
+                if (centerMe.x <= centerNextTile.x && centerNextTile.y == centerMe.y) {
+                    usedTiles.add(currentTile);
+                    currentTile = tempTile;
+                }
 
             }
             ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
@@ -179,6 +198,24 @@ public class Offensive extends Entity {
 //TODO make this dynamic
         Texture t = TextureFactory.getTexture("zoimbie1_hold_" + direction.toString().toLowerCase());
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+
+        if (Globals.DEBUG) {
+            ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
+            shapeRenderer.begin(ShapeType.Line);
+            shapeRenderer.setColor(1, 1, 1, 1);
+            shapeRenderer.line(ingameX, ingameY, ingameX + Globals.TILE_WIDTH, ingameY + Globals.TILE_HEIGHT);
+            shapeRenderer.line(ingameX, ingameY + Globals.TILE_HEIGHT, ingameX + Globals.TILE_WIDTH, ingameY);
+
+            Tile tempTile = getNextPosition();
+
+            if (tempTile != null) {
+                Vector2 centerMe = new Vector2(ingameX + (Globals.TILE_WIDTH / 2), ingameY + (Globals.TILE_HEIGHT / 2));
+                Vector2 centerTile = new Vector2(tempTile.getX(true) + Globals.TILE_WIDTH / 2, tempTile.getY(true) + Globals.TILE_HEIGHT / 2);
+                shapeRenderer.setColor(1, 0, 0, 1);
+                shapeRenderer.line(centerMe, centerTile);
+            }
+            shapeRenderer.end();
+        }
     }
 
     public boolean isSpawned() {
