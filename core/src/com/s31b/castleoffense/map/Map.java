@@ -156,4 +156,19 @@ public class Map {
             System.out.println(item.toString());
         }
     }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+            return false;
+        }
+        if (other == this){
+            return true;
+        }
+        if (!(other instanceof Map)){
+            return false;
+        }
+        Map m = (Map)other;
+        return this.tiles == m.tiles;
+    }
 }
