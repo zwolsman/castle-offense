@@ -14,8 +14,8 @@ import com.s31b.castleoffense.player.Player;
  */
 public class Defensive extends Entity {
 
-    private final int damagePerSecond;
-    private final int range;
+    private int damagePerSecond;
+    private int range;
 
     private Tile position;
 
@@ -51,6 +51,13 @@ public class Defensive extends Entity {
         return damagePerSecond;
     }
 
+    /**
+     * @param damagePerSecond the damagePerSecond to set
+     */
+    public void setDamagePerSecond(int damagePerSecond) {
+        this.damagePerSecond = damagePerSecond;
+    }
+
     public void update() {
 
     }
@@ -61,5 +68,19 @@ public class Defensive extends Entity {
                 position.getX() * Globals.TILE_WIDTH,
                 position.getY() * Globals.TILE_HEIGHT,
                 Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+    }
+
+    /**
+     * @return the range
+     */
+    public int getRange() {
+        return range;
+    }
+
+    /**
+     * @param range the range to set
+     */
+    public void setRange(int range) {
+        this.range = range;
     }
 }

@@ -39,7 +39,7 @@ public class EntityFactory {
     public static int getEntityPriceByType(EntityType type) {
         for (EntityDAO e : CONS_ENTITIES) {
             if (e.getType().equals(type.name())) {
-                if (e.getClass() == DefensiveDAO.class){
+                if (e.getClass() == DefensiveDAO.class) {
                     return ((DefensiveDAO) e).getPrice();
                 } else if (e.getClass() == OffensiveDAO.class) {
                     return ((OffensiveDAO) e).getPrice();
@@ -67,5 +67,13 @@ public class EntityFactory {
             }
         }
         return null;
+    }
+
+    public static List<OffensiveDAO> getAllOffensives() {
+        return CONS_DB.getAll(OffensiveDAO.class);
+    }
+
+    public static List<DefensiveDAO> getAllDefensives() {
+        return CONS_DB.getAll(DefensiveDAO.class);
     }
 }
