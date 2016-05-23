@@ -7,17 +7,17 @@ package com.s31b.castleoffense.game.entity;
  */
 public enum EntityType {
     //Defensive
-    Defensive_Tower1(1.0f),
+    Defensive_Tower1(1),
     //Offensive
-    Offensive_Npc1(1.0f);
+    Offensive_Npc1(1);
 
-    private final float multiplyFactor;
+    private final int multiplyFactor;
 
-    private EntityType(float multiplyFactor) {
+    private EntityType(int multiplyFactor) {
         this.multiplyFactor = multiplyFactor;
     }
 
-    public float getMultiplyFactor() {
+    public int getMultiplyFactor() {
         return multiplyFactor;
     }
 }

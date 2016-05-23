@@ -45,7 +45,7 @@ public class Offensive extends Entity {
      * @param speed The speed of the unit. Must be positive
      * @param reward The reward the player gets in gold
      */
-    public Offensive(EntityType type, String name, String descr, Texture sprite, Player owner, float price, int hp, int speed, int reward) {
+    public Offensive(EntityType type, String name, String descr, Texture sprite, Player owner, int price, int hp, int speed, int reward) {
         super(type, name, descr, sprite, price, owner);
         hitpoints = hp;
         movementSpeed = speed;

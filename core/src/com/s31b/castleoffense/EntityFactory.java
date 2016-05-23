@@ -17,14 +17,14 @@ public class EntityFactory {
      * @param type type to get price of
      * @return price of given type
      */
-    public static float getEntityPriceByType(EntityType type) {
+    public static int getEntityPriceByType(EntityType type) {
         switch (type) {
             case Defensive_Tower1:
                 return Globals.PRICE_DEFENSIVE * EntityType.Defensive_Tower1.getMultiplyFactor();
             case Offensive_Npc1:
                 return Globals.PRICE_OFFENSIVE * EntityType.Offensive_Npc1.getMultiplyFactor();
             default:
-                return 0.0f;
+                return 0;
         }
     }
 

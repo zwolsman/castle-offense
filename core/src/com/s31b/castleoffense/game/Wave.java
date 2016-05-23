@@ -3,6 +3,7 @@ package com.s31b.castleoffense.game;
 import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.entity.*;
+import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +71,9 @@ public class Wave {
 
         if (player1done && player2done) {
             waveDone = true;
+            for(Player player : game.getPlayers()){
+                player.addGold(Globals.GOLD_INCR_PER_WAVE);
+            }
         }
     }
 
@@ -108,7 +112,9 @@ public class Wave {
         }
 
         for (Offensive entity : offEntities) {
-            entity.draw(Globals.SPRITE_BATCH);
+            if(entity.getHitpoints() > 0){
+                entity.draw(Globals.SPRITE_BATCH);
+            }           
         }
     }
 }
