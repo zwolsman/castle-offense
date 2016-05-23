@@ -161,7 +161,7 @@ public class CoGame {
         map.draw();
         getCurrentWave().draw();
 
-        for (Defensive tower : towers) {
+        for (Defensive tower : getAllTowers()) {
             tower.draw();
         }
     }
