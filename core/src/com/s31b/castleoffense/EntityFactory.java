@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Creates the CONS_ENTITIES used in the game
+ * Creates the entities used in the game
  *
  * @author GoosLaptop
  */
@@ -24,6 +24,10 @@ public class EntityFactory {
         retval.addAll(CONS_DB.getAll(DefensiveDAO.class));
         retval.addAll(CONS_DB.getAll(OffensiveDAO.class));
         return retval;
+    }
+
+    public static void init() {
+        //At this point, the connection to the database has been established and all the entities have been loaded.
     }
 
     /**
