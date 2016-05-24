@@ -128,17 +128,8 @@ public class GameMenu implements Screen {
         backgroundTabDef.setSize(500, 150);
 
         endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")));
+        endWave.addListener(new HoverListener());
         endWave.addListener(new ClickListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOff = 0;
@@ -149,17 +140,8 @@ public class GameMenu implements Screen {
         });
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")));
+        surrender.addListener(new HoverListener());
         surrender.addListener(new ClickListener() {
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.endGame();
@@ -168,9 +150,9 @@ public class GameMenu implements Screen {
         });
 
         getTabPages();
-        endWave.setSize(120, 120);
+        endWave.setSize(120, 70);
         endWave.setPosition(530, 630);
-        surrender.setSize(120, 120);
+        surrender.setSize(100, 30);
         surrender.setPosition(530, 570);
 
         float w = Gdx.graphics.getWidth();
@@ -189,37 +171,6 @@ public class GameMenu implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.addActor(background);
-        stage.addActor(menuBar);
-        stage.addActor(main);
-        stage.addActor(endWave);
-        stage.addActor(surrender);
-        stage.addActor(playerHpDesc);
-        stage.addActor(playerNameDesc);
-        stage.addActor(playerGoldDesc);
-        stage.addActor(playerName);
-        stage.addActor(playerHp);
-        stage.addActor(playerGold);
-        stage.act(Gdx.graphics.getDeltaTime());
-        
-        stage.act();
-        stage.draw();
-
-        TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-
-        game.update();
-        game.draw();
-
-        batch.end();
-    }
-
     private void getTabPages() {
         main = new Table();
         main.setSize(500, 180);
@@ -229,30 +180,8 @@ public class GameMenu implements Screen {
         HorizontalGroup group = new HorizontalGroup();
         final imageButton tab1 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDefDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")));
         final imageButton tab2 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOffDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")));
-        tab1.addListener(new ClickListener() {       
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
-        });
-        tab2.addListener(new ClickListener() {       
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
-        });
+        tab1.addListener(new HoverListener());
+        tab2.addListener(new HoverListener());
         group.addActor(tab1);
         group.addActor(tab2);
         main.add(group);
@@ -329,17 +258,8 @@ public class GameMenu implements Screen {
         
         
         buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
+        buyDef.addListener(new HoverListener());
         buyDef.addListener(new ClickListener() {
-             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: this should be player.BuyDefensiveEntity()
@@ -355,17 +275,8 @@ public class GameMenu implements Screen {
         buyDef.setSize(100, 40);
         
         nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
+        nextDef.addListener(new HoverListener());
         nextDef.addListener(new ClickListener() {
-             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
             @Override
             public void clicked(InputEvent event, float x, float y) {   
                 countDefList++;
@@ -412,7 +323,7 @@ public class GameMenu implements Screen {
         offPriceDesc.setColor(Color.BLACK);
         offPrice = new Label(Float.toString(o.getPrice()), skin);
         offPrice.setPosition(170, 90);
-        offPrice.setColor(Color.BLACK);
+        offPrice.setColor(Color.BLACK);;
         
         Label offDescriptionDesc = new Label("Beschrijving: ", skin);
         offDescriptionDesc.setPosition(60, 70);
@@ -444,26 +355,18 @@ public class GameMenu implements Screen {
         offNumber.setColor(Color.BLACK);
 
         buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
+        buyOff.addListener(new HoverListener());
         buyOff.addListener(new ClickListener() {
-             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
                 Gdx.graphics.setCursor(customCursor);
                 customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
                 countOff++;
                 // TODO: this should be player.BuyOffensiveEntity()
                 Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.Military, player);
                 game.getCurrentWave().addOffensive(entity);
                 offNumber.setText(Integer.toString(countOff));
-                
-                playerGold.setText(Integer.toString(player.getGold()));
             }
         ;
         });
@@ -471,17 +374,8 @@ public class GameMenu implements Screen {
         buyOff.setSize(100, 40);
         
         nextOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
+        nextOff.addListener(new HoverListener());
         nextOff.addListener(new ClickListener() {
-             @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
-            };
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor fromActor){
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            };
             @Override
             public void clicked(InputEvent event, float x, float y) {   
                 countOffList++;
@@ -516,7 +410,41 @@ public class GameMenu implements Screen {
         contentOff.addActor(offNumber);
         return contentOff;
     }
+    
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        stage.addActor(background);
+        stage.addActor(menuBar);
+        stage.addActor(main);
+        stage.addActor(endWave);
+        stage.addActor(surrender);
+        stage.addActor(playerHpDesc);
+        stage.addActor(playerNameDesc);
+        stage.addActor(playerGoldDesc);
+        stage.addActor(playerName);
+        stage.addActor(playerHp);
+        stage.addActor(playerGold);
+        stage.act(Gdx.graphics.getDeltaTime());
+        
+        stage.act();
+        stage.draw();
+        
+        playerGold.setText(Integer.toString(player.getGold()));
+        playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
+        
+        TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
 
+        game.update();
+        game.draw();
+
+        batch.end();
+    }
+    
     @Override
     public void show() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
