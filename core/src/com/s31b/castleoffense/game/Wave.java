@@ -7,6 +7,8 @@ import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -15,7 +17,8 @@ import java.util.List;
 public class Wave {
 
     private int number;
-
+    private ExecutorService pool = Executors.newSingleThreadExecutor();
+    private Object obj = new Object();
     private boolean player1done, player2done, waveDone;
 
     private List<Offensive> offEntities;
@@ -72,7 +75,7 @@ public class Wave {
 
         if (player1done && player2done) {
             waveDone = true;
-            for(Player player : game.getPlayers()){
+            for (Player player : game.getPlayers()) {
                 player.addGold(Globals.GOLD_INCR_PER_WAVE);
             }
         }
@@ -83,12 +86,14 @@ public class Wave {
      */
     private void spawnWave() {
         // entity.update();
-        for (Offensive entity : offEntities) {
-            timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
+        synchronized (obj) {
+            for (Offensive entity : offEntities) {
+                timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
 
-            if (timeSinceLastSpawn > spawnTime && !entity.isSpawned()) {
-                entity.spawn();
-                timeSinceLastSpawn = 0;
+                if (timeSinceLastSpawn > spawnTime && !entity.isSpawned()) {
+                    entity.spawn();
+                    timeSinceLastSpawn = 0;
+                }
             }
         }
     }
@@ -100,9 +105,19 @@ public class Wave {
 
         spawnWave();
 
-        for (Offensive entity : offEntities) {
-            if (entity.isSpawned()) {
-                entity.update();
+        for (int i = 0; i < offEntities.size(); i++) {
+            Offensive x = offEntities.get(i);
+            if (x.isSpawned()) {
+                if (!x.update()) {
+                    for (Player player : game.getPlayers()) {
+                        if (x.getOwner() != player) {
+                            player.hitCastle();
+                            player.addGold(x.getKillReward());
+                            System.out.println("Hit:" + player.getCastle().getHitpoints());
+                        }
+                    }
+                    offEntities.remove(x);
+                }
             }
         }
     }
@@ -112,8 +127,9 @@ public class Wave {
             return;
         }
 
-        for (Offensive entity : offEntities) {
-            entity.draw(TextureGlobals.SPRITE_BATCH);
+        for (int i = 0; i < offEntities.size(); i++) {
+            Offensive x = offEntities.get(i);
+            x.draw(TextureGlobals.SPRITE_BATCH);
         }
     }
     

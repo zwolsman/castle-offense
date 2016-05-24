@@ -4,6 +4,7 @@ import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
+import java.rmi.RemoteException;
 
 /**
  * A player instance
@@ -62,9 +63,9 @@ public class Player {
      *
      * @return bought defensive entity, or null if not enough money
      */
-    public boolean buyDefensiveEntity(EntityType type, Tile location) {
+    public boolean buyDefensiveEntity(EntityType type, Tile location) throws RemoteException {
         float price = EntityFactory.getEntityPriceByType(type);
-        if (price < this.gold) {
+        if (price <= this.gold) {
             this.gold -= price;
             Defensive entity = (Defensive) EntityFactory.buyEntity(type, this);
             if (entity == null) {
@@ -90,6 +91,10 @@ public class Player {
         return name;
     }
 
+    public void hitCastle(){
+        castle.loseHitpoints(1);
+    }
+    
     public void setName(String name) {
         this.name = name;
     }

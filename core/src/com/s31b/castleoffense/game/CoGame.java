@@ -1,6 +1,5 @@
 package com.s31b.castleoffense.game;
 
-import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
@@ -9,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Timer;
 
 /**
  *
@@ -22,13 +22,15 @@ public class CoGame {
     private int currentWaveId;
 
     private GameState state;
-
+    private long startTime;
+    private long endTime;
     private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
     private List<Player> players;
     private Player player1;
     private Player player2;
+    private Timer timer;
 
     public CoGame(int id) {
         this.id = id;
@@ -55,9 +57,11 @@ public class CoGame {
      * Initializes the game
      */
     public void initializeGame() {
+        startTime = System.currentTimeMillis();
+        endTime = startTime + 60000;
         map = new Map();
-        waves = new ArrayList<Wave>();
-        towers = new ArrayList<Defensive>();
+        waves = new ArrayList();
+        towers = new ArrayList();
         player1 = new Player(1, "Speler 1", this);
         player2 = new Player(2, "Speler 2", this);
         players = Arrays.asList(player1, player2);
@@ -151,15 +155,19 @@ public class CoGame {
     }
 
     public void update() {
-        boolean checkCastle;
-        for(Player player : players){
-            if(player.getCastle().getHitpoints() > 0){
-                getCurrentWave().update();
+        if (startTime < endTime) {
+            for (Player player : players) {
+                if (player.getCastle().getHitpoints() > 0) {
+                    getCurrentWave().update();
+                } else {
+                    endGame();
+                }
             }
-            else {
-                endGame();
+        } else {
+            for (Player player : players) {
+                this.getCurrentWave().endWave(player.getId());
             }
-        }     
+        }
     }
 
     /**
@@ -182,8 +190,8 @@ public class CoGame {
     public Map getMap() {
         return this.map;
     }
-    
-    public List<Player> getPlayers(){
+
+    public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
     }
     

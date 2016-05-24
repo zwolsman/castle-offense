@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +38,7 @@ public class GameManager {
         return instance;
     }
 
-    public synchronized CoGame createGame() {
+    public synchronized CoGame createGame() throws RemoteException {
         nextGameId++;
         CoGame game = new CoGame(nextGameId);
         allGames.add(game);
