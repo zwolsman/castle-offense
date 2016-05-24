@@ -96,31 +96,32 @@ public class GameMenu implements Screen {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/sky.png")));
-        background.setWidth(700);
+        background.setWidth(Gdx.graphics.getWidth());
         
         menuBar = new Image(new Texture(Gdx.files.internal("GUIMenu/menuBar.png")));
+        menuBar.setHeight(70);
         menuBar.setPosition(2, 450);
         
         playerNameDesc = new Label("Naam: ", skin);
         playerNameDesc.setColor(Color.BLACK);
-        playerNameDesc.setPosition(50, 500);
+        playerNameDesc.setPosition(50, 490);
         playerName = new Label(player.getName(), skin);
         playerName.setColor(Color.BLACK);
-        playerName.setPosition(130, 500);
+        playerName.setPosition(130, 490);
         
         playerHpDesc = new Label("Levenspunten: ", skin);
         playerHpDesc.setColor(Color.BLACK);
-        playerHpDesc.setPosition(276, 500);
+        playerHpDesc.setPosition(276, 490);
         playerHp = new Label(Integer.toString(player.getCastle().getHitpoints()), skin);
         playerHp.setColor(Color.BLACK);
-        playerHp.setPosition(400, 500);
+        playerHp.setPosition(400, 490);
         
         playerGoldDesc = new Label("Geld: ", skin);
         playerGoldDesc.setColor(Color.BLACK);
-        playerGoldDesc.setPosition(500, 500);
+        playerGoldDesc.setPosition(500, 490);
         playerGold = new Label(Integer.toString(player.getGold()), skin);
         playerGold.setColor(Color.BLACK);
-        playerGold.setPosition(550, 500);
+        playerGold.setPosition(550, 490);
         
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
@@ -151,9 +152,9 @@ public class GameMenu implements Screen {
 
         getTabPages();
         endWave.setSize(120, 70);
-        endWave.setPosition(530, 630);
+        endWave.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 130);
         surrender.setSize(100, 30);
-        surrender.setPosition(530, 570);
+        surrender.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 190);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -174,7 +175,8 @@ public class GameMenu implements Screen {
     private void getTabPages() {
         main = new Table();
         main.setSize(500, 180);
-        main.setPosition(10, 600);
+        // Zet het menu in de breedte het midden - de breedte van de 2 knoppen ernaast. en 200 px van de bovenkant.
+        main.setPosition((Gdx.graphics.getWidth() / 2) - (main.getWidth() / 2 + endWave.getWidth() / 3), Gdx.graphics.getHeight() - 200);
 
         // Create the tab buttons
         HorizontalGroup group = new HorizontalGroup();
@@ -359,9 +361,6 @@ public class GameMenu implements Screen {
         buyOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("hand-pointer.png")), 0, 0);
-                Gdx.graphics.setCursor(customCursor);
-                customCursor.dispose();
                 countOff++;
                 // TODO: this should be player.BuyOffensiveEntity()
                 Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.Military, player);
@@ -428,8 +427,6 @@ public class GameMenu implements Screen {
         stage.addActor(playerHp);
         stage.addActor(playerGold);
         stage.act(Gdx.graphics.getDeltaTime());
-        
-        stage.act();
         stage.draw();
         
         playerGold.setText(Integer.toString(player.getGold()));

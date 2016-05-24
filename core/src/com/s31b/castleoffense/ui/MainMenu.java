@@ -50,7 +50,8 @@ public class MainMenu implements Screen {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
-        background.setHeight(800);
+        background.setHeight(Gdx.graphics.getHeight());
+        background.setWidth(Gdx.graphics.getWidth());
        
         buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")));
         buttonPlay.addListener(new HoverListener());
