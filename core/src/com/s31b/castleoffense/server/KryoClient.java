@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class KryoClient extends Listener {
 
@@ -28,22 +28,24 @@ public class KryoClient extends Listener {
     }
 
     private void connect() {
-        client.start();
-        innerConnect();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                client.start();
+                innerConnect();
+            }
+        }).start();
     }
 
-    private void innerConnect() {
+    private Boolean innerConnect() {
         try {
             client.connect(0, serverIp, tcpPort);
             System.out.println("Connected!");
+            return true;
         } catch (IOException ex) {
-            System.out.println("Reconnecting in 5 seconds");
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ex1) {
-                Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-            innerConnect();
+            Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
+
+            return innerConnect();
         }
     }
 
