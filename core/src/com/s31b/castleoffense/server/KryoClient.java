@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class KryoClient {
 
@@ -29,23 +29,21 @@ public class KryoClient {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                client.start();
                 innerConnect();
             }
         }).start();
     }
 
-    private void innerConnect() {
+    private Boolean innerConnect() {
         try {
             client.connect(5000, serverIp, tcpPort);
             System.out.println("Connected!");
+            return true;
         } catch (IOException ex) {
-            System.out.println("Reconnecting in 5 seconds");
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ex1) {
-                Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex1);
-            }
-            innerConnect();
+            Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
+
+            return innerConnect();
         }
     }
 
@@ -65,6 +63,7 @@ public class KryoClient {
             try {
                 String msg = reader.readLine();
                 TestPacket p = new TestPacket();
+                p.msg = msg;
                 kClient.send(p);
             } catch (IOException ex) {
                 Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
