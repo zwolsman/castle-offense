@@ -1,6 +1,5 @@
 package com.s31b.castleoffense.game;
 
-import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
@@ -61,8 +60,8 @@ public class CoGame {
         startTime = System.currentTimeMillis();
         endTime = startTime + 60000;
         map = new Map();
-        waves = new ArrayList<Wave>();
-        towers = new ArrayList<Defensive>();
+        waves = new ArrayList();
+        towers = new ArrayList();
         player1 = new Player(1, "Speler 1", this);
         player2 = new Player(2, "Speler 2", this);
         players = Arrays.asList(player1, player2);
