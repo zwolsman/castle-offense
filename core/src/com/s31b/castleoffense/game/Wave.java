@@ -132,4 +132,26 @@ public class Wave {
             x.draw(TextureGlobals.SPRITE_BATCH);
         }
     }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+            return false;
+        }
+        if (other == this){
+            return true;
+        }
+        if (!(other instanceof Wave)){
+            return false;
+        }
+        Wave w = (Wave)other;
+        return 
+            this.player1done == w.player1done &&
+            this.player2done == w.player2done &&
+            this.waveDone == w.waveDone &&
+            this.game.equals(w.game) &&
+            this.number == w.number &&
+            this.spawnTime == w.spawnTime &&
+            this.timeSinceLastSpawn == w.timeSinceLastSpawn;
+    }
 }

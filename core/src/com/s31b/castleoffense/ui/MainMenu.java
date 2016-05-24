@@ -7,9 +7,12 @@ package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -43,23 +46,29 @@ public class MainMenu implements Screen {
     public void create () {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-        background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));  
+        background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
+        background.setHeight(800);
        
-        buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")));
+        buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")));
         buttonPlay.addListener( new ClickListener() {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 co.setScreen(new GameMenu(co, game, game.getPlayerById(1))); 
             };
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor){
+                Cursor customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("GUIMenu/buttonMainStart.png")), 0, 0);
+                Gdx.graphics.setCursor(customCursor);
+            };
         });
-        buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")));
+        buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")));
         buttonInfo.addListener( new ClickListener() {              
             @Override
             public void clicked(InputEvent event, float x, float y) {
                co.setScreen(new InfoScreen(co, game));
             };
         });
-        buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")));
+        buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")));
         buttonQuit.addListener( new ClickListener() {              
             @Override
             public void clicked(InputEvent event, float x, float y) {

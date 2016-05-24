@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class Globals {
 
+    public static final Boolean DEBUG = false;
     public static final int TILES_X = 17, TILES_Y = 12;
     public static final int TILE_WIDTH = 40, TILE_HEIGHT = 40;
 

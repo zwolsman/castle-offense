@@ -14,20 +14,20 @@ import java.util.logging.Logger;
  *
  * @author fhict
  */
-public class Server {
+public class RMIServer {
 
     public static final int PORT = 1099;
     public static InetAddress HOST;
     private Registry registry = null;
 
-    public Server() {
+    public RMIServer() {
         try {
             HOST = InetAddress.getLocalHost();
             registry = LocateRegistry.createRegistry(PORT);
         } catch (UnknownHostException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         } catch(RemoteException ex){
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RMIServer.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

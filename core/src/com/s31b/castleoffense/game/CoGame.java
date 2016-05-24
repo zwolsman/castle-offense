@@ -195,4 +195,29 @@ public class CoGame {
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
     }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+                        return false;
+        }
+        if (other == this){
+                        return true;
+        }
+        if (!(other instanceof CoGame)){
+                        return false;
+        }
+        CoGame w = (CoGame)other;
+        return 
+            this.currentWaveId == w.currentWaveId &&
+            this.id == w.id &&
+            this.map == w.map &&
+            this.player1 == w.player1 &&
+            this.player2 == w.player2 &&
+            this.players == w.players &&
+            this.state == w.state &&
+            this.towers == w.towers &&
+            this.waves == w.waves;
+
+    }
 }
