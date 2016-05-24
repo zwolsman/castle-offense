@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class Offensive extends Entity {
 
-    private int hitpoints;
+    private double hitpoints;
     private final int movementSpeed;
     private final int killReward;
     private final Castle destinationCastle;
@@ -72,7 +72,7 @@ public class Offensive extends Entity {
         }
     }
 
-    public int getHitpoints() {
+    public double getHitpoints() {
         return hitpoints;
     }
 
@@ -114,8 +114,15 @@ public class Offensive extends Entity {
         return null;
     }
 
-    public void removeHealth(int amount) {
+    public void removeHealth(double amount) {
         hitpoints -= amount;
+    }
+
+    public boolean isDead() {
+        if (this.hitpoints <= 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -124,9 +131,6 @@ public class Offensive extends Entity {
      */
     public boolean update() {
         Tile tempTile = getNextPosition();
-        if (this.hitpoints <= 0) {
-            return false;
-        }
 
         if (tempTile == null) {
             // TODO
@@ -236,6 +240,16 @@ public class Offensive extends Entity {
         //System.out.println("Spawned!");
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
+    }
+
+    public List<int[]> getCorners() {
+        List<int[]> retval;
+        retval = new ArrayList();
+        retval.add(new int[]{ingameX, ingameY});
+        retval.add(new int[]{ingameX, ingameY + (Globals.TILE_HEIGHT)});
+        retval.add(new int[]{ingameX + (Globals.TILE_WIDTH), ingameY});
+        retval.add(new int[]{ingameX + (Globals.TILE_WIDTH), ingameY + (Globals.TILE_HEIGHT)});
+        return retval;
     }
 }
 

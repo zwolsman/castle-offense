@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class Globals {
 
-    public static final Boolean DEBUG = false;
+    public static final Boolean DEBUG = true;
     public static final int TILES_X = 17, TILES_Y = 12;
     public static final int TILE_WIDTH = 40, TILE_HEIGHT = 40;
 
@@ -22,7 +22,7 @@ public class Globals {
     public static final int PRICE_OFFENSIVE = 5;
     public static final int PRICE_DEFENSIVE = 200;
     public static final int GOLD_INCR_PER_WAVE = 20;
-    
+
     // Base DPS
     public static final int DAMAGE_PER_SECOND = 10;
     // Base Range

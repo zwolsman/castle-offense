@@ -1,4 +1,3 @@
-
 package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.Gdx;
@@ -68,7 +67,7 @@ public class GameMenu implements Screen {
     private Label offLabel;
     private Label offPrice;
     private Label offHp;
-    private Label offNumber; 
+    private Label offNumber;
     private Label offSpeed;
     private Label offDescription;
     private Label defPrice;
@@ -81,7 +80,7 @@ public class GameMenu implements Screen {
     private Label playerNameDesc;
     private Label playerGold;
     private Label playerGoldDesc;
-    
+
     public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
         this.co = castleoffense;
         this.game = game;
@@ -97,32 +96,32 @@ public class GameMenu implements Screen {
 
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/sky.png")));
         background.setWidth(Gdx.graphics.getWidth());
-        
+
         menuBar = new Image(new Texture(Gdx.files.internal("GUIMenu/menuBar.png")));
         menuBar.setHeight(70);
         menuBar.setPosition(2, 450);
-        
+
         playerNameDesc = new Label("Naam: ", skin);
         playerNameDesc.setColor(Color.BLACK);
         playerNameDesc.setPosition(50, 490);
         playerName = new Label(player.getName(), skin);
         playerName.setColor(Color.BLACK);
         playerName.setPosition(130, 490);
-        
+
         playerHpDesc = new Label("Levenspunten: ", skin);
         playerHpDesc.setColor(Color.BLACK);
         playerHpDesc.setPosition(276, 490);
         playerHp = new Label(Integer.toString(player.getCastle().getHitpoints()), skin);
         playerHp.setColor(Color.BLACK);
         playerHp.setPosition(400, 490);
-        
+
         playerGoldDesc = new Label("Geld: ", skin);
         playerGoldDesc.setColor(Color.BLACK);
         playerGoldDesc.setPosition(500, 490);
         playerGold = new Label(Integer.toString(player.getGold()), skin);
         playerGold.setColor(Color.BLACK);
         playerGold.setPosition(550, 490);
-        
+
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabOff.setSize(500, 150);
@@ -225,78 +224,79 @@ public class GameMenu implements Screen {
         Table contentDef = new Table();
         contentDef.addActor(backgroundTabDef);
         DefensiveDAO d = defList.get(0);
-        
+
         defLabel = new Label(d.getName(), skin);
         defLabel.setPosition(60, 110);
         defLabel.setColor(Color.BLACK);
-        
+
         Label defPriceDesc = new Label("Prijs: ", skin);
         defPriceDesc.setPosition(60, 90);
         defPriceDesc.setColor(Color.BLACK);
         defPrice = new Label(Float.toString(d.getPrice()), skin);
         defPrice.setPosition(170, 90);
         defPrice.setColor(Color.BLACK);
-        
+
         Label defDescriptionDesc = new Label("Beschrijving: ", skin);
         defDescriptionDesc.setPosition(60, 70);
         defDescriptionDesc.setColor(Color.BLACK);
         defDescription = new Label(d.getDescr(), skin);
         defDescription.setPosition(170, 70);
         defDescription.setColor(Color.BLACK);
-        
+
         Label defDpsDesc = new Label("DPS: ", skin);
         defDpsDesc.setPosition(60, 50);
         defDpsDesc.setColor(Color.BLACK);
         defDps = new Label(Integer.toString(d.getDPS()), skin);
         defDps.setPosition(170, 50);
         defDps.setColor(Color.BLACK);
-        
+
         Label defRangeDesc = new Label("Bereik: ", skin);
         defRangeDesc.setPosition(60, 30);
         defRangeDesc.setColor(Color.BLACK);
         defRange = new Label(Integer.toString(d.getRange()), skin);
         defRange.setPosition(170, 30);
         defRange.setColor(Color.BLACK);
-        
-        
+
         buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
         buyDef.addListener(new HoverListener());
         buyDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // TODO: this should be player.BuyDefensiveEntity()
-                Defensive entity = (Defensive) EntityFactory.buyEntity(EntityType.Tower_Yellow, player);
+                Defensive entity = (Defensive) EntityFactory.buyEntity(EntityType.Tower_Green, player);
                 tempCounter++;
-                entity.setPosition(new Tile(tempCounter, 0));
+                entity.setPosition(new Tile(tempCounter + 3, 5));
                 game.addTower(entity);
-                
+
                 playerGold.setText(Integer.toString(player.getGold()));
-            };
+            }
+        ;
         });
         buyDef.setPosition(350, 10);
         buyDef.setSize(100, 40);
-        
+
         nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
         nextDef.addListener(new HoverListener());
         nextDef.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {   
+            public void clicked(InputEvent event, float x, float y) {
                 countDefList++;
-                
-                if(countDefList >= defList.size()){
+
+                if (countDefList >= defList.size()) {
                     countDefList = 0;
                 }
-                
+
                 defLabel.setText(defList.get(countDefList).getName());
                 defPrice.setText(Integer.toString(defList.get(countDefList).getPrice()));
                 defDescription.setText(defList.get(countDefList).getDescr());
                 defDps.setText(Integer.toString(defList.get(countDefList).getDPS()));
                 defRange.setText(Integer.toString(defList.get(countDefList).getRange()));
-            };
+            }
+        ;
         });
         nextDef.setPosition(350, 80);
         nextDef.setSize(100, 40);
-        
+
         contentDef.addActor(nextDef);
         contentDef.addActor(buyDef);
         contentDef.addActor(defLabel);
@@ -315,25 +315,25 @@ public class GameMenu implements Screen {
         Table contentOff = new Table();
         contentOff.addActor(backgroundTabOff);
         OffensiveDAO o = offList.get(0);
-        
+
         offLabel = new Label(o.getName(), skin);
         offLabel.setPosition(60, 110);
         offLabel.setColor(Color.BLACK);
-        
+
         Label offPriceDesc = new Label("Prijs: ", skin);
         offPriceDesc.setPosition(60, 90);
         offPriceDesc.setColor(Color.BLACK);
         offPrice = new Label(Float.toString(o.getPrice()), skin);
         offPrice.setPosition(170, 90);
         offPrice.setColor(Color.BLACK);;
-        
+
         Label offDescriptionDesc = new Label("Beschrijving: ", skin);
         offDescriptionDesc.setPosition(60, 70);
         offDescriptionDesc.setColor(Color.BLACK);
         offDescription = new Label(o.getDescr(), skin);
         offDescription.setPosition(170, 70);
         offDescription.setColor(Color.BLACK);
-        
+
         Label offSpeedDesc = new Label("Snelheid: ", skin);
         offSpeedDesc.setPosition(60, 50);
         offSpeedDesc.setColor(Color.BLACK);
@@ -341,14 +341,14 @@ public class GameMenu implements Screen {
         offSpeed = new Label(Integer.toString(o.getSpeed()), skin);
         offSpeed.setPosition(170, 50);
         offSpeed.setColor(Color.BLACK);
-        
+
         Label offHpDesc = new Label("Levenspunten: ", skin);
         offHpDesc.setPosition(60, 30);
         offHpDesc.setColor(Color.BLACK);
         offHp = new Label(Integer.toString(o.getHP()), skin);
         offHp.setPosition(170, 30);
         offHp.setColor(Color.BLACK);
-        
+
         Label offNumberDesc = new Label("Aantal: ", skin);
         offNumberDesc.setPosition(60, 10);
         offNumberDesc.setColor(Color.BLACK);
@@ -371,29 +371,30 @@ public class GameMenu implements Screen {
         });
         buyOff.setPosition(350, 10);
         buyOff.setSize(100, 40);
-        
+
         nextOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
         nextOff.addListener(new HoverListener());
         nextOff.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {   
+            public void clicked(InputEvent event, float x, float y) {
                 countOffList++;
-                
-                if(countOffList >= offList.size()){
+
+                if (countOffList >= offList.size()) {
                     countOffList = 0;
                 }
-                
+
                 offLabel.setText(offList.get(countOffList).getName());
                 offPrice.setText(Integer.toString(offList.get(countOffList).getPrice()));
                 offDescription.setText(offList.get(countOffList).getDescr());
                 offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
                 offHp.setText(Integer.toString(offList.get(countOffList).getHP()));
                 //offNumber.setText(Integer.toString(offList.get(countOffList).getHP()));
-            };
+            }
+        ;
         });
         nextOff.setPosition(350, 80);
         nextOff.setSize(100, 40);
-        
+
         contentOff.addActor(nextOff);
         contentOff.addActor(buyOff);
         contentOff.addActor(offLabel);
@@ -409,12 +410,12 @@ public class GameMenu implements Screen {
         contentOff.addActor(offNumber);
         return contentOff;
     }
-    
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         stage.addActor(background);
         stage.addActor(menuBar);
         stage.addActor(main);
@@ -428,10 +429,10 @@ public class GameMenu implements Screen {
         stage.addActor(playerGold);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        
+
         playerGold.setText(Integer.toString(player.getGold()));
         playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
-        
+
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
@@ -441,7 +442,7 @@ public class GameMenu implements Screen {
 
         batch.end();
     }
-    
+
     @Override
     public void show() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
