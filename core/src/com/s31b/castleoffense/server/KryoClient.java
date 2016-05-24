@@ -19,7 +19,7 @@ public class KryoClient extends Listener {
 
     static Client client;
     static int tcpPort = 9999;
-    static String serverIp = "localhost";
+    static String serverIp = "145.93.131.82";
 
     public KryoClient() {
         client = new Client();
@@ -39,7 +39,7 @@ public class KryoClient extends Listener {
 
     private Boolean innerConnect() {
         try {
-            client.connect(0, serverIp, tcpPort);
+            client.connect(5000, serverIp, tcpPort);
             System.out.println("Connected!");
             return true;
         } catch (IOException ex) {
@@ -85,6 +85,9 @@ public class KryoClient extends Listener {
     
     @Override
     public void received(Connection connection, Object obj) {
-        System.out.println("packet received");
+        if (obj instanceof TestPacket) {
+            TestPacket t = (TestPacket) obj;
+            System.out.println(t.msg);
+        }
     }
 }
