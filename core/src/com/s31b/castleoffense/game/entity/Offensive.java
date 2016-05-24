@@ -24,7 +24,6 @@ public class Offensive extends Entity {
     private final int killReward;
 //    private final ArrayList<Tile> path;
     private final Castle destinationCastle;
-
     private final int[][] corners = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
     private List<Tile> usedTiles = new ArrayList<Tile>();
     private int ingameX, ingameY;
@@ -120,16 +119,21 @@ public class Offensive extends Entity {
      * Calculates the next position to move to. Will use the speed of the unit
      * for movement
      */
-    public void update() {
+    public boolean update() {
         //Tile temp = getNextPostition();
         //currentTile = getNextPostition();
         Tile tempTile = getNextPosition();
+        if (this.hitpoints <= 0) {
+            return false;
+        }
+
         if (tempTile == null) {
             // TODO
             // damage enemy castle
             // remove this offensive entity from the game/wave
-            return;
+            return false;
         }
+
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
 //        System.out.println("movement distance: " + Double.toString(distance));
 //        System.out.println(tempTile.toString());
@@ -153,6 +157,7 @@ public class Offensive extends Entity {
             }
             ingameX = currentTile.getX() * Globals.TILE_WIDTH;
             ingameY += distance;
+
         } else if (tempTile.getY() == currentTile.getY()) {
             if (currentTile.getX() < tempTile.getX()) { //Naar rechts
                 direction = Direction.Right;
@@ -169,14 +174,16 @@ public class Offensive extends Entity {
             }
             ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
             ingameX += distance;
+
         }
+        return true;
     }
 
     public void draw(SpriteBatch batch) {
         if (!isSpawned()) {
             return;
         }
-//TODO make this dynamic
+        //TODO make this dynamic
         Texture t = TextureFactory.getTexture("zoimbie1_hold_" + direction.toString().toLowerCase());
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
     }

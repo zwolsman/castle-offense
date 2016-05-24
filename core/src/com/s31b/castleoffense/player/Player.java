@@ -90,6 +90,10 @@ public class Player {
         return name;
     }
 
+    public void hitCastle(){
+        castle.loseHitpoints(1);
+    }
+    
     public void setName(String name) {
         this.name = name;
     }
