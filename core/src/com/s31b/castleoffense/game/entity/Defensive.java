@@ -70,7 +70,9 @@ public class Defensive extends Entity {
         TextureGlobals.SPRITE_BATCH.end();
         ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        //shapeRenderer.circle(position.getX(true), position.getY(true), range * Globals.TILE_WIDTH);
+        if (Globals.DEBUG) {
+            shapeRenderer.circle(position.getX(true), position.getY(true), range * Globals.TILE_WIDTH);
+        }
         if (targetAquired() && inRange(target)) {
             shapeRenderer.line(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2,
                     target.getX() + Globals.TILE_WIDTH / 2, target.getY() + Globals.TILE_HEIGHT / 2);
