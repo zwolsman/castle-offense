@@ -32,7 +32,7 @@ public class Player {
     private void initPlayer() {
         points = 0;
         gold = 100;
-        offensiveSpawnPosition = new Tile(0, 1); // change to castle door tile
+        offensiveSpawnPosition = new Tile(2, 10); // change to castle door tile
         castle = new Castle(this);
     }
 
