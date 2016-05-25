@@ -1,7 +1,10 @@
 package com.s31b.castleoffense.game.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -23,7 +26,8 @@ import java.util.List;
  */
 public class Offensive extends Entity {
 
-    private double hitpoints;
+    private int hitpoints;
+    private int totalHitpoints;
     private final int movementSpeed;
     private final int killReward;
     private final Castle destinationCastle;
@@ -51,14 +55,16 @@ public class Offensive extends Entity {
     public Offensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int hp, int speed, int reward) {
         super(type, name, descr, sprite, price, owner);
         hitpoints = hp;
+        totalHitpoints = hp;
         movementSpeed = speed;
         killReward = reward;
-        destinationCastle = determineCastle(owner);
+        destinationCastle = determineCastle(owner); 
     }
 
     public Offensive(OffensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
         hitpoints = data.getHP();
+        totalHitpoints = data.getHP();
         movementSpeed = data.getSpeed();
         killReward = data.getReward();
         destinationCastle = determineCastle(owner);
@@ -74,6 +80,10 @@ public class Offensive extends Entity {
 
     public double getHitpoints() {
         return hitpoints;
+    }
+    
+    public int getTotalHitpoints(){
+        return totalHitpoints;
     }
 
     public int getMovementSpeed() {
@@ -207,6 +217,7 @@ public class Offensive extends Entity {
         //TODO make this dynamic
         Texture t = TextureFactory.getTexture("zoimbie1_hold_" + direction.toString().toLowerCase());
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+        drawHealthBar(batch);
 
         if (Globals.DEBUG) {
             ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
@@ -226,7 +237,28 @@ public class Offensive extends Entity {
             shapeRenderer.end();
         }
     }
-
+    
+    public void drawHealthBar(SpriteBatch batch){
+        double totalHitPoints = this.getTotalHitpoints();
+        
+        double widthPerHitPoints = Globals.TILE_WIDTH / totalHitPoints;
+        double greenPart = this.getHitpoints() * widthPerHitPoints;
+        double redPart = (totalHitPoints - this.getHitpoints()) * widthPerHitPoints;
+        
+        Pixmap p = new Pixmap(1, 1, Pixmap.Format.RGB888);
+        p.setColor(Color.GREEN);
+        p.fillRectangle(0, 0, 10, 1);
+        Texture healthBarGreen = new Texture(p);
+        
+        Pixmap p1 = new Pixmap(1, 1, Pixmap.Format.RGB888);
+        p1.setColor(Color.RED);
+        p1.fillRectangle(0, 0, 10, 1);
+        Texture healthBarRed = new Texture(p1);
+        
+        batch.draw(healthBarGreen, ingameX, ingameY - 10, (int)greenPart, Globals.TILE_HEIGHT / 5);
+        batch.draw(healthBarRed, ingameX + (int)greenPart, ingameY - 10, (int)redPart, Globals.TILE_HEIGHT / 5);
+    }
+    
     public boolean isSpawned() {
         return currentTile != null;
     }
