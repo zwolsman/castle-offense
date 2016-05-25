@@ -3,6 +3,7 @@
 package com.s31b.castleoffense.server;
 
 import com.esotericsoftware.kryonet.Client;
+import com.s31b.castleoffense.server.packets.IPacket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -47,12 +48,13 @@ public class KryoClient {
         }
     }
 
-    public void send(TestPacket o) {
+    public void send(IPacket o) {
         client.sendTCP(o);
     }
 
     private void registerPackets() {
-        client.getKryo().register(TestPacket.class);
+        //client.getKryo().register(TestPacket.class);
+        //TODO register packets
     }
 
     public static void main(String[] args) {
@@ -62,9 +64,9 @@ public class KryoClient {
         while (true) {
             try {
                 String msg = reader.readLine();
-                TestPacket p = new TestPacket();
+                /*TestPacket p = new TestPacket();
                 p.msg = msg;
-                kClient.send(p);
+                kClient.send(p);*/
             } catch (IOException ex) {
                 Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
             }

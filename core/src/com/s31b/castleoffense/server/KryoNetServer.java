@@ -5,7 +5,10 @@ package com.s31b.castleoffense.server;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.s31b.castleoffense.server.packets.IPacket;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,26 +51,49 @@ public class KryoNetServer extends Listener {
     public void received(Connection connection, Object obj) {
         System.out.println("Received packet from ip: " + connection.getRemoteAddressTCP().getHostString());
 
-        if (obj instanceof TestPacket) {
+        /*if (obj instanceof TestPacket) {
             TestPacket tPacket = (TestPacket) obj;
             System.out.println("Test packet msg: " + tPacket.msg);
-        }
+        }*/
     }
 
     @Override
     public void disconnected(Connection connection) {
         System.out.println("Lost connection to a client.");
-        // System.out.println("Lost connection with ip: " + connection.getRemoteAddressTCP().getHostString());
-
     }
 
     private void registerPackets() {
-        server.getKryo().register(TestPacket.class);
+        //server.getKryo().register(TestPacket.class);
+        //TODO register all the packets
+    }
+
+    public void broadcast(IPacket p) {
+        System.out.println("Connections: " + server.getConnections().length);
+        for (int i = 0; i < server.getConnections().length; i++) {
+            Connection c = server.getConnections()[i];
+            c.sendTCP(p);
+            System.out.println("Send packet to: " + c.getRemoteAddressTCP().getHostString());
+        }
     }
 
     public static void main(String[] args) {
-        new KryoNetServer().start();
+        KryoNetServer server = new KryoNetServer();
+        server.start();
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
         while (true) {
+            try {
+                String msg = reader.readLine();
+                if ("q".equals(msg.toLowerCase())) {
+                    System.exit(0);
+                }
+                /*TestPacket p = new TestPacket();
+                p.msg = msg;
+                server.broadcast(p);*/
+            } catch (IOException ex) {
+                Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
