@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -138,7 +139,7 @@ public class Defensive extends Entity {
     }
 
     public Offensive dealDamage() {
-        target.removeHealth(damagePerSecond / 10);
+        target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
         return target;
     }
 }
