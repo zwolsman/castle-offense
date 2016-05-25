@@ -71,7 +71,7 @@ public class Defensive extends Entity {
         ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (Globals.DEBUG) {
-            shapeRenderer.circle(position.getX(true), position.getY(true), range * Globals.TILE_WIDTH);
+            shapeRenderer.circle(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2, range * Globals.TILE_WIDTH);
         }
         if (targetAquired() && inRange(target)) {
             shapeRenderer.line(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2,
@@ -115,8 +115,8 @@ public class Defensive extends Entity {
             int ox = i[0];
             int oy = i[1];
 
-            int dx = position.getX(true);
-            int dy = position.getY(true);
+            int dx = position.getX(true) + Globals.TILE_WIDTH / 2;
+            int dy = position.getY(true) + Globals.TILE_HEIGHT / 2;
 
             int xDif = Math.abs(ox - dx);
             int yDif = Math.abs(oy - dy);
