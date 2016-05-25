@@ -24,7 +24,7 @@ public class KryoClient extends Listener {
     public KryoClient() {
         client = new Client();
         registerPackets();
-        
+        client.addListener(this);
     }
 
     private void connect() {
@@ -64,6 +64,9 @@ public class KryoClient extends Listener {
         while (true) {
             try {
                 String msg = reader.readLine();
+                
+                if (msg.equals("q")) System.exit(0);
+                
                 TestPacket p = new TestPacket();
                 p.msg = msg;
                 kClient.send(p);
