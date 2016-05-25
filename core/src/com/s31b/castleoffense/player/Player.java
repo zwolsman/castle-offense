@@ -122,4 +122,25 @@ public class Player {
     public CoGame getGame() {
         return this.game;
     }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+            return false;
+        }
+        if (other == this){
+            return true;
+        }
+        if (!(other instanceof Player)){
+            return false;
+        }
+        Player p = (Player)other;
+        return this.game == p.game &&
+                this.castle.equals(p.castle) &&
+                this.gold == p.gold &&
+                this.id == p.id &&
+                this.name == p.name &&
+                this.offensiveSpawnPosition.equals(p.offensiveSpawnPosition) &&
+                this.points == p.points;
+    }
 }

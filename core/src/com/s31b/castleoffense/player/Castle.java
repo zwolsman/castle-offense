@@ -42,4 +42,20 @@ public class Castle {
     public Player getOwner() {
         return owner;
     }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+            return false;
+        }
+        if (other == this){
+            return true;
+        }
+        if (!(other instanceof Castle)){
+            return false;
+        }
+        Castle c = (Castle)other;
+        return this.hitpoints == c.hitpoints &&
+                this.owner.equals(c.owner);
+    }
 }
