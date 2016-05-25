@@ -20,18 +20,18 @@ public class Map {
     private Tile[][] tiles;
     //A temporary map, will be dynamic later
     private static final String tempMask[] = {
-        "00000000002222200",
-        "11100000002020200",
-        "00100000002212200",
-        "00100000000010000",
-        "00100111111110000",
-        "00100100000000000",
-        "00100100000000000",
-        "00100111111111000",
-        "00100000000001000",
-        "00100000000001000",
-        "00111111111111000",
-        "00000000000000000"};
+        "0000000111111111000000000000000000",
+        "0000000100000001000000000000000000",
+        "0000000111100001000000011111100000",
+        "0000000000100001000000010000100000",
+        "0000001111100001000000010000100000",
+        "0000001000000001000111110000100000",
+        "0000001000000001000100000000100000",
+        "0000001000000001000100000000100000",
+        "0000001000000001000100000000100000",
+        "0000001000000001000100000000100000",
+        "2111111000000001111100000000100000",
+        "0000000000000000000000000000200000"};
 
     public Map() {
         tiles = new Tile[Globals.TILES_X][Globals.TILES_Y];
@@ -156,19 +156,19 @@ public class Map {
             System.out.println(item.toString());
         }
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
+    public boolean equals(Object other) {
+        if (other == null) {
             return false;
         }
-        if (other == this){
+        if (other == this) {
             return true;
         }
-        if (!(other instanceof Map)){
+        if (!(other instanceof Map)) {
             return false;
         }
-        Map m = (Map)other;
+        Map m = (Map) other;
         return this.tiles == m.tiles;
     }
 }
