@@ -79,22 +79,22 @@ public class Player {
         return false;
     }
 
-    public void addPoints(int ammount) {
-        points += ammount;
+    public void addPoints(int amount) {
+        points += amount;
     }
 
-    public void addGold(int ammount) {
-        gold += ammount;
+    public void addGold(int amount) {
+        gold += amount;
     }
 
     public String getName() {
         return name;
     }
 
-    public void hitCastle(){
+    public void hitCastle() {
         castle.loseHitpoints(1);
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }

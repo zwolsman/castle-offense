@@ -251,6 +251,14 @@ public class Offensive extends Entity {
         retval.add(new int[]{ingameX + (Globals.TILE_WIDTH), ingameY + (Globals.TILE_HEIGHT)});
         return retval;
     }
+
+    public float getX() {
+        return ingameX;
+    }
+
+    public float getY() {
+        return ingameY;
+    }
 }
 
 /**
