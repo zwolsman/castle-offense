@@ -5,6 +5,7 @@ package com.s31b.castleoffense.server;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.s31b.castleoffense.server.packets.IPacket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,12 +50,13 @@ public class KryoClient extends Listener {
         }
     }
 
-    public void send(Packet o) {
+    public void send(IPacket o) {
         client.sendTCP(o);
     }
 
     private void registerPackets() {
-        client.getKryo().register(TestPacket.class);
+        //client.getKryo().register(TestPacket.class);
+        //TODO register packets
     }
 
     public static void main(String[] args) {
@@ -67,30 +69,27 @@ public class KryoClient extends Listener {
                 
                 if (msg.equals("q")) System.exit(0);
                 
-                TestPacket p = new TestPacket();
-                p.msg = msg;
-                kClient.send(p);
             } catch (IOException ex) {
                 Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+
     @Override
     public void connected(Connection connection) {
         System.out.println("Connected to server with ip: " + connection.getRemoteAddressTCP().getHostString());
     }
-    
+
     @Override
     public void disconnected(Connection connection) {
         System.out.println("Lost connection with server: " + connection.getRemoteAddressTCP().getHostString());
     }
-    
+
     @Override
     public void received(Connection connection, Object obj) {
-        if (obj instanceof TestPacket) {
+        /*if (obj instanceof TestPacket) {
             TestPacket t = (TestPacket) obj;
             System.out.println(t.msg);
-        }
+        }*/
     }
 }
