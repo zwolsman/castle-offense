@@ -5,12 +5,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.s31b.castleoffense.CastleOffense;
 
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 680;
-		config.height = 800;
-		config.resizable = false;
-		config.samples = 2;
-		new LwjglApplication(new CastleOffense(), config);
-	}
+
+    public static void main(String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.width = 680 * 2;
+        config.height = 800;
+        config.resizable = false;
+        config.samples = 2;
+        new LwjglApplication(new CastleOffense(), config);
+    }
 }
