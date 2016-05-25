@@ -199,7 +199,7 @@ public class GameMenu implements Screen {
         main.setSize(500, 180);
         // Put the menu in the middle (Horizontal) - the width of the button endWave
         // Put the menu 200px form the top of the screen
-        main.setPosition((Gdx.graphics.getWidth() / 2) - (main.getWidth() / 2 + endWave.getWidth() / 3), Gdx.graphics.getHeight() - 200);
+        main.setPosition((Gdx.graphics.getWidth() / 2) - (main.getWidth() / 2 + endWave.getWidth() / 3), Gdx.graphics.getHeight() - 180);
 
         // Create the tab buttons
         HorizontalGroup group = new HorizontalGroup();
@@ -265,7 +265,7 @@ public class GameMenu implements Screen {
         defDescription.setPosition(170, 70);
         defDescription.setColor(Color.BLACK);
 
-        Label defDpsDesc = new Label("DPS: ", skin);
+        Label defDpsDesc = new Label("Schade: ", skin);
         defDpsDesc.setPosition(60, 50);
         defDpsDesc.setColor(Color.BLACK);
         defDps = new Label(Integer.toString(d.getDPS()), skin);
