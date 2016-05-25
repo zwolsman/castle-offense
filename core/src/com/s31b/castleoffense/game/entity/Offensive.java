@@ -255,8 +255,8 @@ public class Offensive extends Entity {
         p1.fillRectangle(0, 0, 10, 1);
         Texture healthBarRed = new Texture(p1);
         
-        batch.draw(healthBarGreen, ingameX, ingameY - 10, (int)greenPart, Globals.TILE_HEIGHT / 5);
-        batch.draw(healthBarRed, ingameX + (int)greenPart, ingameY - 10, (int)redPart, Globals.TILE_HEIGHT / 5);
+        batch.draw(healthBarGreen, ingameX, ingameY + Globals.TILE_HEIGHT , (int)greenPart, Globals.TILE_HEIGHT / 5);
+        batch.draw(healthBarRed, ingameX + (int)greenPart, ingameY + Globals.TILE_HEIGHT, (int)redPart, Globals.TILE_HEIGHT / 5);
     }
     
     public boolean isSpawned() {
