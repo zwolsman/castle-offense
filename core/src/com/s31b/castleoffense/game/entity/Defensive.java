@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game.entity;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
@@ -14,8 +15,9 @@ import com.s31b.castleoffense.player.Player;
  */
 public class Defensive extends Entity {
 
-    private int damagePerSecond;
+    private double damagePerSecond;
     private int range;
+    private Offensive target;
 
     private Tile position;
 
@@ -24,6 +26,7 @@ public class Defensive extends Entity {
         damagePerSecond = dps;
         this.range = range;
         position = new Tile(0, 0);
+        target = null;
     }
 
     public Defensive(DefensiveDAO data, Player owner) {
@@ -31,6 +34,7 @@ public class Defensive extends Entity {
         damagePerSecond = data.getDPS();
         this.range = data.getRange();
         position = new Tile(0, 0);
+        target = null;
     }
 
     /**
@@ -47,7 +51,7 @@ public class Defensive extends Entity {
      *
      * @return
      */
-    public int getDamagePerSecond() {
+    public double getDamagePerSecond() {
         return damagePerSecond;
     }
 
@@ -68,6 +72,10 @@ public class Defensive extends Entity {
                 position.getX() * Globals.TILE_WIDTH,
                 position.getY() * Globals.TILE_HEIGHT,
                 Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+        ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.circle(position.getX(true), position.getY(true), range * Globals.TILE_WIDTH);
+        shapeRenderer.end();
     }
 
     /**
@@ -82,5 +90,45 @@ public class Defensive extends Entity {
      */
     public void setRange(int range) {
         this.range = range;
+    }
+
+    public void setTarget(Offensive o) {
+        target = o;
+    }
+
+    public boolean targetAquired() {
+        return target != null;
+    }
+
+    public boolean inRange(Offensive o) {
+        for (int[] i : o.getCorners()) {
+            int ox = i[0];
+            int oy = i[1];
+
+            int dx = position.getX(true);
+            int dy = position.getY(true);
+
+            int xDif = Math.abs(ox - dx);
+            int yDif = Math.abs(oy - dy);
+
+            if (Math.sqrt(Math.pow(xDif, 2) + Math.pow(yDif, 2)) < (range * Globals.TILE_WIDTH)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void deleteTarget() {
+        System.out.println("target of tower deleted.");
+        target = null;
+    }
+
+    public Offensive getTarget() {
+        return target;
+    }
+
+    public Offensive dealDamage() {
+        target.removeHealth(damagePerSecond / 10);
+        return target;
     }
 }

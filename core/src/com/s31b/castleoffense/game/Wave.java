@@ -7,6 +7,8 @@ import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  *
@@ -15,10 +17,12 @@ import java.util.List;
 public class Wave {
 
     private int number;
-
+    private ExecutorService pool = Executors.newSingleThreadExecutor();
+    private Object obj = new Object();
     private boolean player1done, player2done, waveDone;
 
     private List<Offensive> offEntities;
+    private List<Offensive> killedEntities;
 
     private final CoGame game;
 
@@ -32,6 +36,7 @@ public class Wave {
 
     private void initWave() {
         offEntities = new ArrayList<Offensive>();
+        killedEntities = new ArrayList<Offensive>();
         player1done = false;
         player2done = false;
         waveDone = false;
@@ -46,7 +51,7 @@ public class Wave {
      * Adds an offensive entity to the wave that will be attacking the other
      * players castle
      *
-     * @param entity A class that is derrived from the Offensive class
+     * @param entity A class that is derived from the Offensive class
      */
     public void addOffensive(Offensive entity) {
         offEntities.add(entity);
@@ -72,7 +77,7 @@ public class Wave {
 
         if (player1done && player2done) {
             waveDone = true;
-            for(Player player : game.getPlayers()){
+            for (Player player : game.getPlayers()) {
                 player.addGold(Globals.GOLD_INCR_PER_WAVE);
             }
         }
@@ -83,12 +88,14 @@ public class Wave {
      */
     private void spawnWave() {
         // entity.update();
-        for (Offensive entity : offEntities) {
-            timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
+        synchronized (obj) {
+            for (Offensive entity : offEntities) {
+                timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
 
-            if (timeSinceLastSpawn > spawnTime && !entity.isSpawned()) {
-                entity.spawn();
-                timeSinceLastSpawn = 0;
+                if (timeSinceLastSpawn > spawnTime && !entity.isSpawned()) {
+                    entity.spawn();
+                    timeSinceLastSpawn = 0;
+                }
             }
         }
     }
@@ -100,9 +107,25 @@ public class Wave {
 
         spawnWave();
 
-        for (Offensive entity : offEntities) {
-            if (entity.isSpawned()) {
-                entity.update();
+        for (int i = 0; i < offEntities.size(); i++) {
+            Offensive x = offEntities.get(i);
+            if (x.isSpawned()) {
+                checkInRange(x);
+                if (x.isDead()) {
+                    killedEntities.add(x);
+                    clearTarget(x);
+                    offEntities.remove(x);
+                } else if (!x.update()) {
+                    for (Player player : game.getPlayers()) {
+                        if (x.getOwner() != player) {
+                            player.hitCastle();
+                            player.addGold(x.getKillReward());
+                            System.out.println("Hit:" + player.getCastle().getHitpoints());
+                            clearTarget(x);
+                            offEntities.remove(x);
+                        }
+                    }
+                }
             }
         }
     }
@@ -112,30 +135,61 @@ public class Wave {
             return;
         }
 
-        for (Offensive entity : offEntities) {
-            entity.draw(TextureGlobals.SPRITE_BATCH);
+        for (int i = 0; i < offEntities.size(); i++) {
+            Offensive x = offEntities.get(i);
+            x.draw(TextureGlobals.SPRITE_BATCH);
         }
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
+    public boolean equals(Object other) {
+        if (other == null) {
             return false;
         }
-        if (other == this){
+        if (other == this) {
             return true;
         }
-        if (!(other instanceof Wave)){
+        if (!(other instanceof Wave)) {
             return false;
         }
-        Wave w = (Wave)other;
-        return 
-            this.player1done == w.player1done &&
-            this.player2done == w.player2done &&
-            this.waveDone == w.waveDone &&
-            this.game.equals(w.game) &&
-            this.number == w.number &&
-            this.spawnTime == w.spawnTime &&
-            this.timeSinceLastSpawn == w.timeSinceLastSpawn;
+        Wave w = (Wave) other;
+        return this.player1done == w.player1done
+                && this.player2done == w.player2done
+                && this.waveDone == w.waveDone
+                && this.game.equals(w.game)
+                && this.number == w.number
+                && this.spawnTime == w.spawnTime
+                && this.timeSinceLastSpawn == w.timeSinceLastSpawn;
+    }
+
+    private void clearTarget(Offensive o) {
+        List<Defensive> defensives = game.getAllTowers();
+        for (int i = 0; i < defensives.size(); i++) {
+            Defensive d = defensives.get(i);
+            if (d.targetAquired() && d.getTarget() == o) {
+                d.deleteTarget();
+            }
+        }
+    }
+
+    private void checkInRange(Offensive o) {
+        List<Defensive> defensives = game.getAllTowers();
+        for (int i = 0; i < defensives.size(); i++) {
+            Defensive d = defensives.get(i);
+            /*if (d.targetAquired() && d.getTarget() == o && d.inRange(o)) {
+                o = d.dealDamage();
+            } else if (d.inRange(o) && !d.targetAquired()) {
+                d.setTarget(o);
+                o = d.dealDamage();
+            }*/
+
+            if (d.inRange(o)) {
+                if (!d.targetAquired() || !d.inRange(d.getTarget())) {
+                    d.setTarget(o);
+                }
+                o = d.dealDamage();
+                System.out.println(o.getHitpoints());
+            }
+        }
     }
 }

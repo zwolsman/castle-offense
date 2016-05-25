@@ -23,11 +23,10 @@ import java.util.List;
  */
 public class Offensive extends Entity {
 
-    private int hitpoints;
+    private double hitpoints;
     private final int movementSpeed;
     private final int killReward;
     private final Castle destinationCastle;
-
     private final int[][] corners = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
     private List<Tile> usedTiles = new ArrayList<Tile>();
     private int ingameX, ingameY;
@@ -73,7 +72,7 @@ public class Offensive extends Entity {
         }
     }
 
-    public int getHitpoints() {
+    public double getHitpoints() {
         return hitpoints;
     }
 
@@ -115,21 +114,29 @@ public class Offensive extends Entity {
         return null;
     }
 
-    public void removeHealth(int amount) {
+    public void removeHealth(double amount) {
         hitpoints -= amount;
+    }
+
+    public boolean isDead() {
+        if (this.hitpoints <= 0) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * Calculates the next position to move to. Will use the speed of the unit
      * for movement
      */
-    public void update() {
+    public boolean update() {
         Tile tempTile = getNextPosition();
+
         if (tempTile == null) {
             // TODO
             // damage enemy castle
             // remove this offensive entity from the game/wave
-            return;
+            return false;
         }
 
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
@@ -162,6 +169,7 @@ public class Offensive extends Entity {
             }
             ingameX = currentTile.getX() * Globals.TILE_WIDTH;
             ingameY += distance;
+
         } else { //Horizontaal |
             Vector2 centerMe = new Vector2(ingameX + (Globals.TILE_WIDTH / 2), ingameY + (Globals.TILE_HEIGHT / 2));
             if (centerTile.x < centerNextTile.x) { //Naar rechts
@@ -187,14 +195,16 @@ public class Offensive extends Entity {
             }
             ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
             ingameX += distance;
+
         }
+        return true;
     }
 
     public void draw(SpriteBatch batch) {
         if (!isSpawned()) {
             return;
         }
-//TODO make this dynamic
+        //TODO make this dynamic
         Texture t = TextureFactory.getTexture("zoimbie1_hold_" + direction.toString().toLowerCase());
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 
@@ -230,6 +240,16 @@ public class Offensive extends Entity {
         //System.out.println("Spawned!");
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
+    }
+
+    public List<int[]> getCorners() {
+        List<int[]> retval;
+        retval = new ArrayList();
+        retval.add(new int[]{ingameX, ingameY});
+        retval.add(new int[]{ingameX, ingameY + (Globals.TILE_HEIGHT)});
+        retval.add(new int[]{ingameX + (Globals.TILE_WIDTH), ingameY});
+        retval.add(new int[]{ingameX + (Globals.TILE_WIDTH), ingameY + (Globals.TILE_HEIGHT)});
+        return retval;
     }
 }
 
