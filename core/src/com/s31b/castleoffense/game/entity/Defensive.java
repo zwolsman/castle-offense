@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.game.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -67,15 +68,25 @@ public class Defensive extends Entity {
     }
 
     public void draw() {
+        TextureGlobals.SPRITE_BATCH.end();
+        ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        if (Globals.DEBUG) {
+            shapeRenderer.circle(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2, range * Globals.TILE_WIDTH);
+        }
+        if (targetAquired() && inRange(target)) {
+            shapeRenderer.line(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2,
+                    target.getX() + Globals.TILE_WIDTH / 2, target.getY() + Globals.TILE_HEIGHT / 2);
+        }
+        shapeRenderer.end();
+
+        TextureGlobals.SPRITE_BATCH.begin();
         TextureGlobals.SPRITE_BATCH.draw(
                 TextureFactory.getTexture(super.getSprite()),
                 position.getX() * Globals.TILE_WIDTH,
                 position.getY() * Globals.TILE_HEIGHT,
                 Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
-        ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(position.getX(true), position.getY(true), range * Globals.TILE_WIDTH);
-        shapeRenderer.end();
+
     }
 
     /**
@@ -105,8 +116,8 @@ public class Defensive extends Entity {
             int ox = i[0];
             int oy = i[1];
 
-            int dx = position.getX(true);
-            int dy = position.getY(true);
+            int dx = position.getX(true) + Globals.TILE_WIDTH / 2;
+            int dy = position.getY(true) + Globals.TILE_HEIGHT / 2;
 
             int xDif = Math.abs(ox - dx);
             int yDif = Math.abs(oy - dy);
@@ -128,7 +139,7 @@ public class Defensive extends Entity {
     }
 
     public Offensive dealDamage() {
-        target.removeHealth(damagePerSecond / 10);
+        target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
         return target;
     }
 }

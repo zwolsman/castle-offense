@@ -113,13 +113,13 @@ public class Wave {
                 checkInRange(x);
                 if (x.isDead()) {
                     killedEntities.add(x);
+                    reward(x);
                     clearTarget(x);
                     offEntities.remove(x);
                 } else if (!x.update()) {
                     for (Player player : game.getPlayers()) {
                         if (x.getOwner() != player) {
                             player.hitCastle();
-                            player.addGold(x.getKillReward());
                             System.out.println("Hit:" + player.getCastle().getHitpoints());
                             clearTarget(x);
                             offEntities.remove(x);
@@ -189,6 +189,14 @@ public class Wave {
                 }
                 o = d.dealDamage();
                 System.out.println(o.getHitpoints());
+            }
+        }
+    }
+
+    public void reward(Offensive o) {
+        for (Player player : game.getPlayers()) {
+            if (o.getOwner() != player) {
+                player.addGold(o.getKillReward());
             }
         }
     }

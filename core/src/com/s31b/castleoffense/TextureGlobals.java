@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class TextureGlobals {
 
     //Sprite Batch
-    public static final SpriteBatch SPRITE_BATCH = new SpriteBatch();
+    public static SpriteBatch SPRITE_BATCH = new SpriteBatch();
 
     public static final ShapeRenderer SHAPE_RENDERER = new ShapeRenderer();
     //Castle texture

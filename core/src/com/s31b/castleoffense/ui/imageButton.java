@@ -2,16 +2,41 @@ package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 public class imageButton extends ImageButton
 {   
-    public imageButton(Texture texture_up, Texture texture_down, Texture background)
+    private final ImageButtonStyle style;
+    private Drawable draw_down;
+    private Drawable draw_up;
+    private Drawable draw_hover;
+    
+    public imageButton(Texture texture_up, Texture texture_down, Texture texture_hover)
     {
+
         super(new SpriteDrawable(new Sprite(texture_up)),
               new SpriteDrawable(new Sprite(texture_down)));
-
-        this.setBackground(new SpriteDrawable(new Sprite(background)));
+        
+        this.addListener(new HoverListener(this));
+        
+        draw_down = new Image(texture_down).getDrawable();
+        draw_up = new Image(texture_up).getDrawable();
+        draw_hover = new Image(texture_hover).getDrawable();
+        
+        style = new ImageButtonStyle();
+        style.up = draw_up;
+        style.down = draw_down;
+        
+        this.setStyle(style);
+    }
+    public void hoverOn(){
+        style.up = draw_hover;
+    }
+    
+    public void hoverOf(){
+        style.up = draw_up;
     }
 }

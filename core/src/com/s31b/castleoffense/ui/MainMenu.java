@@ -7,12 +7,14 @@ package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Cursor.SystemCursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
@@ -39,6 +42,7 @@ public class MainMenu implements Screen {
     private Stage stage;
     private CastleOffense co;
     private CoGame game;
+    private imageButton buttonPlayHovered;
 
     public MainMenu(CastleOffense castleoffense, CoGame game){
         this.co = castleoffense;
@@ -53,9 +57,8 @@ public class MainMenu implements Screen {
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
        
-        buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")));
-        buttonPlay.addListener(new HoverListener());
-        buttonPlay.addListener( new ClickListener() {              
+        buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartHover.png")));
+        buttonPlay.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
@@ -63,7 +66,6 @@ public class MainMenu implements Screen {
             };
         });
         buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")));
-        buttonInfo.addListener(new HoverListener());
         buttonInfo.addListener( new ClickListener() {       
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -72,7 +74,6 @@ public class MainMenu implements Screen {
             };
         });
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")));
-        buttonQuit.addListener(new HoverListener());
         buttonQuit.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
