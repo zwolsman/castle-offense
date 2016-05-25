@@ -5,17 +5,14 @@
  */
 package com.s31b.castleoffense;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 /**
  *
  * @author fhict
  */
 public class Globals {
 
-    public static final Boolean DEBUG = true;
-    public static final int TILES_X = 17, TILES_Y = 12;
+    public static final Boolean DEBUG = false;
+    public static final int TILES_X = 17 * 2, TILES_Y = 12;
     public static final int TILE_WIDTH = 40, TILE_HEIGHT = 40;
 
     //Base Prices

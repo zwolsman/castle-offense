@@ -33,7 +33,7 @@ public class Player {
     private void initPlayer() {
         points = 0;
         gold = 100;
-        offensiveSpawnPosition = new Tile(0, 1); // change to castle door tile
+        offensiveSpawnPosition = new Tile(2, 10); // change to castle door tile
         castle = new Castle(this);
     }
 
@@ -121,5 +121,26 @@ public class Player {
 
     public CoGame getGame() {
         return this.game;
+    }
+    
+    @Override
+    public boolean equals(Object other){
+        if (other == null){
+            return false;
+        }
+        if (other == this){
+            return true;
+        }
+        if (!(other instanceof Player)){
+            return false;
+        }
+        Player p = (Player)other;
+        return this.game == p.game &&
+                this.castle.equals(p.castle) &&
+                this.gold == p.gold &&
+                this.id == p.id &&
+                this.name == p.name &&
+                this.offensiveSpawnPosition.equals(p.offensiveSpawnPosition) &&
+                this.points == p.points;
     }
 }
