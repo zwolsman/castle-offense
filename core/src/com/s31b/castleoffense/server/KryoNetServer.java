@@ -50,11 +50,6 @@ public class KryoNetServer extends Listener {
     @Override
     public void received(Connection connection, Object obj) {
         System.out.println("Received packet from ip: " + connection.getRemoteAddressTCP().getHostString());
-
-        /*if (obj instanceof TestPacket) {
-            TestPacket tPacket = (TestPacket) obj;
-            System.out.println("Test packet msg: " + tPacket.msg);
-        }*/
     }
 
     @Override
