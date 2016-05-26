@@ -26,7 +26,6 @@ public class MainMenu implements Screen {
     private imageButton buttonQuit;
     private imageButton buttonJoin;
     private Image background;
-    private Cursor customCursor;
     private Skin skin;
     private Stage stage;
     private CastleOffense co;
@@ -68,7 +67,6 @@ public class MainMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
                co.setScreen(new InfoScreen(co, game));
-               //co.setScreen(new EndGameMenu(false, co, game));
             };
         });
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitHover.png")));

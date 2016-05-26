@@ -167,7 +167,7 @@ public class GameMenu implements Screen {
         surrender.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.endGame();
+                co.setScreen(new EndGameMenu(false, co, game));
             }
         ;
         });
@@ -465,6 +465,13 @@ public class GameMenu implements Screen {
         playerGold.setText(Integer.toString(player.getGold()));
         playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
         castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
+        
+        if(player.getCastle().getHitpoints() == 0){
+            co.setScreen(new EndGameMenu(false, co, game));
+        }
+        else if(opponent.getCastle().getHitpoints() == 0){
+            co.setScreen(new EndGameMenu(true, co, game));
+        }
         
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
         batch.begin();

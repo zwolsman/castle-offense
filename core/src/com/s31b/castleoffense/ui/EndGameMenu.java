@@ -63,7 +63,7 @@ public class EndGameMenu implements Screen{
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                co.setScreen(new MainMenu(co, game));
+                game.endGame();
             };
         });
         buttonDone.setPosition((Gdx.graphics.getWidth() / 2) - (buttonDone.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 20);
