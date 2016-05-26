@@ -53,7 +53,7 @@ public class Offensive extends Entity {
         hitpoints = hp;
         movementSpeed = speed;
         killReward = reward;
-        destinationCastle = determineCastle(owner);
+        destinationCastle = getEnemyCastle(owner);
     }
 
     public Offensive(OffensiveDAO data, Player owner) {
@@ -61,15 +61,11 @@ public class Offensive extends Entity {
         hitpoints = data.getHP();
         movementSpeed = data.getSpeed();
         killReward = data.getReward();
-        destinationCastle = determineCastle(owner);
+        destinationCastle = getEnemyCastle(owner);
     }
 
-    private Castle determineCastle(Player owner) {
-        if (owner.getId() == 1) {
-            return owner.getGame().getPlayerById(2).getCastle();
-        } else {
-            return owner.getGame().getPlayerById(1).getCastle();
-        }
+    private Castle getEnemyCastle(Player owner) {
+        return owner.getGame().getPlayerById((owner.getId() + 1) % owner.getGame().getPlayers().size()).getCastle();
     }
 
     public double getHitpoints() {
