@@ -58,7 +58,7 @@ public class EndGameMenu implements Screen{
         
         stateImage.setPosition((Gdx.graphics.getWidth() / 2) - (stateImage.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 40);
         
-        buttonDone = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
+        buttonDone = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitHover.png")));
         buttonDone.addListener(new ClickListener() {   
             @Override
             public void clicked(InputEvent event, float x, float y) {

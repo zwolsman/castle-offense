@@ -12,115 +12,71 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.CastleOffense;
-import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.CoGame;
-import com.s31b.castleoffense.player.Player;
-import com.s31b.castleoffense.server.KryoClient;
-import com.s31b.castleoffense.server.packets.CreateGamePacket;
-import com.s31b.castleoffense.server.packets.JoinGamePacket;
-import com.s31b.castleoffense.server.packets.PlayerListPacket;
-import java.util.Scanner;
 
 /**
  *
  * @author Nick
  */
-public class MainMenu extends Listener implements Screen {
-
+public class MainMenu implements Screen {
     private OrthographicCamera camera;
     private imageButton buttonPlay;
     private imageButton buttonInfo;
     private imageButton buttonQuit;
-    private imageButton buttonCreate;
     private imageButton buttonJoin;
-
     private Image background;
     private Skin skin;
     private Stage stage;
     private CastleOffense co;
     private CoGame game;
     private imageButton buttonPlayHovered;
-    private Player player;
 
-    public MainMenu(CastleOffense castleoffense, CoGame game) {
+    public MainMenu(CastleOffense castleoffense, CoGame game){
         this.co = castleoffense;
         this.game = game;
         this.create();
     }
-
-    public void create() {
-        Globals.client = new KryoClient();
-        Globals.client.getClient().addListener(this);
-        Globals.client.connect();
-
+        
+    public void create () {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
-
+       
         buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartHover.png")));
-        buttonPlay.addListener(new ClickListener() {
+        buttonPlay.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                System.out.println("Creating game");
-                startGame();
-            }
-        ;
+                co.setScreen(new GameMenu(co, game, game.getPlayerById(1)));          
+            };
         });
         buttonJoin = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainJoin.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinHover.png")));
-        buttonJoin.addListener(new ClickListener() {
+        buttonJoin.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-
-            }
-        ;
+                
+            };
         });
         buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoHover.png")));
-        buttonInfo.addListener(new ClickListener() {
+        buttonInfo.addListener( new ClickListener() {       
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                co.setScreen(new InfoScreen(co, game));
-            }
-        ;
+               Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+               co.setScreen(new InfoScreen(co, game));
+            };
         });
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitHover.png")));
-        buttonQuit.addListener(new ClickListener() {
+        buttonQuit.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.exit(0);
-            }
-        ;
+            };
         });
 
-        buttonCreate = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")));
-        buttonCreate.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-
-            }
-        ;
-        });
-
-        buttonJoin = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")));
-        buttonJoin.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                System.out.println("Enter the id of the game:");
-                Scanner sc = new Scanner(System.in);
-
-                int nextId = sc.nextInt();
-                System.out.println("Trying to join game " + nextId);
-                joinGame(nextId);
-            }
-        ;
-        });
         Gdx.input.setInputProcessor(stage);
 
         /* Give main menu buttons their styling:
@@ -146,46 +102,18 @@ public class MainMenu extends Listener implements Screen {
         stage.addActor(buttonJoin);
         stage.addActor(buttonInfo);
         stage.addActor(buttonQuit);
-        stage.addActor(buttonCreate);
-        stage.addActor(buttonJoin);
-
         stage.act();
         stage.draw();
     }
-
-    private void startGame() {
-        Globals.client.send(new CreateGamePacket());
-    }
-
-    private void joinGame(int id) {
-        Globals.client.send(new JoinGamePacket(id));
-    }
-
-    @Override
-    public void received(Connection connection, Object obj) {
-        if (obj instanceof PlayerListPacket) {
-            PlayerListPacket packet = (PlayerListPacket) obj;
-            for (String name : packet.players) {
-                player = game.addPlayer(name);
-            }
-            System.out.println("Joined a game as " + player.getName());
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    co.setScreen(new GameMenu(co, game, player));
-                }
-            });
-        }
-    }
-
-    @Override
+    
+     @Override
     public void show() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void resize(int i, int i1) {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -195,12 +123,12 @@ public class MainMenu extends Listener implements Screen {
 
     @Override
     public void resume() {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void hide() {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
