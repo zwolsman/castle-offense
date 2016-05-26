@@ -27,10 +27,7 @@ public class CoGame {
     private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
-    private List<Player> players;
-    private Player player1;
-    private Player player2;
-    private Timer timer;
+    private List<Player> players = new ArrayList<Player>();
 
     public CoGame(int id) {
         this.id = id;
@@ -53,6 +50,15 @@ public class CoGame {
         return null;
     }
 
+    public Player getPlayerByName(String name) {
+        for (Player tempPlayer : players) {
+            if (tempPlayer.getName().equals(name)) {
+                return tempPlayer;
+            }
+        }
+        return null;
+    }
+
     /**
      * Initializes the game
      */
@@ -62,13 +68,16 @@ public class CoGame {
         map = new Map();
         waves = new ArrayList();
         towers = new ArrayList();
-        player1 = new Player(1, "Speler 1", this);
-        player2 = new Player(2, "Speler 2", this);
-        players = Arrays.asList(player1, player2);
         EntityFactory.init();
 
         currentWaveId = 0;
         currentWaveId = nextWave().getNumber();
+    }
+
+    public Player addPlayer(String name) {
+        Player p = new Player(players.size(), name, this);
+        players.add(p);
+        return p;
     }
 
     /**
@@ -194,29 +203,26 @@ public class CoGame {
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
-                        return false;
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
         }
-        if (other == this){
-                        return true;
+        if (other == this) {
+            return true;
         }
-        if (!(other instanceof CoGame)){
-                        return false;
+        if (!(other instanceof CoGame)) {
+            return false;
         }
-        CoGame w = (CoGame)other;
-        return 
-            this.currentWaveId == w.currentWaveId &&
-            this.id == w.id &&
-            this.map == w.map &&
-            this.player1 == w.player1 &&
-            this.player2 == w.player2 &&
-            this.players == w.players &&
-            this.state == w.state &&
-            this.towers == w.towers &&
-            this.waves == w.waves;
+        CoGame w = (CoGame) other;
+        return this.currentWaveId == w.currentWaveId
+                && this.id == w.id
+                && this.map == w.map
+                && this.players == w.players
+                && this.state == w.state
+                && this.towers == w.towers
+                && this.waves == w.waves;
 
     }
 }
