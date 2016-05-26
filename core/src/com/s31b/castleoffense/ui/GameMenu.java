@@ -166,8 +166,7 @@ public class GameMenu implements Screen {
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
 
-        game.getCurrentWave().endWave(2);
-
+        //game.getCurrentWave().endWave(2);
         Gdx.input.setInputProcessor(stage);
     }
 
