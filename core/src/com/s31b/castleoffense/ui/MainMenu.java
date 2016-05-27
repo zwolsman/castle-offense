@@ -14,12 +14,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
+import com.s31b.castleoffense.player.Player;
+import com.s31b.castleoffense.server.KryoClient;
+import com.s31b.castleoffense.server.packets.CreateGamePacket;
+import com.s31b.castleoffense.server.packets.JoinGamePacket;
+import com.s31b.castleoffense.server.packets.PlayerListPacket;
+import java.util.Scanner;
+import com.s31b.castleoffense.Globals;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 /**
  *
  * @author Nick
  */
-public class MainMenu implements Screen {
+public class MainMenu extends Listener implements Screen {
     private OrthographicCamera camera;
     private imageButton buttonPlay;
     private imageButton buttonInfo;
@@ -30,15 +39,20 @@ public class MainMenu implements Screen {
     private Stage stage;
     private CastleOffense co;
     private CoGame game;
-    private imageButton buttonPlayHovered;
+    private Player player;
 
     public MainMenu(CastleOffense castleoffense, CoGame game){
         this.co = castleoffense;
         this.game = game;
+        this.player = null;
         this.create();
     }
         
     public void create () {
+        Globals.client = new KryoClient();
+        Globals.client.getClient().addListener(this);
+        Globals.client.connect();
+        
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
@@ -50,14 +64,22 @@ public class MainMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                co.setScreen(new GameMenu(co, game, game.getPlayerById(1)));          
+                System.out.println("Creating game");
+                startGame();
+                co.setScreen(new GameMenu(co, game, game.getPlayerById(1)));         
             };
         });
         buttonJoin = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainJoin.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinHover.png")));
         buttonJoin.addListener( new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+               Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+               System.out.println("Enter the id of the game:");
+               Scanner sc = new Scanner(System.in);
+ 
+               int nextId = sc.nextInt();
+               System.out.println("Trying to join game " + nextId);
+               joinGame(nextId);
                 
             };
         });
@@ -91,6 +113,31 @@ public class MainMenu implements Screen {
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
+    }
+    
+    private void startGame() {
+        Globals.client.send(new CreateGamePacket());
+    }
+
+    private void joinGame(int id) {
+        Globals.client.send(new JoinGamePacket(id));
+    }
+
+    @Override
+    public void received(Connection connection, Object obj) {
+       if (obj instanceof PlayerListPacket) {
+           PlayerListPacket packet = (PlayerListPacket) obj;
+             for (String name : packet.players) {
+               player = game.addPlayer(name);
+            }
+            System.out.println("Joined a game as " + player.getName());
+            Gdx.app.postRunnable(new Runnable() {
+                 @Override
+               public void run() {
+                    co.setScreen(new GameMenu(co, game, player));
+                }
+           });
+       }
     }
 
     @Override

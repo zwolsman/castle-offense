@@ -136,7 +136,13 @@ public class GameMenu implements Screen {
         castleHpDesc = new Label("Levenspunten tegenstander: ", skin);
         castleHpDesc.setColor(Color.BLACK);
         castleHpDesc.setPosition(400, 490);
-        castleHp = new Label(Integer.toString(opponent.getCastle().getHitpoints()), skin);
+        String CastleHpText = "";
+        // Check if the opponent exists
+        if(opponent != null)
+        { 
+            CastleHpText = Integer.toString(opponent.getCastle().getHitpoints());
+        }
+        castleHp = new Label(CastleHpText, skin);
         castleHp.setColor(Color.BLACK);
         castleHp.setPosition(620, 490);
   
@@ -463,7 +469,10 @@ public class GameMenu implements Screen {
         
         playerGold.setText(Integer.toString(player.getGold()));
         playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
-        castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
+        String CastleOpponentHp = "";
+        if(opponent != null){
+            castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
+        }
         
         if(player.getCastle().getHitpoints() == 0){
             co.setScreen(new EndGameMenu(false, co, game));
