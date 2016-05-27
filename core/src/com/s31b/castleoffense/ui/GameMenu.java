@@ -84,7 +84,7 @@ public class GameMenu implements Screen {
     private Label playerGoldDesc;
     private Label castleHp;
     private Label castleHpDesc;
-    
+
     public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
         this.co = castleoffense;
         this.game = game;
@@ -92,12 +92,12 @@ public class GameMenu implements Screen {
         this.defList = EntityFactory.getAllDefensives();
         this.offList = EntityFactory.getAllOffensives();
         this.offPerWaveList = new ArrayList<OffensiveDAO>();
-        for(Player p : game.getPlayers()){
-            if(p != player){
+        for (Player p : game.getPlayers()) {
+            if (p != player) {
                 this.opponent = p;
             }
         }
-        
+
         this.create();
     }
 
@@ -111,12 +111,12 @@ public class GameMenu implements Screen {
         menuBar = new Image(new Texture(Gdx.files.internal("GUIMenu/menuBar.png")));
         menuBar.setHeight(70);
         menuBar.setPosition(2, 450);
-        
+
         String playerNameString = "";
         String playerHpString = "";
         String playerGoldString = "";
-        
-        if(player != null && game != null){
+
+        if (player != null && game != null) {
             playerNameString = player.getName();
             playerHpString = Integer.toString(player.getCastle().getHitpoints());
             playerGoldString = Integer.toString(player.getGold());
@@ -128,34 +128,33 @@ public class GameMenu implements Screen {
         playerName = new Label(playerNameString, skin);
         playerName.setColor(Color.BLACK);
         playerName.setPosition(75, 490);
-        
+
         playerHpDesc = new Label("Levenspunten: ", skin);
         playerHpDesc.setColor(Color.BLACK);
         playerHpDesc.setPosition(150, 490);
         playerHp = new Label(playerHpString, skin);
         playerHp.setColor(Color.BLACK);
         playerHp.setPosition(270, 490);
-        
+
         playerGoldDesc = new Label("Geld: ", skin);
         playerGoldDesc.setColor(Color.BLACK);
         playerGoldDesc.setPosition(310, 490);
         playerGold = new Label(playerGoldString, skin);
         playerGold.setColor(Color.BLACK);
         playerGold.setPosition(360, 490);
-        
+
         castleHpDesc = new Label("Levenspunten tegenstander: ", skin);
         castleHpDesc.setColor(Color.BLACK);
         castleHpDesc.setPosition(400, 490);
         String CastleHpText = "";
         // Check if the opponent exists
-        if(opponent != null)
-        { 
+        if (opponent != null) {
             CastleHpText = Integer.toString(opponent.getCastle().getHitpoints());
         }
         castleHp = new Label(CastleHpText, skin);
         castleHp.setColor(Color.BLACK);
         castleHp.setPosition(620, 490);
-  
+
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabOff.setSize(500, 150);
@@ -168,10 +167,10 @@ public class GameMenu implements Screen {
                 countOff = 0;
                 offPerWaveList.clear();
                 offNumber.setText(Integer.toString(countOff));
-                if(player != null && game != null){
+                if (player != null && game != null) {
                     game.getCurrentWave().endWave(player.getId());
                 }
-                
+
                 // Set the buttons disabled -- WORKS --
 //                endWave.setTouchable(Touchable.disabled);
 //                buyOff.setTouchable(Touchable.disabled);
@@ -300,10 +299,10 @@ public class GameMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 tempCounter++;
-                if(player != null && game != null){
-                    for(DefensiveDAO d : defList){
-                        if(defLabel.getText().toString().equals(d.getName())){
-                            Defensive entity = (Defensive)EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
+                if (player != null && game != null) {
+                    for (DefensiveDAO d : defList) {
+                        if (defLabel.getText().toString().equals(d.getName())) {
+                            Defensive entity = (Defensive) EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
                             game.addTower(entity);
                             entity.setPosition(new Tile(tempCounter, 0));
                             System.out.println("Bought: " + entity.getName());
@@ -402,10 +401,10 @@ public class GameMenu implements Screen {
         buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyHover.png")));
         buyOff.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {       
+            public void clicked(InputEvent event, float x, float y) {
                 countOff++;
-                for(OffensiveDAO o : offList){
-                    if(offLabel.getText().toString().equals(o.getName()) && player != null){ 
+                for (OffensiveDAO o : offList) {
+                    if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                         offPerWaveList.add(o);
                         Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.valueOf(o.getType()), player);
                         game.getCurrentWave().addOffensive(entity);
@@ -413,7 +412,7 @@ public class GameMenu implements Screen {
                         break;
                     }
                 }
-                
+
                 offNumber.setText(Integer.toString(countOff));
             }
         ;
@@ -426,8 +425,8 @@ public class GameMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOffList++;
- 
-                if(countOffList >= offList.size()){
+
+                if (countOffList >= offList.size()) {
                     countOffList = 0;
                 }
 
@@ -479,33 +478,31 @@ public class GameMenu implements Screen {
         stage.addActor(castleHp);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        
-        if(player != null && game != null){
+
+        if (player != null && game != null && opponent != null) {
             playerGold.setText(Integer.toString(player.getGold()));
             playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
-            
+
             String CastleOpponentHp = "";
-            if(opponent != null){
+            if (opponent != null) {
                 castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
             }
-        
-            if(player.getCastle().getHitpoints() == 0){
+
+            if (player.getCastle().getHitpoints() == 0) {
                 co.setScreen(new EndGameMenu(false, co, game));
             }
-            if(opponent.getCastle().getHitpoints() == 0){
+            if (opponent.getCastle().getHitpoints() == 0) {
                 co.setScreen(new EndGameMenu(true, co, game));
             }
         }
-       
-        
-        
+
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
-            
+
         game.update();
         game.draw();
-        
+
         batch.end();
     }
 
@@ -540,4 +537,3 @@ public class GameMenu implements Screen {
     }
 
 }
- 
