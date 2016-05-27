@@ -111,25 +111,35 @@ public class GameMenu implements Screen {
         menuBar = new Image(new Texture(Gdx.files.internal("GUIMenu/menuBar.png")));
         menuBar.setHeight(70);
         menuBar.setPosition(2, 450);
+        
+        String playerNameString = "";
+        String playerHpString = "";
+        String playerGoldString = "";
+        
+        if(player != null && game != null){
+            playerNameString = player.getName();
+            playerHpString = Integer.toString(player.getCastle().getHitpoints());
+            playerGoldString = Integer.toString(player.getGold());
+        }
 
         playerNameDesc = new Label("Naam: ", skin);
         playerNameDesc.setColor(Color.BLACK);
         playerNameDesc.setPosition(15, 490);
-        playerName = new Label(player.getName(), skin);
+        playerName = new Label(playerNameString, skin);
         playerName.setColor(Color.BLACK);
         playerName.setPosition(75, 490);
         
         playerHpDesc = new Label("Levenspunten: ", skin);
         playerHpDesc.setColor(Color.BLACK);
         playerHpDesc.setPosition(150, 490);
-        playerHp = new Label(Integer.toString(player.getCastle().getHitpoints()), skin);
+        playerHp = new Label(playerHpString, skin);
         playerHp.setColor(Color.BLACK);
         playerHp.setPosition(270, 490);
         
         playerGoldDesc = new Label("Geld: ", skin);
         playerGoldDesc.setColor(Color.BLACK);
         playerGoldDesc.setPosition(310, 490);
-        playerGold = new Label(Integer.toString(player.getGold()), skin);
+        playerGold = new Label(playerGoldString, skin);
         playerGold.setColor(Color.BLACK);
         playerGold.setPosition(360, 490);
         
@@ -146,7 +156,6 @@ public class GameMenu implements Screen {
         castleHp.setColor(Color.BLACK);
         castleHp.setPosition(620, 490);
   
-
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabOff.setSize(500, 150);
@@ -159,7 +168,9 @@ public class GameMenu implements Screen {
                 countOff = 0;
                 offPerWaveList.clear();
                 offNumber.setText(Integer.toString(countOff));
-                game.getCurrentWave().endWave(player.getId());
+                if(player != null && game != null){
+                    game.getCurrentWave().endWave(player.getId());
+                }
                 
                 // Set the buttons disabled -- WORKS --
 //                endWave.setTouchable(Touchable.disabled);
@@ -289,17 +300,19 @@ public class GameMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 tempCounter++;
-                for(DefensiveDAO d : defList){
-                    if(defLabel.getText().toString().equals(d.getName())){
-                        Defensive entity = (Defensive)EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
-                        game.addTower(entity);
-                        entity.setPosition(new Tile(tempCounter, 0));
-                        System.out.println("Bought: " + entity.getName());
-                        break;
+                if(player != null && game != null){
+                    for(DefensiveDAO d : defList){
+                        if(defLabel.getText().toString().equals(d.getName())){
+                            Defensive entity = (Defensive)EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
+                            game.addTower(entity);
+                            entity.setPosition(new Tile(tempCounter, 0));
+                            System.out.println("Bought: " + entity.getName());
+                            break;
+                        }
                     }
+
+                    playerGold.setText(Integer.toString(player.getGold()));
                 }
-                
-                playerGold.setText(Integer.toString(player.getGold()));
             }
         ;
         });
@@ -392,7 +405,7 @@ public class GameMenu implements Screen {
             public void clicked(InputEvent event, float x, float y) {       
                 countOff++;
                 for(OffensiveDAO o : offList){
-                    if(offLabel.getText().toString().equals(o.getName())){ 
+                    if(offLabel.getText().toString().equals(o.getName()) && player != null){ 
                         offPerWaveList.add(o);
                         Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.valueOf(o.getType()), player);
                         game.getCurrentWave().addOffensive(entity);
@@ -467,19 +480,24 @@ public class GameMenu implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         
-        playerGold.setText(Integer.toString(player.getGold()));
-        playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
-        String CastleOpponentHp = "";
-        if(opponent != null){
-            castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
-        }
+        if(player != null && game != null){
+            playerGold.setText(Integer.toString(player.getGold()));
+            playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
+            
+            String CastleOpponentHp = "";
+            if(opponent != null){
+                castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
+            }
         
-        if(player.getCastle().getHitpoints() == 0){
-            co.setScreen(new EndGameMenu(false, co, game));
+            if(player.getCastle().getHitpoints() == 0){
+                co.setScreen(new EndGameMenu(false, co, game));
+            }
+            if(opponent.getCastle().getHitpoints() == 0){
+                co.setScreen(new EndGameMenu(true, co, game));
+            }
         }
-        else if(opponent.getCastle().getHitpoints() == 0){
-            co.setScreen(new EndGameMenu(true, co, game));
-        }
+       
+        
         
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
         batch.begin();
