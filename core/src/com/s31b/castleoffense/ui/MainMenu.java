@@ -65,8 +65,7 @@ public class MainMenu extends Listener implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
                 System.out.println("Creating game");
-                startGame();
-                co.setScreen(new GameMenu(co, game, game.getPlayerById(1)));         
+                startGame();    
             };
         });
         buttonJoin = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainJoin.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinHover.png")));
