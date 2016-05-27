@@ -87,7 +87,8 @@ public class MainMenu extends Listener implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-               co.setScreen(new InfoScreen(co, game));
+               //co.setScreen(new InfoScreen(co, game));
+               co.setScreen(new EndGameMenu(false, co, game));
             };
         });
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitHover.png")));

@@ -126,7 +126,7 @@ public class CoGame {
     public void endGame() {
         this.state = GameState.Ended;
         System.out.println("Game ended!");
-        System.exit(0);
+        //System.exit(0);
     }
 //TODO: implent multiple maps.
 //    public void addMap(Map map) {
