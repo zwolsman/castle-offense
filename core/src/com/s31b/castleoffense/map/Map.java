@@ -1,7 +1,10 @@
 package com.s31b.castleoffense.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
@@ -49,8 +52,7 @@ public class Map {
                     continue;
                 }
                 tiles[x][y] = new Tile(x, y, type, this);
-                System.out.println(tiles[x][y]);
-
+                //System.out.println(tiles[x][y]);
             }
         }
     }
@@ -114,14 +116,37 @@ public class Map {
         return temp;
     }
 
-    public void draw() {
+    public Tile getSelectedTile() {
 
+        int xMouse = Gdx.input.getX();
+        int yMouse = Math.abs(Gdx.input.getY() - Gdx.graphics.getHeight());
+
+        int x = (int) Math.ceil(xMouse / Globals.TILE_WIDTH);
+        int y = (int) Math.ceil(yMouse / Globals.TILE_HEIGHT);
+        if (Globals.DEBUG) {
+            System.out.println("X raw: " + xMouse);
+            System.out.println("Y raw: " + yMouse);
+            System.out.println("============");
+            System.out.println("math ceil x: " + Math.ceil(xMouse / Globals.TILE_WIDTH));
+            System.out.println("math ceil y: " + Math.ceil(yMouse / Globals.TILE_HEIGHT));
+        }
+        if (x >= Globals.TILES_X - 1 || x < 0 || y >= Globals.TILES_Y - 1 || y < 0) {
+            return null;
+        }
+        return tiles[x][y];
+    }
+
+    public void draw() {
+        //TextureGlobals.SPRITE_BATCH = new SpriteBatch();
+        BitmapFont font = new BitmapFont();
+        if (Globals.DEBUG) {
+            TextureGlobals.SHAPE_RENDERER.begin(ShapeRenderer.ShapeType.Line);
+        }
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
                 int ingameX = x * Globals.TILE_WIDTH, ingameY = y * Globals.TILE_HEIGHT;
                 Tile tile = tiles[x][y];
                 if (tile == null) {
-                    //System.out.println("TILE IS NULL; x: " + x + " y:" + y);
                     continue;
                 }
 
@@ -137,14 +162,17 @@ public class Map {
                 }
                 TextureGlobals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 
-                //font.draw
-                //font.draw(Globals.SPRITE_BATCH, String.format("X: %s, Y: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                if (Globals.DEBUG) {
+                    font.draw(TextureGlobals.SPRITE_BATCH, String.format("X: %s,\r\nY: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                    TextureGlobals.SHAPE_RENDERER.rect(ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+                }
+
             }
         }
-    }
-
-    public Tile getSelectedTile() {
-        return this.selectedTile;
+        if (Globals.DEBUG) {
+            TextureGlobals.SHAPE_RENDERER.end();
+        }
+        //TextureGlobals.SPRITE_BATCH.begin();
     }
 
     public void mouseClicked(int x, int y) {
