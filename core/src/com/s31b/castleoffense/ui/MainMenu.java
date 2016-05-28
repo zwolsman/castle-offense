@@ -78,7 +78,7 @@ public class MainMenu extends Listener implements Screen {
                 System.out.println("Enter the id of the game:");
                 Scanner sc = new Scanner(System.in);
 
-                int nextId = sc.nextInt();
+                int nextId = 0;//sc.nextInt();
                 System.out.println("Trying to join game " + nextId);
                 joinGame(nextId);
 
