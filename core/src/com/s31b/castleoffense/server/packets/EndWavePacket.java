@@ -2,13 +2,15 @@
  */
 package com.s31b.castleoffense.server.packets;
 
+import java.util.List;
+
 /**
  *
  * @author fhict
  */
 public class EndWavePacket implements IPacket {
 
-    public int playerId;
-    public int[][] entities;
+    public List<Integer> entities;
+    public int pid;
 
 }

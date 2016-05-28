@@ -75,9 +75,14 @@ public class CoGame {
     }
 
     public Player addPlayer(String name) {
-        Player p = new Player(players.size(), name, this);
-        players.add(p);
-        return p;
+        Player temp = getPlayerByName(name);
+
+        if (temp == null) {
+            temp = new Player(players.size(), name, this);
+            players.add(temp);
+        }
+
+        return temp;
     }
 
     /**

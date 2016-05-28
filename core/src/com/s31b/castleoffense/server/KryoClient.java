@@ -9,6 +9,7 @@ import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.CreateGamePacket;
 import com.s31b.castleoffense.server.packets.CreatedGamePacket;
+import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.IPacket;
 import com.s31b.castleoffense.server.packets.JoinGamePacket;
 import com.s31b.castleoffense.server.packets.JoinedGamePacket;
@@ -88,6 +89,9 @@ public class KryoClient extends Listener {
 
         client.getKryo().register(BuyTowerPacket.class);
         client.getKryo().register(BoughtTowerPacket.class);
+
+        client.getKryo().register(EndWavePacket.class);
+
     }
 
     @Override

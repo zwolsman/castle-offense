@@ -37,6 +37,8 @@ import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
 import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
+import com.s31b.castleoffense.server.packets.EndWavePacket;
+import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +96,10 @@ public class GameMenu extends Listener implements Screen {
     private Defensive towerToPlace = null;
 
     public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
+        if (player.getId() > 0) {
+            opponent = game.getPlayerById((player.getId() + 1) % game.getPlayers().size());
+            System.out.println("Opponent: " + opponent.getName());
+        }
         this.co = castleoffense;
         this.game = game;
         this.player = player;
@@ -178,7 +184,7 @@ public class GameMenu extends Listener implements Screen {
                 offPerWaveList.clear();
                 offNumber.setText(Integer.toString(countOff));
                 if (player != null && game != null) {
-                    game.getCurrentWave().endWave(player.getId());
+                    endWave();
                 }
             }
         ;
@@ -410,9 +416,8 @@ public class GameMenu extends Listener implements Screen {
                 for (OffensiveDAO o : offList) {
                     if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                         offPerWaveList.add(o);
-                        Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.valueOf(o.getType()), player);
-                        game.getCurrentWave().addOffensive(entity);
-                        System.out.println("Added to que: " + entity.getName());
+
+                        System.out.println("Added to que: " + o.getName());
                         break;
                     }
                 }
@@ -520,6 +525,22 @@ public class GameMenu extends Listener implements Screen {
         towerToPlace = null;
     }
 
+    private void endWave() {
+        //ofPerWaveList
+
+        List types = java.util.Arrays.asList(EntityType.values());
+        EndWavePacket p = new EndWavePacket();
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        for (OffensiveDAO o : offPerWaveList) {
+            int id = types.indexOf(EntityType.getTypeFromString(o.getType()));
+            ids.add(id);
+        }
+        p.entities = ids;
+
+        Globals.client.send(p);
+        //game.getCurrentWave().endWave(player.getId());
+    }
+
     @Override
     public void received(Connection c, Object obj) {
         System.out.println("Received packet");
@@ -531,6 +552,29 @@ public class GameMenu extends Listener implements Screen {
             tower.setPosition(new Tile(packet.x, packet.y));
             game.addTower(tower);
         }
+
+        if (obj instanceof PlayerListPacket) {
+            PlayerListPacket packet = (PlayerListPacket) obj;
+            for (String name : packet.players) {
+
+                Player p = game.getPlayerByName(name);
+                if (p == null) {
+                    System.out.println("Got opponent, name: " + name);
+                    opponent = game.addPlayer(name);
+                }
+            }
+        }
+
+        if (obj instanceof EndWavePacket) {
+            EndWavePacket packet = (EndWavePacket) obj;
+            Player p = game.getPlayerById(packet.pid);
+            for (Integer i : packet.entities) {
+                EntityType type = EntityType.values()[i];
+                game.getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(type, p));
+            }
+            game.getCurrentWave().endWave(p.getId());
+        }
+
     }
 
     private void drawGhostTower() {

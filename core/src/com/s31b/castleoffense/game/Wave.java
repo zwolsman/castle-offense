@@ -64,11 +64,12 @@ public class Wave {
      * @param playerId
      */
     public void endWave(int playerId) {
+        //TODO fix deze hardcoded troep
         switch (playerId) {
-            case 1:
+            case 0:
                 player1done = true;
                 break;
-            case 2:
+            case 1:
                 player2done = true;
                 break;
             default:
