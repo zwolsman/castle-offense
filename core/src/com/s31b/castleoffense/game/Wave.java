@@ -111,15 +111,16 @@ public class Wave {
         for (int i = 0; i < offEntities.size(); i++) {
             Offensive x = offEntities.get(i);
             if (x.isSpawned()) {
-                checkInRange(x);
-                if (x.isDead()) {
-                    killedEntities.add(x);
-                    reward(x);
-                    clearTarget(x);
-                    offEntities.remove(x);
-                } else if (!x.update()) {
-                    for (Player player : game.getPlayers()) {
-                        if (x.getOwner() != player) {
+                for (Player player : game.getPlayers()) {
+                    if (x.getOwner() != player) {
+                        checkInRange(x);
+                        if (x.isDead()) {
+                            killedEntities.add(x);
+                            reward(x);
+                            clearTarget(x);
+                            offEntities.remove(x);
+                        } else if (!x.update()) {
+
                             player.hitCastle();
                             System.out.println("Hit:" + player.getCastle().getHitpoints());
                             clearTarget(x);
