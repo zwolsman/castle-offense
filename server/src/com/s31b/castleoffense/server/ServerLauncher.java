@@ -13,6 +13,7 @@ public class ServerLauncher {
 
         while (true) {
             if (scanner.nextLine().toLowerCase().equals("q")) {
+                System.exit(0);
                 break;
             }
         }

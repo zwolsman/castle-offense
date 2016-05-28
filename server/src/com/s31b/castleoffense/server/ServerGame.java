@@ -8,6 +8,9 @@ import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.HashMap;
 
 /**
  *
@@ -16,7 +19,9 @@ import java.util.ArrayList;
 public class ServerGame extends Listener implements ApplicationListener {
 
     private CoGame game;
-    private final ArrayList<Connection> connectedPlayers = new ArrayList<Connection>();
+    //private final ArrayList<Connection> connectedPlayers = new ArrayList<Connection>();
+
+    private final HashMap<Connection, Player> players = new HashMap<Connection, Player>();
 
     public ServerGame(int id) {
         game = new CoGame(id);
@@ -26,8 +31,8 @@ public class ServerGame extends Listener implements ApplicationListener {
     }
 
     public void addPlayer(Connection c, String name) {
-        connectedPlayers.add(c);
-        game.addPlayer(name);
+        //connectedPlayers.add(c);
+        players.put(c, game.addPlayer(name));
     }
 
     /**
@@ -37,7 +42,15 @@ public class ServerGame extends Listener implements ApplicationListener {
      * @return
      */
     public Boolean isInGame(Connection c) {
-        return connectedPlayers.contains(c);
+        return players.containsKey(c); //return connectedPlayers.contains(c);
+    }
+
+    public Player getPlayer(Connection c) {
+        return players.get(c);
+    }
+
+    public Collection<Connection> getConnections() {
+        return players.keySet();
     }
 
     /**

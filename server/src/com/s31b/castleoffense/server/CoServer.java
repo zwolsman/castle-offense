@@ -7,6 +7,9 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.s31b.castleoffense.player.Player;
+import static com.s31b.castleoffense.server.KryoClient.client;
+import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
+import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.CreateGamePacket;
 import com.s31b.castleoffense.server.packets.CreatedGamePacket;
 import com.s31b.castleoffense.server.packets.JoinGamePacket;
@@ -88,6 +91,20 @@ public class CoServer extends Listener {
             StartGamePacket packet = (StartGamePacket) obj;
             startGame(packet.gid);
         }
+        if (obj instanceof BuyTowerPacket) {
+            BuyTowerPacket packet = (BuyTowerPacket) obj;
+            for (ServerGame g : games) {
+                System.out.println("Checking game");
+                if (g.isInGame(connection)) {
+                    System.out.println("Found game with connection!");
+                    Player p = g.getPlayer(connection);
+                    BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.x, packet.y, p.getId(), packet.name);
+                    for (Connection c : g.getConnections()) {
+                        c.sendTCP(boughtPacket);
+                    }
+                }
+            }
+        }
     }
 
     private void startGame(int id) {
@@ -120,5 +137,7 @@ public class CoServer extends Listener {
         server.getKryo().register(PlayerListPacket.class);
         server.getKryo().register(java.util.ArrayList.class);
 
+        server.getKryo().register(BuyTowerPacket.class);
+        server.getKryo().register(BoughtTowerPacket.class);
     }
 }
