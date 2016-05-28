@@ -59,30 +59,33 @@ abstract public class Entity implements Priceable {
         return owner;
     }
 
+    public EntityType getType() {
+        return type;
+    }
+
     @Override
     public float getPrice() {
         return this.price;
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
-                        return false;
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
         }
-        if (other == this){
-                        return true;
+        if (other == this) {
+            return true;
         }
-        if (!(other instanceof Entity)){
-                        return false;
+        if (!(other instanceof Entity)) {
+            return false;
         }
-        Entity d = (Entity)other;
-        return 
-            this.description == d.description &&
-            this.id == d.id &&
-            this.name == d.name &&
-            this.owner == d.owner &&
-            this.price == d.price &&
-            this.sprite.equals(d.sprite) &&
-            this.type == d.type;
+        Entity d = (Entity) other;
+        return this.description == d.description
+                && this.id == d.id
+                && this.name == d.name
+                && this.owner == d.owner
+                && this.price == d.price
+                && this.sprite.equals(d.sprite)
+                && this.type == d.type;
     }
 }

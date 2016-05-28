@@ -1,6 +1,7 @@
 package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,9 +22,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.DefensiveDAO;
 import com.s31b.castleoffense.data.OffensiveDAO;
@@ -31,6 +35,8 @@ import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
+import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
+import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +44,7 @@ import java.util.List;
  *
  * @author Nick
  */
-public class GameMenu implements Screen {
+public class GameMenu extends Listener implements Screen {
 
     private CastleOffense co;
     private CoGame game;
@@ -85,6 +91,8 @@ public class GameMenu implements Screen {
     private Label castleHp;
     private Label castleHpDesc;
 
+    private Defensive towerToPlace = null;
+
     public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
         this.co = castleoffense;
         this.game = game;
@@ -99,6 +107,8 @@ public class GameMenu implements Screen {
         }
 
         this.create();
+        Globals.client.getClient().addListener(this);
+
     }
 
     public void create() {
@@ -170,11 +180,6 @@ public class GameMenu implements Screen {
                 if (player != null && game != null) {
                     game.getCurrentWave().endWave(player.getId());
                 }
-
-                // Set the buttons disabled -- WORKS --
-//                endWave.setTouchable(Touchable.disabled);
-//                buyOff.setTouchable(Touchable.disabled);
-//                buyDef.setTouchable(Touchable.disabled);
             }
         ;
         });
@@ -302,10 +307,9 @@ public class GameMenu implements Screen {
                 if (player != null && game != null) {
                     for (DefensiveDAO d : defList) {
                         if (defLabel.getText().toString().equals(d.getName())) {
-                            Defensive entity = (Defensive) EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
-                            game.addTower(entity);
-                            entity.setPosition(new Tile(tempCounter, 0));
-                            System.out.println("Bought: " + entity.getName());
+                            towerToPlace = (Defensive) EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
+
+                            System.out.println("Bought: " + towerToPlace.getName());
                             break;
                         }
                     }
@@ -435,7 +439,6 @@ public class GameMenu implements Screen {
                 offDescription.setText(offList.get(countOffList).getDescr());
                 offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
                 offHp.setText(Integer.toString(offList.get(countOffList).getHP()));
-                //offNumber.setText(Integer.toString(offList.get(countOffList).getHP()));
             }
         ;
         });
@@ -502,8 +505,44 @@ public class GameMenu implements Screen {
 
         game.update();
         game.draw();
-
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null) {
+            placeTower();
+        } else if (towerToPlace != null) {
+            drawGhostTower();
+        }
         batch.end();
+    }
+
+    private void placeTower() {
+        Tile t = game.getMap().getSelectedTile();
+        Globals.client.send(new BuyTowerPacket(t.getX(), t.getY(), towerToPlace.getType().name()));
+        System.out.println("Send packet");
+        towerToPlace = null;
+    }
+
+    @Override
+    public void received(Connection c, Object obj) {
+        System.out.println("Received packet");
+        System.out.println(obj);
+        if (obj instanceof BoughtTowerPacket) {
+            BoughtTowerPacket packet = (BoughtTowerPacket) obj;
+
+            Defensive tower = (Defensive) EntityFactory.buyEntity(EntityType.getTypeFromString(packet.name), game.getPlayerById(packet.pid));
+            tower.setPosition(new Tile(packet.x, packet.y));
+            game.addTower(tower);
+        }
+    }
+
+    private void drawGhostTower() {
+        Tile t = game.getMap().getSelectedTile();
+        if (t != null) {
+            TextureGlobals.SPRITE_BATCH.draw(
+                    TextureFactory.getTexture(towerToPlace.getSprite()),
+                    t.getX(true),
+                    t.getY(true),
+                    Globals.TILE_WIDTH, Globals.TILE_HEIGHT
+            );
+        }
     }
 
     @Override

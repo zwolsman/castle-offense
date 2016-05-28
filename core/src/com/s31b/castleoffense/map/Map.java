@@ -116,6 +116,12 @@ public class Map {
         return temp;
     }
 
+    /**
+     * Returns a Tile if there is a tile found, returns null if not. Uses the
+     * current coordinates of the mouse position to calculate.
+     *
+     * @return
+     */
     public Tile getSelectedTile() {
 
         int xMouse = Gdx.input.getX();
@@ -172,7 +178,6 @@ public class Map {
         if (Globals.DEBUG) {
             TextureGlobals.SHAPE_RENDERER.end();
         }
-        //TextureGlobals.SPRITE_BATCH.begin();
     }
 
     public void mouseClicked(int x, int y) {

@@ -5,6 +5,8 @@ package com.s31b.castleoffense.server;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
+import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.CreateGamePacket;
 import com.s31b.castleoffense.server.packets.CreatedGamePacket;
 import com.s31b.castleoffense.server.packets.IPacket;
@@ -28,7 +30,7 @@ public class KryoClient extends Listener {
 
     static Client client;
     static int tcpPort = 9999;
-    static String serverIp = "145.93.133.73";
+    static String serverIp = "localhost";
 
     public KryoClient() {
         client = new Client();
@@ -56,8 +58,12 @@ public class KryoClient extends Listener {
             System.out.println("Connected!");
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
-
+            try {
+                //Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.sleep(5000);
+            } catch (InterruptedException ex1) {
+                // Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex1);
+            }
             return innerConnect();
         }
     }
@@ -80,6 +86,8 @@ public class KryoClient extends Listener {
         client.getKryo().register(PlayerListPacket.class);
         client.getKryo().register(java.util.ArrayList.class);
 
+        client.getKryo().register(BuyTowerPacket.class);
+        client.getKryo().register(BoughtTowerPacket.class);
     }
 
     @Override
