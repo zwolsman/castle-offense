@@ -12,6 +12,7 @@ import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.CreateGamePacket;
 import com.s31b.castleoffense.server.packets.CreatedGamePacket;
+import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.JoinGamePacket;
 import com.s31b.castleoffense.server.packets.JoinedGamePacket;
 import com.s31b.castleoffense.server.packets.NewPlayerPacket;
@@ -84,7 +85,9 @@ public class CoServer extends Listener {
             for (Player p : games.get(packet.gid).getGame().getPlayers()) {
                 plPacket.players.add(p.getName());
             }
-            connection.sendTCP(plPacket);
+            for (Connection c : games.get(packet.gid).getConnections()) {
+                c.sendTCP(plPacket);
+            }
         }
 
         if (obj instanceof StartGamePacket) {
@@ -101,6 +104,21 @@ public class CoServer extends Listener {
                     BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.x, packet.y, p.getId(), packet.name);
                     for (Connection c : g.getConnections()) {
                         c.sendTCP(boughtPacket);
+                    }
+                }
+            }
+        }
+
+        if (obj instanceof EndWavePacket) {
+            EndWavePacket packet = (EndWavePacket) obj;
+            for (ServerGame g : games) {
+                System.out.println("Checking game");
+                if (g.isInGame(connection)) {
+                    System.out.println("Found game with connection!");
+                    Player p = g.getPlayer(connection);
+                    packet.pid = p.getId();
+                    for (Connection c : g.getConnections()) {
+                        c.sendTCP(packet);
                     }
                 }
             }
@@ -139,5 +157,8 @@ public class CoServer extends Listener {
 
         server.getKryo().register(BuyTowerPacket.class);
         server.getKryo().register(BoughtTowerPacket.class);
+
+        server.getKryo().register(EndWavePacket.class);
+
     }
 }
