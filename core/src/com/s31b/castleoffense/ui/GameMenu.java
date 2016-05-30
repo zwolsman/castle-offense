@@ -104,7 +104,7 @@ public class GameMenu extends Listener implements Screen {
         this.player = player;
         this.defList = EntityFactory.getAllDefensives();
         this.offList = EntityFactory.getAllOffensives();
-        this.offPerWaveList = new ArrayList<OffensiveDAO>();
+        this.offPerWaveList = new ArrayList<>();
         for (Player p : game.getPlayers()) {
             if (p != player) {
                 this.opponent = p;
