@@ -178,8 +178,8 @@ public class CoGame {
                 }
             }
         } else {
-            for (Player player : players) {
-                this.getCurrentWave().endWave(player.getId());
+            for (int i = 0; i < players.size(); i++) {
+                this.getCurrentWave().endWave();
             }
         }
     }

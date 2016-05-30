@@ -57,26 +57,18 @@ public class Wave {
         offEntities.add(entity);
     }
 
+    
+    private int playersDone;
+    
     /**
-     * Ends the wave. If both players ended the wave the wave will be played.
+     * Ends the wave. If all players ended the wave the wave will be played.
      * End wave means end of turn
      *
-     * @param playerId
      */
-    public void endWave(int playerId) {
-        //TODO fix deze hardcoded troep
-        switch (playerId) {
-            case 0:
-                player1done = true;
-                break;
-            case 1:
-                player2done = true;
-                break;
-            default:
-                break;
-        }
+    public void endWave() {
+        playersDone++;
 
-        if (player1done && player2done) {
+        if (playersDone >= game.getPlayers().size()) {
             waveDone = true;
             for (Player player : game.getPlayers()) {
                 player.addGold(Globals.GOLD_INCR_PER_WAVE);
