@@ -1,7 +1,6 @@
 package com.s31b.castleoffense;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.s31b.castleoffense.game.CoGame;
@@ -11,7 +10,7 @@ import com.s31b.castleoffense.ui.MainMenu;
 /**
  * Game instance of our game (Castle of Clans) aka CoC
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class CastleOffense extends Game {
 

@@ -1,10 +1,8 @@
-/*
- */
 package com.s31b.castleoffense.server.packets;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class StartGamePacket implements IPacket {
 

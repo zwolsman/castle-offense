@@ -1,6 +1,5 @@
 package com.s31b.castleoffense.game.entity;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.player.Player;
 
 /**
