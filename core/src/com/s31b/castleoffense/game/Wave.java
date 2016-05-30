@@ -165,7 +165,7 @@ public class Wave {
         for (int i = 0; i < defensives.size(); i++) {
             Defensive tower = defensives.get(i);
 
-            if (tower.inRange(offensive)) {
+            if (tower.inRange(offensive) && tower.getOwner() != offensive.getOwner()) {
                 if (!tower.targetAquired() || !tower.inRange(tower.getTarget())) {
                     tower.setTarget(offensive);
                 }
