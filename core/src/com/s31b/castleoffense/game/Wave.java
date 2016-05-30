@@ -145,7 +145,6 @@ public class Wave {
         int hash = 5;
         hash = 41 * hash + this.number;
         hash = 41 * hash + (this.waveDone ? 1 : 0);
-        hash = 41 * hash + Objects.hashCode(this.game);
         hash = 41 * hash + Float.floatToIntBits(this.timeSinceLastSpawn);
         hash = 41 * hash + Float.floatToIntBits(this.spawnTime);
         return hash;
