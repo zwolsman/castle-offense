@@ -8,8 +8,6 @@ import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  *
@@ -20,7 +18,7 @@ public class Wave {
     private final int number;
     private Object obj = new Object();
     private boolean waveDone;
-    
+
     private int playersDone;
 
     private List<Offensive> offEntities;
@@ -57,10 +55,10 @@ public class Wave {
     public void addOffensive(Offensive entity) {
         offEntities.add(entity);
     }
-    
+
     /**
-     * Ends the wave. If all players ended the wave the wave will be played.
-     * End wave means end of turn
+     * Ends the wave. If all players ended the wave the wave will be played. End
+     * wave means end of turn
      *
      */
     public void endWave() {
@@ -78,15 +76,12 @@ public class Wave {
      * Spawn the wave with spawn delay for each offensive entity
      */
     private void spawnWave() {
-        // entity.update();
-        synchronized (obj) {
-            for (Offensive entity : offEntities) {
-                timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
+        for (Offensive entity : offEntities) {
+            timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
 
-                if (timeSinceLastSpawn > spawnTime && !entity.isSpawned()) {
-                    entity.spawn();
-                    timeSinceLastSpawn = 0;
-                }
+            if (timeSinceLastSpawn > spawnTime && !entity.isSpawned()) {
+                entity.spawn();
+                timeSinceLastSpawn = 0;
             }
         }
     }
@@ -101,23 +96,21 @@ public class Wave {
         for (int i = 0; i < offEntities.size(); i++) {
             Offensive x = offEntities.get(i);
             if (x.isSpawned()) {
-                for (Player player : game.getPlayers()) {
-                    if (x.getOwner() != player) {
-                        checkInRange(x);
-                        if (x.isDead()) {
-                            killedEntities.add(x);
-                            reward(x);
-                            clearTarget(x);
-                            offEntities.remove(x);
-                        } else if (!x.update()) {
+                game.getPlayers().stream().filter((player) -> (x.getOwner() != player)).forEach((player) -> {
+                    checkInRange(x);
+                    if (x.isDead()) {
+                        killedEntities.add(x);
+                        reward(x);
+                        clearTarget(x);
+                        offEntities.remove(x);
+                    } else if (!x.update()) {
 
-                            player.hitCastle();
-                            System.out.println("Hit:" + player.getCastle().getHitpoints());
-                            clearTarget(x);
-                            offEntities.remove(x);
-                        }
+                        player.hitCastle();
+                        System.out.println("Hit:" + player.getCastle().getHitpoints());
+                        clearTarget(x);
+                        offEntities.remove(x);
                     }
-                }
+                });
             }
         }
     }
@@ -144,13 +137,7 @@ public class Wave {
         if (!(other instanceof Wave)) {
             return false;
         }
-        Wave w = (Wave) other;
-        return this.playersDone == w.playersDone
-                && this.waveDone == w.waveDone
-                && this.game.equals(w.game)
-                && this.number == w.number
-                && this.spawnTime == w.spawnTime
-                && this.timeSinceLastSpawn == w.timeSinceLastSpawn;
+        return this.hashCode() == other.hashCode();
     }
 
     @Override
@@ -174,23 +161,16 @@ public class Wave {
         }
     }
 
-    private void checkInRange(Offensive o) {
+    private void checkInRange(Offensive offensive) {
         List<Defensive> defensives = game.getAllTowers();
         for (int i = 0; i < defensives.size(); i++) {
-            Defensive d = defensives.get(i);
-            /*if (d.targetAquired() && d.getTarget() == o && d.inRange(o)) {
-                o = d.dealDamage();
-            } else if (d.inRange(o) && !d.targetAquired()) {
-                d.setTarget(o);
-                o = d.dealDamage();
-            }*/
+            Defensive tower = defensives.get(i);
 
-            if (d.inRange(o)) {
-                if (!d.targetAquired() || !d.inRange(d.getTarget())) {
-                    d.setTarget(o);
+            if (tower.inRange(offensive)) {
+                if (!tower.targetAquired() || !tower.inRange(tower.getTarget())) {
+                    tower.setTarget(offensive);
                 }
-                o = d.dealDamage();
-                System.out.println(o.getHitpoints());
+                tower.dealDamage();
             }
         }
     }
