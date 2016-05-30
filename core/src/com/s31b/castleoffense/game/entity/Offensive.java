@@ -58,7 +58,7 @@ public class Offensive extends Entity {
         totalHitpoints = hp;
         movementSpeed = speed;
         killReward = reward;
-        destinationCastle = determineCastle(owner); 
+        destinationCastle = getEnemyCastle(owner);
     }
 
     public Offensive(OffensiveDAO data, Player owner) {
@@ -67,22 +67,18 @@ public class Offensive extends Entity {
         totalHitpoints = data.getHP();
         movementSpeed = data.getSpeed();
         killReward = data.getReward();
-        destinationCastle = determineCastle(owner);
+        destinationCastle = getEnemyCastle(owner);
     }
 
-    private Castle determineCastle(Player owner) {
-        if (owner.getId() == 1) {
-            return owner.getGame().getPlayerById(2).getCastle();
-        } else {
-            return owner.getGame().getPlayerById(1).getCastle();
-        }
+    private Castle getEnemyCastle(Player owner) {
+        return owner.getGame().getPlayerById((owner.getId() + 1) % owner.getGame().getPlayers().size()).getCastle();
     }
 
     public double getHitpoints() {
         return hitpoints;
     }
-    
-    public int getTotalHitpoints(){
+
+    public int getTotalHitpoints() {
         return totalHitpoints;
     }
 
@@ -215,7 +211,7 @@ public class Offensive extends Entity {
             return;
         }
         //TODO make this dynamic
-        Texture t = TextureFactory.getTexture("zoimbie1_hold_" + direction.toString().toLowerCase());
+        Texture t = TextureFactory.getTexture(super.getSprite() + "_hold_" + direction.toString().toLowerCase());
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
         drawHealthBar(batch);
 
@@ -237,28 +233,28 @@ public class Offensive extends Entity {
             shapeRenderer.end();
         }
     }
-    
-    public void drawHealthBar(SpriteBatch batch){
+
+    public void drawHealthBar(SpriteBatch batch) {
         double totalHitPoints = this.getTotalHitpoints();
-        
+
         double widthPerHitPoints = Globals.TILE_WIDTH / totalHitPoints;
         double greenPart = this.getHitpoints() * widthPerHitPoints;
         double redPart = (totalHitPoints - this.getHitpoints()) * widthPerHitPoints;
-        
+
         Pixmap p = new Pixmap(1, 1, Pixmap.Format.RGB888);
         p.setColor(Color.GREEN);
         p.fillRectangle(0, 0, 10, 1);
         Texture healthBarGreen = new Texture(p);
-        
+
         Pixmap p1 = new Pixmap(1, 1, Pixmap.Format.RGB888);
         p1.setColor(Color.RED);
         p1.fillRectangle(0, 0, 10, 1);
         Texture healthBarRed = new Texture(p1);
-        
-        batch.draw(healthBarGreen, ingameX, ingameY + Globals.TILE_HEIGHT , (int)greenPart, Globals.TILE_HEIGHT / 5);
-        batch.draw(healthBarRed, ingameX + (int)greenPart, ingameY + Globals.TILE_HEIGHT, (int)redPart, Globals.TILE_HEIGHT / 5);
+
+        batch.draw(healthBarGreen, ingameX, ingameY + Globals.TILE_HEIGHT, (int) greenPart, Globals.TILE_HEIGHT / 5);
+        batch.draw(healthBarRed, ingameX + (int) greenPart, ingameY + Globals.TILE_HEIGHT, (int) redPart, Globals.TILE_HEIGHT / 5);
     }
-    
+
     public boolean isSpawned() {
         return currentTile != null;
     }

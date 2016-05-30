@@ -48,7 +48,7 @@ public class InfoScreen implements Screen{
         text.setSize(500, 550);
         text.setPosition((Gdx.graphics.getWidth() / 2) - (text.getWidth() / 2), (Gdx.graphics.getHeight()/ 2) - (text.getHeight()/ 2));
         
-        buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")));
+        buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
         buttonBack.addListener(new ClickListener() {   
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -1,12 +1,21 @@
 package com.s31b.castleoffense.server;
 
-import com.badlogic.gdx.backends.headless.HeadlessApplication;
-import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+import java.util.Scanner;
 
 public class ServerLauncher {
 
+    private static ServerGame gameInstance = new ServerGame();
+
     public static void main(String[] arg) {
-        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
-        new HeadlessApplication(new RenderListener());
+        Scanner scanner = new Scanner(System.in);
+        CoServer server = new CoServer();
+        server.start();
+
+        while (true) {
+            if (scanner.nextLine().toLowerCase().equals("q")) {
+                System.exit(0);
+                break;
+            }
+        }
     }
 }

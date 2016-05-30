@@ -1,6 +1,7 @@
 package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,9 +22,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.DefensiveDAO;
 import com.s31b.castleoffense.data.OffensiveDAO;
@@ -31,6 +35,10 @@ import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
+import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
+import com.s31b.castleoffense.server.packets.BuyTowerPacket;
+import com.s31b.castleoffense.server.packets.EndWavePacket;
+import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +46,7 @@ import java.util.List;
  *
  * @author Nick
  */
-public class GameMenu implements Screen {
+public class GameMenu extends Listener implements Screen {
 
     private CastleOffense co;
     private CoGame game;
@@ -84,21 +92,29 @@ public class GameMenu implements Screen {
     private Label playerGoldDesc;
     private Label castleHp;
     private Label castleHpDesc;
-    
+
+    private Defensive towerToPlace = null;
+
     public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
+        if (player.getId() > 0) {
+            opponent = game.getPlayerById((player.getId() + 1) % game.getPlayers().size());
+            System.out.println("Opponent: " + opponent.getName());
+        }
         this.co = castleoffense;
         this.game = game;
         this.player = player;
         this.defList = EntityFactory.getAllDefensives();
         this.offList = EntityFactory.getAllOffensives();
         this.offPerWaveList = new ArrayList<OffensiveDAO>();
-        for(Player p : game.getPlayers()){
-            if(p != player){
+        for (Player p : game.getPlayers()) {
+            if (p != player) {
                 this.opponent = p;
             }
         }
-        
+
         this.create();
+        Globals.client.getClient().addListener(this);
+
     }
 
     public void create() {
@@ -112,62 +128,73 @@ public class GameMenu implements Screen {
         menuBar.setHeight(70);
         menuBar.setPosition(2, 450);
 
+        String playerNameString = "";
+        String playerHpString = "";
+        String playerGoldString = "";
+
+        if (player != null && game != null) {
+            playerNameString = player.getName();
+            playerHpString = Integer.toString(player.getCastle().getHitpoints());
+            playerGoldString = Integer.toString(player.getGold());
+        }
+
         playerNameDesc = new Label("Naam: ", skin);
         playerNameDesc.setColor(Color.BLACK);
         playerNameDesc.setPosition(15, 490);
-        playerName = new Label(player.getName(), skin);
+        playerName = new Label(playerNameString, skin);
         playerName.setColor(Color.BLACK);
         playerName.setPosition(75, 490);
-        
+
         playerHpDesc = new Label("Levenspunten: ", skin);
         playerHpDesc.setColor(Color.BLACK);
         playerHpDesc.setPosition(150, 490);
-        playerHp = new Label(Integer.toString(player.getCastle().getHitpoints()), skin);
+        playerHp = new Label(playerHpString, skin);
         playerHp.setColor(Color.BLACK);
         playerHp.setPosition(270, 490);
-        
+
         playerGoldDesc = new Label("Geld: ", skin);
         playerGoldDesc.setColor(Color.BLACK);
         playerGoldDesc.setPosition(310, 490);
-        playerGold = new Label(Integer.toString(player.getGold()), skin);
+        playerGold = new Label(playerGoldString, skin);
         playerGold.setColor(Color.BLACK);
         playerGold.setPosition(360, 490);
-        
+
         castleHpDesc = new Label("Levenspunten tegenstander: ", skin);
         castleHpDesc.setColor(Color.BLACK);
         castleHpDesc.setPosition(400, 490);
-        castleHp = new Label(Integer.toString(opponent.getCastle().getHitpoints()), skin);
+        String CastleHpText = "";
+        // Check if the opponent exists
+        if (opponent != null) {
+            CastleHpText = Integer.toString(opponent.getCastle().getHitpoints());
+        }
+        castleHp = new Label(CastleHpText, skin);
         castleHp.setColor(Color.BLACK);
         castleHp.setPosition(620, 490);
-  
 
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabOff.setSize(500, 150);
         backgroundTabDef.setSize(500, 150);
 
-        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")));
+        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveHover.png")));
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOff = 0;
                 offPerWaveList.clear();
                 offNumber.setText(Integer.toString(countOff));
-                game.getCurrentWave().endWave(player.getId());
-                
-                // Set the buttons disabled -- WORKS --
-//                endWave.setTouchable(Touchable.disabled);
-//                buyOff.setTouchable(Touchable.disabled);
-//                buyDef.setTouchable(Touchable.disabled);
+                if (player != null && game != null) {
+                    endWave();
+                }
             }
         ;
         });
 
-        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")));
+        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
         surrender.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.endGame();
+                co.setScreen(new EndGameMenu(false, co, game));
             }
         ;
         });
@@ -189,8 +216,7 @@ public class GameMenu implements Screen {
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
 
-        game.getCurrentWave().endWave(2);
-
+        //game.getCurrentWave().endWave(2);
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -203,8 +229,8 @@ public class GameMenu implements Screen {
 
         // Create the tab buttons
         HorizontalGroup group = new HorizontalGroup();
-        final imageButton tab1 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDefDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")));
-        final imageButton tab2 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOffDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")));
+        final imageButton tab1 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDefDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDefHover.png")));
+        final imageButton tab2 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOffDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOffHover.png")));
         group.addActor(tab1);
         group.addActor(tab2);
         main.add(group);
@@ -279,29 +305,30 @@ public class GameMenu implements Screen {
         defRange.setPosition(170, 30);
         defRange.setColor(Color.BLACK);
 
-        buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
+        buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyHover.png")));
         buyDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 tempCounter++;
-                for(DefensiveDAO d : defList){
-                    if(defLabel.getText().toString().equals(d.getName())){
-                        Defensive entity = (Defensive)EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
-                        game.addTower(entity);
-                        entity.setPosition(new Tile(tempCounter, 0));
-                        System.out.println("Bought: " + entity.getName());
-                        break;
+                if (player != null && game != null) {
+                    for (DefensiveDAO d : defList) {
+                        if (defLabel.getText().toString().equals(d.getName())) {
+                            towerToPlace = (Defensive) EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
+
+                            System.out.println("Bought: " + towerToPlace.getName());
+                            break;
+                        }
                     }
+
+                    playerGold.setText(Integer.toString(player.getGold()));
                 }
-                
-                playerGold.setText(Integer.toString(player.getGold()));
             }
         ;
         });
         buyDef.setPosition(350, 10);
         buyDef.setSize(100, 40);
 
-        nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
+        nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextHover.png")));
         nextDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -381,21 +408,20 @@ public class GameMenu implements Screen {
         offNumber.setPosition(170, 10);
         offNumber.setColor(Color.BLACK);
 
-        buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")));
+        buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyHover.png")));
         buyOff.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {       
+            public void clicked(InputEvent event, float x, float y) {
                 countOff++;
-                for(OffensiveDAO o : offList){
-                    if(offLabel.getText().toString().equals(o.getName())){ 
+                for (OffensiveDAO o : offList) {
+                    if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                         offPerWaveList.add(o);
-                        Offensive entity = (Offensive) EntityFactory.buyEntity(EntityType.valueOf(o.getType()), player);
-                        game.getCurrentWave().addOffensive(entity);
-                        System.out.println("Added to que: " + entity.getName());
+
+                        System.out.println("Added to que: " + o.getName());
                         break;
                     }
                 }
-                
+
                 offNumber.setText(Integer.toString(countOff));
             }
         ;
@@ -403,13 +429,13 @@ public class GameMenu implements Screen {
         buyOff.setPosition(350, 10);
         buyOff.setSize(100, 40);
 
-        nextOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")));
+        nextOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextHover.png")));
         nextOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOffList++;
- 
-                if(countOffList >= offList.size()){
+
+                if (countOffList >= offList.size()) {
                     countOffList = 0;
                 }
 
@@ -418,7 +444,6 @@ public class GameMenu implements Screen {
                 offDescription.setText(offList.get(countOffList).getDescr());
                 offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
                 offHp.setText(Integer.toString(offList.get(countOffList).getHP()));
-                //offNumber.setText(Integer.toString(offList.get(countOffList).getHP()));
             }
         ;
         });
@@ -461,19 +486,107 @@ public class GameMenu implements Screen {
         stage.addActor(castleHp);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-        
-        playerGold.setText(Integer.toString(player.getGold()));
-        playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
-        castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
-        
+
+        if (player != null && game != null && opponent != null) {
+            playerGold.setText(Integer.toString(player.getGold()));
+            playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
+
+            String CastleOpponentHp = "";
+            if (opponent != null) {
+                castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
+            }
+
+            if (player.getCastle().getHitpoints() == 0) {
+                co.setScreen(new EndGameMenu(false, co, game));
+            }
+            if (opponent.getCastle().getHitpoints() == 0) {
+                co.setScreen(new EndGameMenu(true, co, game));
+            }
+        }
+
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
-            
+
         game.update();
         game.draw();
-        
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null) {
+            placeTower();
+        } else if (towerToPlace != null) {
+            drawGhostTower();
+        }
         batch.end();
+    }
+
+    private void placeTower() {
+        Tile t = game.getMap().getSelectedTile();
+        Globals.client.send(new BuyTowerPacket(t.getX(), t.getY(), towerToPlace.getType().name()));
+        System.out.println("Send packet");
+        towerToPlace = null;
+    }
+
+    private void endWave() {
+        //ofPerWaveList
+
+        List types = java.util.Arrays.asList(EntityType.values());
+        EndWavePacket p = new EndWavePacket();
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        for (OffensiveDAO o : offPerWaveList) {
+            int id = types.indexOf(EntityType.getTypeFromString(o.getType()));
+            ids.add(id);
+        }
+        p.entities = ids;
+
+        Globals.client.send(p);
+        //game.getCurrentWave().endWave(player.getId());
+    }
+
+    @Override
+    public void received(Connection c, Object obj) {
+        System.out.println("Received packet");
+        System.out.println(obj);
+        if (obj instanceof BoughtTowerPacket) {
+            BoughtTowerPacket packet = (BoughtTowerPacket) obj;
+
+            Defensive tower = (Defensive) EntityFactory.buyEntity(EntityType.getTypeFromString(packet.name), game.getPlayerById(packet.pid));
+            tower.setPosition(new Tile(packet.x, packet.y));
+            game.addTower(tower);
+        }
+
+        if (obj instanceof PlayerListPacket) {
+            PlayerListPacket packet = (PlayerListPacket) obj;
+            for (String name : packet.players) {
+
+                Player p = game.getPlayerByName(name);
+                if (p == null) {
+                    System.out.println("Got opponent, name: " + name);
+                    opponent = game.addPlayer(name);
+                }
+            }
+        }
+
+        if (obj instanceof EndWavePacket) {
+            EndWavePacket packet = (EndWavePacket) obj;
+            Player p = game.getPlayerById(packet.pid);
+            for (Integer i : packet.entities) {
+                EntityType type = EntityType.values()[i];
+                game.getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(type, p));
+            }
+            game.getCurrentWave().endWave(p.getId());
+        }
+
+    }
+
+    private void drawGhostTower() {
+        Tile t = game.getMap().getSelectedTile();
+        if (t != null) {
+            TextureGlobals.SPRITE_BATCH.draw(
+                    TextureFactory.getTexture(towerToPlace.getSprite()),
+                    t.getX(true),
+                    t.getY(true),
+                    Globals.TILE_WIDTH, Globals.TILE_HEIGHT
+            );
+        }
     }
 
     @Override
@@ -507,4 +620,3 @@ public class GameMenu implements Screen {
     }
 
 }
- 

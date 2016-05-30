@@ -5,7 +5,18 @@ package com.s31b.castleoffense.server;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
+import com.s31b.castleoffense.server.packets.BuyTowerPacket;
+import com.s31b.castleoffense.server.packets.CreateGamePacket;
+import com.s31b.castleoffense.server.packets.CreatedGamePacket;
+import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.IPacket;
+import com.s31b.castleoffense.server.packets.JoinGamePacket;
+import com.s31b.castleoffense.server.packets.JoinedGamePacket;
+import com.s31b.castleoffense.server.packets.NewPlayerPacket;
+import com.s31b.castleoffense.server.packets.NewPlayerResponsePacket;
+import com.s31b.castleoffense.server.packets.PlayerListPacket;
+import com.s31b.castleoffense.server.packets.StartGamePacket;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +31,7 @@ public class KryoClient extends Listener {
 
     static Client client;
     static int tcpPort = 9999;
-    static String serverIp = "145.93.131.82";
+    static String serverIp = "localhost";
 
     public KryoClient() {
         client = new Client();
@@ -28,7 +39,7 @@ public class KryoClient extends Listener {
         client.addListener(this);
     }
 
-    private void connect() {
+    public void connect() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -38,14 +49,22 @@ public class KryoClient extends Listener {
         }).start();
     }
 
+    public Client getClient() {
+        return this.client;
+    }
+
     private Boolean innerConnect() {
         try {
             client.connect(5000, serverIp, tcpPort);
             System.out.println("Connected!");
             return true;
         } catch (IOException ex) {
-            Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
-
+            try {
+                //Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.sleep(5000);
+            } catch (InterruptedException ex1) {
+                // Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex1);
+            }
             return innerConnect();
         }
     }
@@ -55,24 +74,24 @@ public class KryoClient extends Listener {
     }
 
     private void registerPackets() {
-        //client.getKryo().register(TestPacket.class);
-        //TODO register packets
-    }
+        client.getKryo().register(NewPlayerPacket.class);
+        client.getKryo().register(NewPlayerResponsePacket.class);
+        client.getKryo().register(StartGamePacket.class);
 
-    public static void main(String[] args) {
-        KryoClient kClient = new KryoClient();
-        kClient.connect();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        while (true) {
-            try {
-                String msg = reader.readLine();
-                
-                if (msg.equals("q")) System.exit(0);
-                
-            } catch (IOException ex) {
-                Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        client.getKryo().register(JoinGamePacket.class);
+        client.getKryo().register(JoinedGamePacket.class);
+
+        client.getKryo().register(CreateGamePacket.class);
+        client.getKryo().register(CreatedGamePacket.class);
+
+        client.getKryo().register(PlayerListPacket.class);
+        client.getKryo().register(java.util.ArrayList.class);
+
+        client.getKryo().register(BuyTowerPacket.class);
+        client.getKryo().register(BoughtTowerPacket.class);
+
+        client.getKryo().register(EndWavePacket.class);
+
     }
 
     @Override
