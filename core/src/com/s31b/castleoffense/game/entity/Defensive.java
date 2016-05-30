@@ -16,7 +16,7 @@ import com.s31b.castleoffense.player.Player;
  */
 public class Defensive extends Entity {
 
-    private double damagePerSecond;
+    private int damagePerSecond;
     private int range;
     private Offensive target;
 
