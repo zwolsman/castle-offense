@@ -31,7 +31,7 @@ public class CoServer extends Listener {
 
     static Server server;
     static int tcpPort = 9999;
-    static ArrayList<ServerGame> games = new ArrayList<ServerGame>();
+    static ArrayList<ServerGame> games = new ArrayList<>();
 
     public CoServer() {
         server = new Server();
