@@ -62,8 +62,8 @@ public class Offensive extends Entity {
 
     public Offensive(OffensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
-        hitpoints = data.getHP();
-        totalHitpoints = data.getHP();
+        hitpoints = data.getHealthPoints();
+        totalHitpoints = data.getHealthPoints();
         movementSpeed = data.getSpeed();
         killReward = data.getReward();
         destinationCastle = getEnemyCastle(owner);

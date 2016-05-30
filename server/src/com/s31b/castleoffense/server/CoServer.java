@@ -7,17 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 import com.s31b.castleoffense.player.Player;
-import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
-import com.s31b.castleoffense.server.packets.BuyTowerPacket;
-import com.s31b.castleoffense.server.packets.CreateGamePacket;
-import com.s31b.castleoffense.server.packets.CreatedGamePacket;
-import com.s31b.castleoffense.server.packets.EndWavePacket;
-import com.s31b.castleoffense.server.packets.JoinGamePacket;
-import com.s31b.castleoffense.server.packets.JoinedGamePacket;
-import com.s31b.castleoffense.server.packets.NewPlayerPacket;
-import com.s31b.castleoffense.server.packets.NewPlayerResponsePacket;
-import com.s31b.castleoffense.server.packets.PlayerListPacket;
-import com.s31b.castleoffense.server.packets.StartGamePacket;
+import com.s31b.castleoffense.server.packets.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -31,7 +21,7 @@ public class CoServer extends Listener {
 
     static Server server;
     static int tcpPort = 9999;
-    static ArrayList<ServerGame> games = new ArrayList<ServerGame>();
+    static ArrayList<ServerGame> games = new ArrayList<>();
 
     public CoServer() {
         server = new Server();
@@ -100,7 +90,7 @@ public class CoServer extends Listener {
                 if (g.isInGame(connection)) {
                     System.out.println("Found game with connection!");
                     Player p = g.getPlayer(connection);
-                    BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.x, packet.y, p.getId(), packet.name);
+                    BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.getX(), packet.getY(), p.getId(), packet.getName());
                     for (Connection c : g.getConnections()) {
                         c.sendTCP(boughtPacket);
                     }
