@@ -511,7 +511,7 @@ public class GameMenu extends Listener implements Screen {
             game.update();
             game.draw();
         }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null && game.getMap().getSelectedTile() != null) {
             placeTower();
         } else if (towerToPlace != null) {
             drawGhostTower();
