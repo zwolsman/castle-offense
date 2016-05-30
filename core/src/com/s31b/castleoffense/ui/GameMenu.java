@@ -293,7 +293,7 @@ public class GameMenu extends Listener implements Screen {
         Label defDpsDesc = new Label("Schade: ", skin);
         defDpsDesc.setPosition(60, 50);
         defDpsDesc.setColor(Color.BLACK);
-        defDps = new Label(Integer.toString(d.getDPS()), skin);
+        defDps = new Label(Integer.toString(d.getDamage()), skin);
         defDps.setPosition(170, 50);
         defDps.setColor(Color.BLACK);
 
@@ -340,7 +340,7 @@ public class GameMenu extends Listener implements Screen {
                 defLabel.setText(defList.get(countDefList).getName());
                 defPrice.setText(Integer.toString(defList.get(countDefList).getPrice()));
                 defDescription.setText(defList.get(countDefList).getDescr());
-                defDps.setText(Integer.toString(defList.get(countDefList).getDPS()));
+                defDps.setText(Integer.toString(defList.get(countDefList).getDamage()));
                 defRange.setText(Integer.toString(defList.get(countDefList).getRange()));
             }
         ;
@@ -396,7 +396,7 @@ public class GameMenu extends Listener implements Screen {
         Label offHpDesc = new Label("Levenspunten: ", skin);
         offHpDesc.setPosition(60, 30);
         offHpDesc.setColor(Color.BLACK);
-        offHp = new Label(Integer.toString(o.getHP()), skin);
+        offHp = new Label(Integer.toString(o.getHealthPoints()), skin);
         offHp.setPosition(170, 30);
         offHp.setColor(Color.BLACK);
 
@@ -442,7 +442,7 @@ public class GameMenu extends Listener implements Screen {
                 offPrice.setText(Integer.toString(offList.get(countOffList).getPrice()));
                 offDescription.setText(offList.get(countOffList).getDescr());
                 offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
-                offHp.setText(Integer.toString(offList.get(countOffList).getHP()));
+                offHp.setText(Integer.toString(offList.get(countOffList).getHealthPoints()));
             }
         ;
         });
