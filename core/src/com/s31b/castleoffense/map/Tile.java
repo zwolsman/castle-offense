@@ -74,7 +74,7 @@ public class Tile {
     }
 
     public boolean isWalkable() {
-        return type == TileType.Path;
+        return type == TileType.Path || type == TileType.Castle;
     }
 
     public boolean isBuildable() {
