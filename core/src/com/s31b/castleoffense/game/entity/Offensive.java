@@ -70,6 +70,10 @@ public class Offensive extends Entity {
     }
 
     private Castle getEnemyCastle(Player owner) {
+
+        if (owner.getGame().getPlayers().size() <= 1) {
+            return null;
+        }
         return owner.getGame().getPlayerById((owner.getId() + 1) % owner.getGame().getPlayers().size()).getCastle();
     }
 
