@@ -3,7 +3,7 @@ package com.s31b.castleoffense.map;
 /**
  * The types a tile can be
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public enum TileType {
     Grass,

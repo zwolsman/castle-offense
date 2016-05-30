@@ -17,7 +17,6 @@ import com.s31b.castleoffense.server.packets.NewPlayerPacket;
 import com.s31b.castleoffense.server.packets.NewPlayerResponsePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import com.s31b.castleoffense.server.packets.StartGamePacket;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,21 +37,18 @@ public class KryoClient extends Listener {
     }
 
     public void connect() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                client.start();
-                try {
-                    innerConnect();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        new Thread(() -> {
+            client.start();
+            try {
+                innerConnect();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
     }
 
     public Client getClient() {
-        return this.client;
+        return KryoClient.client;
     }
 
     private Boolean innerConnect() throws InterruptedException {

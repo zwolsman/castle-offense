@@ -6,5 +6,5 @@ package com.s31b.castleoffense.server.packets;
  */
 public class NewPlayerResponsePacket {
 
-    public int Id;
+    int Id;
 }

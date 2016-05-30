@@ -26,7 +26,7 @@ public class GameManager {
 
     public GameManager() {
         //instance = this; // to make sure instance won't be null again;
-        allGames = new ArrayList<CoGame>();
+        allGames = new ArrayList<>();
     }
 
     public synchronized static GameManager getInstance() {

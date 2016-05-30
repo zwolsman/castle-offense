@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class PlayerListPacket {
 
-    public ArrayList<String> players = new ArrayList<String>();
+    public ArrayList<String> players = new ArrayList<>();
 
     public PlayerListPacket() {
     }

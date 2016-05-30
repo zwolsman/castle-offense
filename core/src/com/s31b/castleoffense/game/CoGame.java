@@ -25,7 +25,7 @@ public class CoGame {
     private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
 
     public CoGame(int id) {
         this.id = id;

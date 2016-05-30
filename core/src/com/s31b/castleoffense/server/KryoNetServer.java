@@ -31,12 +31,9 @@ public class KryoNetServer extends Listener {
     }
 
     public void start() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                server.start();
-                System.out.println("Started server!");
-            }
+        new Thread(() -> {
+            server.start();
+            System.out.println("Started server!");
         }).start();
     }
 

@@ -19,7 +19,7 @@ import java.util.List;
 public class Map {
 
     private Tile selectedTile;
-    private Tile[][] tiles;
+    private final Tile[][] tiles;
     //A temporary map, will be dynamic later
     private static final String tempMask[] = {
         "0000000111111111000000000000000000",
@@ -69,7 +69,7 @@ public class Map {
      */
     public List<Tile> getAllTiles() {
 
-        List<Tile> tempTiles = new ArrayList<Tile>();
+        List<Tile> tempTiles = new ArrayList<>();
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
                 tempTiles.add(tiles[x][y]);
@@ -85,7 +85,7 @@ public class Map {
      */
     public List<Tile> getAllWalkableTiles() {
 
-        List<Tile> tempTiles = new ArrayList<Tile>();
+        List<Tile> tempTiles = new ArrayList<>();
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
                 System.out.println(x + ", " + y);

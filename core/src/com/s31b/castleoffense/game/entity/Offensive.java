@@ -31,7 +31,7 @@ public class Offensive extends Entity {
     private final int killReward;
     private final Castle destinationCastle;
     private final int[][] corners = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    private List<Tile> usedTiles = new ArrayList<Tile>();
+    private List<Tile> usedTiles = new ArrayList<>();
     private int ingameX, ingameY;
     private Direction direction = Direction.Right;
 
@@ -273,8 +273,6 @@ public class Offensive extends Entity {
      */
     public void spawn() {
         this.currentTile = owner.getOffensiveSpawnPosition();
-
-        //System.out.println("Spawned!");
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }

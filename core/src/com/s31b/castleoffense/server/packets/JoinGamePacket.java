@@ -12,5 +12,5 @@ public class JoinGamePacket implements IPacket {
     public JoinGamePacket(int gameId) {
         gid = gameId;
     }
-    public int gid;
+    int gid;
 }

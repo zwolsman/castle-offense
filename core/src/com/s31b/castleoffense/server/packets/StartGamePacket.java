@@ -6,5 +6,5 @@ package com.s31b.castleoffense.server.packets;
  */
 public class StartGamePacket implements IPacket {
 
-    public int gid;
+    int gid;
 }

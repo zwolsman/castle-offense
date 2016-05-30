@@ -14,11 +14,6 @@ public class Tile {
     private Texture texture;
     private Map map;
 
-    //private BufferedImage sprite;
-//    public Tile(int ownerId, boolean buildable, BufferedImage sprite) {
-//        this.ownerId = ownerId;
-//        this.sprite = sprite;
-//    }
     /**
      * Create a grass tile at a specific position
      *
@@ -47,7 +42,8 @@ public class Tile {
         this.map = m;
     }
 
-    private int x, y;
+    private int x;
+    private int y;
     private TileType type;
 
     public int getX() {
@@ -132,22 +128,22 @@ public class Tile {
     public String toString() {
         return String.format("X: %d, Y: %d, type: %s", getX(), getY(), getType());
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
-                        return false;
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
         }
-        if (other == this){
-                        return true;
+        if (other == this) {
+            return true;
         }
-        if (!(other instanceof Tile)){
-                        return false;
+        if (!(other instanceof Tile)) {
+            return false;
         }
-        Tile t = (Tile)other;
-        return this.buildable == t.buildable &
-                this.x == t.x &&
-                this.y == t.y &&
-                this.type == t.type;
+        Tile t = (Tile) other;
+        return this.buildable == t.buildable
+                && this.x == t.x
+                && this.y == t.y
+                && this.type == t.type;
     }
 }
