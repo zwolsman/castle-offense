@@ -16,7 +16,6 @@ import java.util.Objects;
 public class Wave {
 
     private final int number;
-    private Object obj = new Object();
     private boolean waveDone;
 
     private int playersDone;
@@ -26,7 +25,8 @@ public class Wave {
 
     private final CoGame game;
 
-    private float timeSinceLastSpawn, spawnTime;
+    private float timeSinceLastSpawn;
+    private float spawnTime;
 
     public Wave(int number, CoGame game) {
         this.number = number;
@@ -96,7 +96,7 @@ public class Wave {
         for (int i = 0; i < offEntities.size(); i++) {
             Offensive x = offEntities.get(i);
             if (x.isSpawned()) {
-                game.getPlayers().stream().filter((player) -> (x.getOwner() != player)).forEach((player) -> {
+                game.getPlayers().stream().filter(player -> x.getOwner() != player).forEach(player -> {
                     checkInRange(x);
                     if (x.isDead()) {
                         killedEntities.add(x);
