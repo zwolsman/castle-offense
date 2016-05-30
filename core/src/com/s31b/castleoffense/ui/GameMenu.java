@@ -507,8 +507,10 @@ public class GameMenu extends Listener implements Screen {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
 
-        game.update();
-        game.draw();
+        if (game != null) {
+            game.update();
+            game.draw();
+        }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null) {
             placeTower();
         } else if (towerToPlace != null) {
