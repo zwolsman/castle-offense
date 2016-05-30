@@ -90,7 +90,8 @@ public class Wave {
         if (!waveDone) {
             return;
         }
-
+        
+        System.out.println("displaying wave!");
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {
