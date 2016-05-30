@@ -17,11 +17,7 @@ import com.s31b.castleoffense.server.packets.NewPlayerPacket;
 import com.s31b.castleoffense.server.packets.NewPlayerResponsePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import com.s31b.castleoffense.server.packets.StartGamePacket;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -31,7 +27,7 @@ public class KryoClient extends Listener {
 
     static Client client;
     static int tcpPort = 9999;
-    static String serverIp = "145.93.132.125";
+    static String serverIp = "localhost";//145.93.132.125
 
     public KryoClient() {
         client = new Client();

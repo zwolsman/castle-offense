@@ -5,10 +5,8 @@ import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
 
 /**
  *

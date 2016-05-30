@@ -1,12 +1,10 @@
-/*
- */
 package com.s31b.castleoffense.server.packets;
 
 import java.util.ArrayList;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class PlayerListPacket {
 

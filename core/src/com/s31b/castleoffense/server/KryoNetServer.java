@@ -1,5 +1,3 @@
-/*
- */
 package com.s31b.castleoffense.server;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -14,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class KryoNetServer extends Listener {
 

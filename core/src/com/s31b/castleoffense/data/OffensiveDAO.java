@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.s31b.castleoffense.data;
 
 /**
@@ -11,56 +6,56 @@ package com.s31b.castleoffense.data;
  */
 public class OffensiveDAO extends EntityDAO {
 
-    private int HP;
-    private int Speed;
-    private int Reward;
+    private int healthPoints;
+    private int speed;
+    private int reward;
 
     public OffensiveDAO(String type, String name, String descr, String sprite, int price, int hp, int speed, int reward) {
         super(type, name, descr, sprite, price);
-        this.HP = hp;
-        this.Speed = speed;
-        this.Reward = reward;
+        this.healthPoints = hp;
+        this.speed = speed;
+        this.reward = reward;
     }
 
     /**
-     * @return the HP
+     * @return the healthPoints
      */
     public int getHP() {
-        return HP;
+        return healthPoints;
     }
 
     /**
-     * @param HP the HP to set
+     * @param HP the healthPoints to set
      */
     public void setHP(int HP) {
-        this.HP = HP;
+        this.healthPoints = HP;
     }
 
     /**
-     * @return the Speed
+     * @return the speed
      */
     public int getSpeed() {
-        return Speed;
+        return speed;
     }
 
     /**
-     * @param Speed the Speed to set
+     * @param Speed the speed to set
      */
     public void setSpeed(int Speed) {
-        this.Speed = Speed;
+        this.speed = Speed;
     }
 
     /**
-     * @return the Reward
+     * @return the reward
      */
     public int getReward() {
-        return Reward;
+        return reward;
     }
 
     /**
-     * @param Reward the Reward to set
+     * @param Reward the reward to set
      */
     public void setReward(int Reward) {
-        this.Reward = Reward;
+        this.reward = Reward;
     }
 }

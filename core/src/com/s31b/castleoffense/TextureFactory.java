@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Creates and caches the texture's dynamicly
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class TextureFactory {
 
