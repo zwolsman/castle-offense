@@ -1,10 +1,8 @@
-/*
- */
 package com.s31b.castleoffense.server.packets;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class JoinedGamePacket implements IPacket {
 
@@ -14,5 +12,5 @@ public class JoinedGamePacket implements IPacket {
     public JoinedGamePacket(String name) {
         this.name = name;
     }
-    public String name;
+    String name;
 }

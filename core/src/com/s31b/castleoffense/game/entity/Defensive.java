@@ -138,8 +138,7 @@ public class Defensive extends Entity {
         return target;
     }
 
-    public Offensive dealDamage() {
+    public void dealDamage() {
         target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
-        return target;
     }
 }

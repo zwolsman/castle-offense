@@ -1,10 +1,8 @@
-/*
- */
 package com.s31b.castleoffense.server.packets;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class JoinGamePacket implements IPacket {
 
@@ -14,5 +12,5 @@ public class JoinGamePacket implements IPacket {
     public JoinGamePacket(int gameId) {
         gid = gameId;
     }
-    public int gid;
+    int gid;
 }

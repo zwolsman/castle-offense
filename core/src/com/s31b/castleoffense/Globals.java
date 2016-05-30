@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.s31b.castleoffense;
 
 import com.s31b.castleoffense.server.KryoClient;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class Globals {
 

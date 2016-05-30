@@ -1,16 +1,14 @@
-/*
- */
 package com.s31b.castleoffense.server.packets;
 
 import java.util.ArrayList;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class PlayerListPacket {
 
-    public ArrayList<String> players = new ArrayList<String>();
+    public ArrayList<String> players = new ArrayList<>();
 
     public PlayerListPacket() {
     }

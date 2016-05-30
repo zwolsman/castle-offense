@@ -3,6 +3,7 @@ package com.s31b.castleoffense.player;
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureGlobals;
+import java.util.Objects;
 
 /**
  * The castle of a player
@@ -12,7 +13,7 @@ import com.s31b.castleoffense.TextureGlobals;
 public class Castle {
 
     private int hitpoints;
-    private Player owner;
+    private final Player owner;
 
     public Castle(Player owner) {
         this.hitpoints = Globals.CASTLE_HP;
@@ -42,20 +43,27 @@ public class Castle {
     public Player getOwner() {
         return owner;
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
+    public boolean equals(Object other) {
+        if (other == null) {
             return false;
         }
-        if (other == this){
+        if (other == this) {
             return true;
         }
-        if (!(other instanceof Castle)){
+        if (!(other instanceof Castle)) {
             return false;
         }
-        Castle c = (Castle)other;
-        return this.hitpoints == c.hitpoints &&
-                this.owner.equals(c.owner);
+        Castle c = (Castle) other;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 13 * hash + this.hitpoints;
+        hash = 13 * hash + Objects.hashCode(this.owner);
+        return hash;
     }
 }

@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -51,7 +50,7 @@ public class GameMenu extends Listener implements Screen {
     private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
-    public Stage stage;
+    private Stage stage;
     private Skin skin;
     private Batch batch;
     private Player player;
@@ -508,8 +507,10 @@ public class GameMenu extends Listener implements Screen {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
 
-        game.update();
-        game.draw();
+        if (game != null) {
+            game.update();
+            game.draw();
+        }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null) {
             placeTower();
         } else if (towerToPlace != null) {
@@ -572,7 +573,7 @@ public class GameMenu extends Listener implements Screen {
                 EntityType type = EntityType.values()[i];
                 game.getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(type, p));
             }
-            game.getCurrentWave().endWave(p.getId());
+            game.getCurrentWave().endWave();
         }
 
     }

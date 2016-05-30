@@ -21,7 +21,7 @@ public class Player {
 
     private Castle castle;
 
-    private CoGame game;
+    private final CoGame game;
 
     public Player(int id, String name, CoGame game) {
         this.id = id;
@@ -122,25 +122,25 @@ public class Player {
     public CoGame getGame() {
         return this.game;
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
+    public boolean equals(Object other) {
+        if (other == null) {
             return false;
         }
-        if (other == this){
+        if (other == this) {
             return true;
         }
-        if (!(other instanceof Player)){
+        if (!(other instanceof Player)) {
             return false;
         }
-        Player p = (Player)other;
-        return this.game == p.game &&
-                this.castle.equals(p.castle) &&
-                this.gold == p.gold &&
-                this.id == p.id &&
-                this.name == p.name &&
-                this.offensiveSpawnPosition.equals(p.offensiveSpawnPosition) &&
-                this.points == p.points;
+        Player p = (Player) other;
+        return this.game == p.game
+                && this.castle.equals(p.castle)
+                && this.gold == p.gold
+                && this.id == p.id
+                && this.name == p.name
+                && this.offensiveSpawnPosition.equals(p.offensiveSpawnPosition)
+                && this.points == p.points;
     }
 }

@@ -7,9 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.player.Player;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Dictionary;
 import java.util.HashMap;
 
 /**

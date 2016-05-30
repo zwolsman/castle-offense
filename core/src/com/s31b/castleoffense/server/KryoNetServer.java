@@ -1,5 +1,3 @@
-/*
- */
 package com.s31b.castleoffense.server;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -14,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class KryoNetServer extends Listener {
 
@@ -33,12 +31,9 @@ public class KryoNetServer extends Listener {
     }
 
     public void start() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                server.start();
-                System.out.println("Started server!");
-            }
+        new Thread(() -> {
+            server.start();
+            System.out.println("Started server!");
         }).start();
     }
 

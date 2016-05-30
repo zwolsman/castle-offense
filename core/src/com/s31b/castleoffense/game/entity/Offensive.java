@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -32,7 +31,7 @@ public class Offensive extends Entity {
     private final int killReward;
     private final Castle destinationCastle;
     private final int[][] corners = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    private List<Tile> usedTiles = new ArrayList<Tile>();
+    private List<Tile> usedTiles = new ArrayList<>();
     private int ingameX, ingameY;
     private Direction direction = Direction.Right;
 
@@ -70,7 +69,17 @@ public class Offensive extends Entity {
         destinationCastle = getEnemyCastle(owner);
     }
 
+    /**
+     * Returns the castle of the enemy if there is one, otherwise null.
+     *
+     * @param owner The owner of the offensive object
+     * @return
+     */
     private Castle getEnemyCastle(Player owner) {
+
+        if (owner.getGame().getPlayers().size() <= 1) {
+            return null;
+        }
         return owner.getGame().getPlayerById((owner.getId() + 1) % owner.getGame().getPlayers().size()).getCastle();
     }
 
@@ -264,8 +273,6 @@ public class Offensive extends Entity {
      */
     public void spawn() {
         this.currentTile = owner.getOffensiveSpawnPosition();
-
-        //System.out.println("Spawned!");
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }
