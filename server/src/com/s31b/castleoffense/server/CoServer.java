@@ -90,7 +90,7 @@ public class CoServer extends Listener {
                 if (g.isInGame(connection)) {
                     System.out.println("Found game with connection!");
                     Player p = g.getPlayer(connection);
-                    BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.x, packet.y, p.getId(), packet.name);
+                    BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.getX(), packet.getY(), p.getId(), packet.getName());
                     for (Connection c : g.getConnections()) {
                         c.sendTCP(boughtPacket);
                     }

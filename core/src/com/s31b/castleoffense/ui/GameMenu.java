@@ -104,7 +104,7 @@ public class GameMenu extends Listener implements Screen {
         this.player = player;
         this.defList = EntityFactory.getAllDefensives();
         this.offList = EntityFactory.getAllOffensives();
-        this.offPerWaveList = new ArrayList<OffensiveDAO>();
+        this.offPerWaveList = new ArrayList<>();
         for (Player p : game.getPlayers()) {
             if (p != player) {
                 this.opponent = p;
@@ -511,7 +511,7 @@ public class GameMenu extends Listener implements Screen {
             game.update();
             game.draw();
         }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null && game.getMap().getSelectedTile() != null) {
             placeTower();
         } else if (towerToPlace != null) {
             drawGhostTower();
