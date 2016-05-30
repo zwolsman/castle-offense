@@ -2,6 +2,7 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
+import java.util.Objects;
 
 /**
  * A tile for the map
@@ -141,9 +142,16 @@ public class Tile {
             return false;
         }
         Tile t = (Tile) other;
-        return this.buildable == t.buildable
-                && this.x == t.x
-                && this.y == t.y
-                && this.type == t.type;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + (this.buildable ? 1 : 0);
+        hash = 67 * hash + this.x;
+        hash = 67 * hash + this.y;
+        hash = 67 * hash + Objects.hashCode(this.type);
+        return hash;
     }
 }

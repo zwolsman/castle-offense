@@ -7,6 +7,7 @@ import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -131,10 +132,6 @@ public class CoGame {
         System.out.println("Game ended!");
         //System.exit(0);
     }
-//TODO: implent multiple maps.
-//    public void addMap(Map map) {
-//        maps.add(map);
-//    }
 
     /**
      * Gets the next wave and updates the id of the wave
@@ -219,13 +216,19 @@ public class CoGame {
             return false;
         }
         CoGame w = (CoGame) other;
-        return this.currentWaveId == w.currentWaveId
-                && this.id == w.id
-                && this.map == w.map
-                && this.players == w.players
-                && this.state == w.state
-                && this.towers == w.towers
-                && this.waves == w.waves;
+        return this.hashCode() == other.hashCode();
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + this.id;
+        hash = 79 * hash + this.currentWaveId;
+        hash = 79 * hash + Objects.hashCode(this.state);
+        hash = 79 * hash + Objects.hashCode(this.map);
+        hash = 79 * hash + Objects.hashCode(this.waves);
+        hash = 79 * hash + Objects.hashCode(this.towers);
+        hash = 79 * hash + Objects.hashCode(this.players);
+        return hash;
     }
 }

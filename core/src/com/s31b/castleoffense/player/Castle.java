@@ -3,6 +3,7 @@ package com.s31b.castleoffense.player;
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureGlobals;
+import java.util.Objects;
 
 /**
  * The castle of a player
@@ -55,7 +56,14 @@ public class Castle {
             return false;
         }
         Castle c = (Castle) other;
-        return this.hitpoints == c.hitpoints
-                && this.owner.equals(c.owner);
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 13 * hash + this.hitpoints;
+        hash = 13 * hash + Objects.hashCode(this.owner);
+        return hash;
     }
 }

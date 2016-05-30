@@ -8,6 +8,7 @@ import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +52,6 @@ public class Map {
                     continue;
                 }
                 tiles[x][y] = new Tile(x, y, type, this);
-                //System.out.println(tiles[x][y]);
             }
         }
     }
@@ -168,7 +168,7 @@ public class Map {
                 TextureGlobals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 
                 if (Globals.DEBUG) {
-                    font.draw(TextureGlobals.SPRITE_BATCH, String.format("X: %s,\r\nY: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                    font.draw(TextureGlobals.SPRITE_BATCH, String.format("X: %s,%nY: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
                     TextureGlobals.SHAPE_RENDERER.rect(ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
                 }
 
@@ -200,7 +200,13 @@ public class Map {
         if (!(other instanceof Map)) {
             return false;
         }
-        Map m = (Map) other;
-        return this.tiles == m.tiles;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 71 * hash + Arrays.deepHashCode(this.tiles);
+        return hash;
     }
 }
