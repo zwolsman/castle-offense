@@ -104,7 +104,9 @@ public class Defensive extends Entity {
     }
 
     public void setTarget(Offensive o) {
-        target = o;
+        if (o.getOwner() != getOwner()) {
+            target = o;
+        }
     }
 
     public boolean targetAquired() {
