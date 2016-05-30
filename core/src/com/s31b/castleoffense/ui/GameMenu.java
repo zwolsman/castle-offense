@@ -179,12 +179,12 @@ public class GameMenu extends Listener implements Screen {
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                countOff = 0;
-                offPerWaveList.clear();
-                offNumber.setText(Integer.toString(countOff));
                 if (player != null && game != null) {
                     endWave();
                 }
+                countOff = 0;
+                offPerWaveList.clear();
+                offNumber.setText(Integer.toString(countOff));
             }
         ;
         });
