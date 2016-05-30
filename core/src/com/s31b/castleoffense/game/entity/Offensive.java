@@ -25,8 +25,8 @@ import java.util.List;
  */
 public class Offensive extends Entity {
 
-    private int hitpoints;
-    private int totalHitpoints;
+    private float hitpoints;
+    private float totalHitpoints;
     private final int movementSpeed;
     private final int killReward;
     private final Castle destinationCastle;
@@ -51,7 +51,7 @@ public class Offensive extends Entity {
      * @param speed The speed of the unit. Must be positive
      * @param reward The reward the player gets in gold
      */
-    public Offensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int hp, int speed, int reward) {
+    public Offensive(EntityType type, String name, String descr, String sprite, Player owner, int price, float hp, int speed, int reward) {
         super(type, name, descr, sprite, price, owner);
         hitpoints = hp;
         totalHitpoints = hp;
@@ -87,7 +87,7 @@ public class Offensive extends Entity {
         return hitpoints;
     }
 
-    public int getTotalHitpoints() {
+    public float getTotalHitpoints() {
         return totalHitpoints;
     }
 
@@ -115,7 +115,7 @@ public class Offensive extends Entity {
             int curX = currentTile.getX() + corner[0];
             int curY = currentTile.getY() + corner[1];
 
-            if (curX < 0 || curY < 0) {
+            if (curX < 0 || curY < 0 || curX >= Globals.TILES_X || curY >= Globals.TILES_Y) {
                 continue;
             }
             if (walkableTiles[curX][curY] == null) {
