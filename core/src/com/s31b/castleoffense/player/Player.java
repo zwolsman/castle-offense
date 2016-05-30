@@ -33,7 +33,7 @@ public class Player {
     private void initPlayer() {
         points = 0;
         gold = 100;
-        offensiveSpawnPosition = new Tile(2, 10); // change to castle door tile
+        offensiveSpawnPosition = game.getMap().getSpawnPoints().get(id);
         castle = new Castle(this);
     }
 

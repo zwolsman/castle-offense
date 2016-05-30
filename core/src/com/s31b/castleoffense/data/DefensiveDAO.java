@@ -18,14 +18,14 @@ public class DefensiveDAO extends EntityDAO {
     /**
      * @return the damage
      */
-    public int getDPS() {
+    public int getDamage() {
         return damage;
     }
 
     /**
      * @param DPS the damage to set
      */
-    public void setDPS(int DPS) {
+    public void setDamage(int DPS) {
         this.damage = DPS;
     }
 

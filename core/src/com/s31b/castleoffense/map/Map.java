@@ -21,6 +21,8 @@ public class Map {
 
     private Tile selectedTile;
     private final Tile[][] tiles;
+    private final List<Tile> spawnPoints;
+    
     //A temporary map, will be dynamic later
     private static final String tempMask[] = {
         "0000000111111111000000000000000000",
@@ -38,6 +40,7 @@ public class Map {
 
     public Map() {
         tiles = new Tile[Globals.TILES_X][Globals.TILES_Y];
+        spawnPoints = new ArrayList<>();
         initMap();
     }
 
@@ -52,6 +55,9 @@ public class Map {
                     continue;
                 }
                 tiles[x][y] = new Tile(x, y, type, this);
+                 if (tiles[x][y].getType() == TileType.Castle) {
+                    spawnPoints.add(tiles[x][y]);
+                }
             }
         }
     }
@@ -187,6 +193,10 @@ public class Map {
             selectedTile = item;
             System.out.println(item.toString());
         }
+    }
+    
+    public List<Tile> getSpawnPoints() {
+        return Collections.unmodifiableList(spawnPoints);
     }
 
     @Override

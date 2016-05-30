@@ -90,7 +90,8 @@ public class Wave {
         if (!waveDone) {
             return;
         }
-
+        
+        System.out.println("displaying wave!");
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {
@@ -145,7 +146,6 @@ public class Wave {
         int hash = 5;
         hash = 41 * hash + this.number;
         hash = 41 * hash + (this.waveDone ? 1 : 0);
-        hash = 41 * hash + Objects.hashCode(this.game);
         hash = 41 * hash + Float.floatToIntBits(this.timeSinceLastSpawn);
         hash = 41 * hash + Float.floatToIntBits(this.spawnTime);
         return hash;
@@ -166,7 +166,7 @@ public class Wave {
         for (int i = 0; i < defensives.size(); i++) {
             Defensive tower = defensives.get(i);
 
-            if (tower.inRange(offensive)) {
+            if (tower.inRange(offensive) && tower.getOwner() != offensive.getOwner()) {
                 if (!tower.targetAquired() || !tower.inRange(tower.getTarget())) {
                     tower.setTarget(offensive);
                 }

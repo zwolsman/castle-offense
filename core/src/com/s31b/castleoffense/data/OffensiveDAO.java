@@ -20,15 +20,15 @@ public class OffensiveDAO extends EntityDAO {
     /**
      * @return the healthPoints
      */
-    public int getHP() {
+    public int getHealthPoints() {
         return healthPoints;
     }
 
     /**
-     * @param HP the healthPoints to set
+     * @param healthPoints the healthPoints to set
      */
-    public void setHP(int HP) {
-        this.healthPoints = HP;
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints;
     }
 
     /**
