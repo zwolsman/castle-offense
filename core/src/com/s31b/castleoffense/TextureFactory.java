@@ -90,7 +90,6 @@ public class TextureFactory {
                     textureName = "tile_138";
                 }
             }
-            System.out.println(textureName);
             if ("".equals(textureName)) {
                 System.out.println("No texture found for" + tile.toString());
                 return null;
