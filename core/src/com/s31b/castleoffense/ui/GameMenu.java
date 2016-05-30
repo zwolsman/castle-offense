@@ -50,7 +50,7 @@ public class GameMenu extends Listener implements Screen {
     private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
-    public Stage stage;
+    private Stage stage;
     private Skin skin;
     private Batch batch;
     private Player player;
