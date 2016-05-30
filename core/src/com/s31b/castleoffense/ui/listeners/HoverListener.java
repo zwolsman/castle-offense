@@ -1,4 +1,4 @@
-package com.s31b.castleoffense.ui;
+package com.s31b.castleoffense.ui.listeners;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Cursor;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.s31b.castleoffense.ui.imageButton;
 
 /**
  *
