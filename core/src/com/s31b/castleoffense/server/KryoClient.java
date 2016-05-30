@@ -18,6 +18,8 @@ import com.s31b.castleoffense.server.packets.NewPlayerResponsePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import com.s31b.castleoffense.server.packets.StartGamePacket;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -40,7 +42,11 @@ public class KryoClient extends Listener {
             @Override
             public void run() {
                 client.start();
-                innerConnect();
+                try {
+                    innerConnect();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }).start();
     }
@@ -49,18 +55,13 @@ public class KryoClient extends Listener {
         return this.client;
     }
 
-    private Boolean innerConnect() {
+    private Boolean innerConnect() throws InterruptedException {
         try {
             client.connect(5000, serverIp, tcpPort);
             System.out.println("Connected!");
             return true;
-        } catch (IOException ex) {
-            try {
-                //Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
-                Thread.sleep(5000);
-            } catch (InterruptedException ex1) {
-                // Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+        } catch (Exception ex) {
+            Thread.sleep(5000);
             return innerConnect();
         }
     }
@@ -98,13 +99,5 @@ public class KryoClient extends Listener {
     @Override
     public void disconnected(Connection connection) {
         System.out.println("Lost connection with server: " + connection.getRemoteAddressTCP().getHostString());
-    }
-
-    @Override
-    public void received(Connection connection, Object obj) {
-        /*if (obj instanceof TestPacket) {
-            TestPacket t = (TestPacket) obj;
-            System.out.println(t.msg);
-        }*/
     }
 }
