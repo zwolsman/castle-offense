@@ -1,14 +1,14 @@
-/*
- */
 package com.s31b.castleoffense.server.packets;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class BoughtTowerPacket implements IPacket {
 
-    public int x, y, pid;
+    public int x;
+    public int y;
+    public int pid;
     public String name;
 
     public BoughtTowerPacket() {

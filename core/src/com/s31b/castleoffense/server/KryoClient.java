@@ -17,9 +17,6 @@ import com.s31b.castleoffense.server.packets.NewPlayerPacket;
 import com.s31b.castleoffense.server.packets.NewPlayerResponsePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import com.s31b.castleoffense.server.packets.StartGamePacket;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,40 +28,36 @@ public class KryoClient extends Listener {
 
     static Client client;
     static int tcpPort = 9999;
-    static String serverIp = "localhost";
+    static String serverIp = "145.93.136.32";//145.93.132.125
 
     public KryoClient() {
         client = new Client();
         registerPackets();
-
+        client.addListener(this);
     }
 
     public void connect() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                client.start();
+        new Thread(() -> {
+            client.start();
+            try {
                 innerConnect();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
             }
         }).start();
     }
 
     public Client getClient() {
-        return this.client;
+        return KryoClient.client;
     }
 
-    private Boolean innerConnect() {
+    private Boolean innerConnect() throws InterruptedException {
         try {
             client.connect(5000, serverIp, tcpPort);
             System.out.println("Connected!");
             return true;
-        } catch (IOException ex) {
-            try {
-                //Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex);
-                Thread.sleep(5000);
-            } catch (InterruptedException ex1) {
-                // Logger.getLogger(KryoClient.class.getName()).log(Level.SEVERE, null, ex1);
-            }
+        } catch (Exception ex) {
+            Thread.sleep(5000);
             return innerConnect();
         }
     }
@@ -102,13 +95,5 @@ public class KryoClient extends Listener {
     @Override
     public void disconnected(Connection connection) {
         System.out.println("Lost connection with server: " + connection.getRemoteAddressTCP().getHostString());
-    }
-
-    @Override
-    public void received(Connection connection, Object obj) {
-        /*if (obj instanceof TestPacket) {
-            TestPacket t = (TestPacket) obj;
-            System.out.println(t.msg);
-        }*/
     }
 }

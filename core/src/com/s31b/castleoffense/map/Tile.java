@@ -2,6 +2,7 @@ package com.s31b.castleoffense.map;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.s31b.castleoffense.Globals;
+import java.util.Objects;
 
 /**
  * A tile for the map
@@ -14,11 +15,6 @@ public class Tile {
     private Texture texture;
     private Map map;
 
-    //private BufferedImage sprite;
-//    public Tile(int ownerId, boolean buildable, BufferedImage sprite) {
-//        this.ownerId = ownerId;
-//        this.sprite = sprite;
-//    }
     /**
      * Create a grass tile at a specific position
      *
@@ -47,7 +43,8 @@ public class Tile {
         this.map = m;
     }
 
-    private int x, y;
+    private int x;
+    private int y;
     private TileType type;
 
     public int getX() {
@@ -77,7 +74,7 @@ public class Tile {
     }
 
     public boolean isWalkable() {
-        return type == TileType.Path;
+        return type == TileType.Path || type == TileType.Castle;
     }
 
     public boolean isBuildable() {
@@ -132,22 +129,29 @@ public class Tile {
     public String toString() {
         return String.format("X: %d, Y: %d, type: %s", getX(), getY(), getType());
     }
-    
+
     @Override
-    public boolean equals(Object other){
-        if (other == null){
-                        return false;
+    public boolean equals(Object other) {
+        if (other == null) {
+            return false;
         }
-        if (other == this){
-                        return true;
+        if (other == this) {
+            return true;
         }
-        if (!(other instanceof Tile)){
-                        return false;
+        if (!(other instanceof Tile)) {
+            return false;
         }
-        Tile t = (Tile)other;
-        return this.buildable == t.buildable &
-                this.x == t.x &&
-                this.y == t.y &&
-                this.type == t.type;
+        Tile t = (Tile) other;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 67 * hash + (this.buildable ? 1 : 0);
+        hash = 67 * hash + this.x;
+        hash = 67 * hash + this.y;
+        hash = 67 * hash + Objects.hashCode(this.type);
+        return hash;
     }
 }

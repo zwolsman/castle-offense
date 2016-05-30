@@ -5,10 +5,9 @@ import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Timer;
+import java.util.Objects;
 
 /**
  *
@@ -27,7 +26,7 @@ public class CoGame {
     private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players = new ArrayList<>();
 
     public CoGame(int id) {
         this.id = id;
@@ -86,9 +85,9 @@ public class CoGame {
     }
 
     /**
-     * Get the current wave that is being made by the player
+     * Get the current wave that is being created by the player
      *
-     * @return The wave
+     * @return The current wave
      */
     public Wave getCurrentWave() {
         for (Wave wave : waves) {
@@ -133,10 +132,6 @@ public class CoGame {
         System.out.println("Game ended!");
         //System.exit(0);
     }
-//TODO: implent multiple maps.
-//    public void addMap(Map map) {
-//        maps.add(map);
-//    }
 
     /**
      * Gets the next wave and updates the id of the wave
@@ -178,8 +173,8 @@ public class CoGame {
                 }
             }
         } else {
-            for (Player player : players) {
-                this.getCurrentWave().endWave(player.getId());
+            for (int i = 0; i < players.size(); i++) {
+                this.getCurrentWave().endWave();
             }
         }
     }
@@ -220,14 +215,19 @@ public class CoGame {
         if (!(other instanceof CoGame)) {
             return false;
         }
-        CoGame w = (CoGame) other;
-        return this.currentWaveId == w.currentWaveId
-                && this.id == w.id
-                && this.map == w.map
-                && this.players == w.players
-                && this.state == w.state
-                && this.towers == w.towers
-                && this.waves == w.waves;
+        return this.hashCode() == other.hashCode();
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 79 * hash + this.id;
+        hash = 79 * hash + this.currentWaveId;
+        hash = 79 * hash + Objects.hashCode(this.state);
+        hash = 79 * hash + Objects.hashCode(this.map);
+        hash = 79 * hash + Objects.hashCode(this.waves);
+        hash = 79 * hash + Objects.hashCode(this.towers);
+        hash = 79 * hash + Objects.hashCode(this.players);
+        return hash;
     }
 }

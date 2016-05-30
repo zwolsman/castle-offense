@@ -3,12 +3,12 @@ package com.s31b.castleoffense.map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +20,9 @@ import java.util.List;
 public class Map {
 
     private Tile selectedTile;
-    private Tile[][] tiles;
+    private final Tile[][] tiles;
+    private final List<Tile> spawnPoints;
+    
     //A temporary map, will be dynamic later
     private static final String tempMask[] = {
         "0000000111111111000000000000000000",
@@ -38,6 +40,7 @@ public class Map {
 
     public Map() {
         tiles = new Tile[Globals.TILES_X][Globals.TILES_Y];
+        spawnPoints = new ArrayList<>();
         initMap();
     }
 
@@ -52,7 +55,9 @@ public class Map {
                     continue;
                 }
                 tiles[x][y] = new Tile(x, y, type, this);
-                //System.out.println(tiles[x][y]);
+                 if (tiles[x][y].getType() == TileType.Castle) {
+                    spawnPoints.add(tiles[x][y]);
+                }
             }
         }
     }
@@ -70,7 +75,7 @@ public class Map {
      */
     public List<Tile> getAllTiles() {
 
-        List<Tile> tempTiles = new ArrayList<Tile>();
+        List<Tile> tempTiles = new ArrayList<>();
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
                 tempTiles.add(tiles[x][y]);
@@ -86,7 +91,7 @@ public class Map {
      */
     public List<Tile> getAllWalkableTiles() {
 
-        List<Tile> tempTiles = new ArrayList<Tile>();
+        List<Tile> tempTiles = new ArrayList<>();
         for (int x = 0; x < Globals.TILES_X; x++) {
             for (int y = 0; y < Globals.TILES_Y; y++) {
                 System.out.println(x + ", " + y);
@@ -169,7 +174,7 @@ public class Map {
                 TextureGlobals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
 
                 if (Globals.DEBUG) {
-                    font.draw(TextureGlobals.SPRITE_BATCH, String.format("X: %s,\r\nY: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
+                    font.draw(TextureGlobals.SPRITE_BATCH, String.format("X: %s,%nY: %s", x, y), ingameX, ingameY + 40, 40, 40, false);
                     TextureGlobals.SHAPE_RENDERER.rect(ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
                 }
 
@@ -189,6 +194,10 @@ public class Map {
             System.out.println(item.toString());
         }
     }
+    
+    public List<Tile> getSpawnPoints() {
+        return Collections.unmodifiableList(spawnPoints);
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -201,7 +210,13 @@ public class Map {
         if (!(other instanceof Map)) {
             return false;
         }
-        Map m = (Map) other;
-        return this.tiles == m.tiles;
+        return this.hashCode() == other.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 71 * hash + Arrays.deepHashCode(this.tiles);
+        return hash;
     }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.s31b.castleoffense.data;
 
 /**
@@ -11,40 +6,40 @@ package com.s31b.castleoffense.data;
  */
 public class DefensiveDAO extends EntityDAO {
 
-    private int DPS;
-    private int Range;
+    private int damage;
+    private int range;
 
     public DefensiveDAO(String type, String name, String descr, String sprite, int price, int dps, int range) {
         super(type, name, descr, sprite, price);
-        this.DPS = dps;
-        this.Range = range;
+        this.damage = dps;
+        this.range = range;
     }
 
     /**
-     * @return the DPS
+     * @return the damage
      */
-    public int getDPS() {
-        return DPS;
+    public int getDamage() {
+        return damage;
     }
 
     /**
-     * @param DPS the DPS to set
+     * @param DPS the damage to set
      */
-    public void setDPS(int DPS) {
-        this.DPS = DPS;
+    public void setDamage(int DPS) {
+        this.damage = DPS;
     }
 
     /**
-     * @return the Range
+     * @return the range
      */
     public int getRange() {
-        return Range;
+        return range;
     }
 
     /**
-     * @param Range the Range to set
+     * @param Range the range to set
      */
     public void setRange(int Range) {
-        this.Range = Range;
+        this.range = Range;
     }
 }

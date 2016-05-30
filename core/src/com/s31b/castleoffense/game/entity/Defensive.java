@@ -16,7 +16,7 @@ import com.s31b.castleoffense.player.Player;
  */
 public class Defensive extends Entity {
 
-    private double damagePerSecond;
+    private int damagePerSecond;
     private int range;
     private Offensive target;
 
@@ -32,7 +32,7 @@ public class Defensive extends Entity {
 
     public Defensive(DefensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
-        damagePerSecond = data.getDPS();
+        damagePerSecond = data.getDamage();
         this.range = data.getRange();
         position = new Tile(0, 0);
         target = null;
@@ -104,7 +104,9 @@ public class Defensive extends Entity {
     }
 
     public void setTarget(Offensive o) {
-        target = o;
+        if (o.getOwner() != getOwner()) {
+            target = o;
+        }
     }
 
     public boolean targetAquired() {
@@ -138,8 +140,7 @@ public class Defensive extends Entity {
         return target;
     }
 
-    public Offensive dealDamage() {
+    public void dealDamage() {
         target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
-        return target;
     }
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -26,13 +25,13 @@ import java.util.List;
  */
 public class Offensive extends Entity {
 
-    private int hitpoints;
-    private int totalHitpoints;
+    private float hitpoints;
+    private float totalHitpoints;
     private final int movementSpeed;
     private final int killReward;
     private final Castle destinationCastle;
     private final int[][] corners = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    private List<Tile> usedTiles = new ArrayList<Tile>();
+    private List<Tile> usedTiles = new ArrayList<>();
     private int ingameX, ingameY;
     private Direction direction = Direction.Right;
 
@@ -52,7 +51,7 @@ public class Offensive extends Entity {
      * @param speed The speed of the unit. Must be positive
      * @param reward The reward the player gets in gold
      */
-    public Offensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int hp, int speed, int reward) {
+    public Offensive(EntityType type, String name, String descr, String sprite, Player owner, int price, float hp, int speed, int reward) {
         super(type, name, descr, sprite, price, owner);
         hitpoints = hp;
         totalHitpoints = hp;
@@ -63,14 +62,24 @@ public class Offensive extends Entity {
 
     public Offensive(OffensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
-        hitpoints = data.getHP();
-        totalHitpoints = data.getHP();
+        hitpoints = data.getHealthPoints();
+        totalHitpoints = data.getHealthPoints();
         movementSpeed = data.getSpeed();
         killReward = data.getReward();
         destinationCastle = getEnemyCastle(owner);
     }
 
+    /**
+     * Returns the castle of the enemy if there is one, otherwise null.
+     *
+     * @param owner The owner of the offensive object
+     * @return
+     */
     private Castle getEnemyCastle(Player owner) {
+
+        if (owner.getGame().getPlayers().size() <= 1) {
+            return null;
+        }
         return owner.getGame().getPlayerById((owner.getId() + 1) % owner.getGame().getPlayers().size()).getCastle();
     }
 
@@ -78,7 +87,7 @@ public class Offensive extends Entity {
         return hitpoints;
     }
 
-    public int getTotalHitpoints() {
+    public float getTotalHitpoints() {
         return totalHitpoints;
     }
 
@@ -106,7 +115,7 @@ public class Offensive extends Entity {
             int curX = currentTile.getX() + corner[0];
             int curY = currentTile.getY() + corner[1];
 
-            if (curX < 0 || curY < 0) {
+            if (curX < 0 || curY < 0 || curX >= Globals.TILES_X || curY >= Globals.TILES_Y) {
                 continue;
             }
             if (walkableTiles[curX][curY] == null) {
@@ -264,8 +273,6 @@ public class Offensive extends Entity {
      */
     public void spawn() {
         this.currentTile = owner.getOffensiveSpawnPosition();
-
-        //System.out.println("Spawned!");
         ingameX = currentTile.getX() * Globals.TILE_WIDTH;
         ingameY = currentTile.getY() * Globals.TILE_HEIGHT;
     }

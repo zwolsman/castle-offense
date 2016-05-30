@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -51,7 +50,7 @@ public class GameMenu extends Listener implements Screen {
     private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
-    public Stage stage;
+    private Stage stage;
     private Skin skin;
     private Batch batch;
     private Player player;
@@ -105,7 +104,7 @@ public class GameMenu extends Listener implements Screen {
         this.player = player;
         this.defList = EntityFactory.getAllDefensives();
         this.offList = EntityFactory.getAllOffensives();
-        this.offPerWaveList = new ArrayList<OffensiveDAO>();
+        this.offPerWaveList = new ArrayList<>();
         for (Player p : game.getPlayers()) {
             if (p != player) {
                 this.opponent = p;
@@ -180,12 +179,13 @@ public class GameMenu extends Listener implements Screen {
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+               
+                if (player != null && game != null) {
+                    endWave();
+                } 
                 countOff = 0;
                 offPerWaveList.clear();
                 offNumber.setText(Integer.toString(countOff));
-                if (player != null && game != null) {
-                    endWave();
-                }
             }
         ;
         });
@@ -294,7 +294,7 @@ public class GameMenu extends Listener implements Screen {
         Label defDpsDesc = new Label("Schade: ", skin);
         defDpsDesc.setPosition(60, 50);
         defDpsDesc.setColor(Color.BLACK);
-        defDps = new Label(Integer.toString(d.getDPS()), skin);
+        defDps = new Label(Integer.toString(d.getDamage()), skin);
         defDps.setPosition(170, 50);
         defDps.setColor(Color.BLACK);
 
@@ -341,7 +341,7 @@ public class GameMenu extends Listener implements Screen {
                 defLabel.setText(defList.get(countDefList).getName());
                 defPrice.setText(Integer.toString(defList.get(countDefList).getPrice()));
                 defDescription.setText(defList.get(countDefList).getDescr());
-                defDps.setText(Integer.toString(defList.get(countDefList).getDPS()));
+                defDps.setText(Integer.toString(defList.get(countDefList).getDamage()));
                 defRange.setText(Integer.toString(defList.get(countDefList).getRange()));
             }
         ;
@@ -397,7 +397,7 @@ public class GameMenu extends Listener implements Screen {
         Label offHpDesc = new Label("Levenspunten: ", skin);
         offHpDesc.setPosition(60, 30);
         offHpDesc.setColor(Color.BLACK);
-        offHp = new Label(Integer.toString(o.getHP()), skin);
+        offHp = new Label(Integer.toString(o.getHealthPoints()), skin);
         offHp.setPosition(170, 30);
         offHp.setColor(Color.BLACK);
 
@@ -443,7 +443,7 @@ public class GameMenu extends Listener implements Screen {
                 offPrice.setText(Integer.toString(offList.get(countOffList).getPrice()));
                 offDescription.setText(offList.get(countOffList).getDescr());
                 offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
-                offHp.setText(Integer.toString(offList.get(countOffList).getHP()));
+                offHp.setText(Integer.toString(offList.get(countOffList).getHealthPoints()));
             }
         ;
         });
@@ -508,9 +508,11 @@ public class GameMenu extends Listener implements Screen {
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
 
-        game.update();
-        game.draw();
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null) {
+        if (game != null) {
+            game.update();
+            game.draw();
+        }
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && towerToPlace != null && game.getMap().getSelectedTile() != null) {
             placeTower();
         } else if (towerToPlace != null) {
             drawGhostTower();
@@ -572,7 +574,7 @@ public class GameMenu extends Listener implements Screen {
                 EntityType type = EntityType.values()[i];
                 game.getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(type, p));
             }
-            game.getCurrentWave().endWave(p.getId());
+            game.getCurrentWave().endWave();
         }
 
     }
