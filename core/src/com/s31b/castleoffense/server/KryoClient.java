@@ -27,7 +27,7 @@ public class KryoClient extends Listener {
 
     static Client client;
     static int tcpPort = 9999;
-    static String serverIp = "localhost";
+    static String serverIp = "localhost";//145.93.132.125
 
     public KryoClient() {
         client = new Client();

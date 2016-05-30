@@ -41,7 +41,6 @@ public class MongoDB implements IDataBase {
         MongoCursor cursor = coll.find().iterator();
         while (cursor.hasNext()) {
             Document d = (Document) cursor.next();
-            //System.out.println(d.toJson());
             list.add(gson.fromJson(d.toJson(), type));
         }
         return list;
@@ -55,16 +54,12 @@ public class MongoDB implements IDataBase {
         //if not, create the collection and use it directly to insert the document created.
         try {
             MongoCollection coll;
-            try {
-                db.getCollection(collName);
-            } catch (Exception e) {
-                db.createCollection(collName);
-            }
+            db.getCollection(collName);
             Document data = createDocument(object);
             coll = db.getCollection(collName);
             coll.insertOne(data);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -80,7 +75,7 @@ public class MongoDB implements IDataBase {
             coll = db.getCollection(collName);
             coll.updateOne(data, newData);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -107,7 +102,7 @@ public class MongoDB implements IDataBase {
                     try {
                         return method.invoke(o, null);
                     } catch (Exception e) {
-                        System.out.println(e);
+                        System.err.println(e);
                     }
                 }
             }
@@ -121,9 +116,6 @@ public class MongoDB implements IDataBase {
         for (Class<?> c = object.getClass(); c != null; c = c.getSuperclass()) {
             Field[] fields = c.getDeclaredFields();
             objectFields.addAll(Arrays.asList(fields));
-            //for (Field classField : fields) {
-            //    objectFields.add(classField);
-            //}
         }
 
         //Generating Document with the field data to insert into the database.

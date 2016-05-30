@@ -6,87 +6,87 @@ package com.s31b.castleoffense.data;
  */
 public abstract class EntityDAO {
 
-    private String Type;
-    private String Name;
-    private String Descr;
-    private String Sprite;
-    private int Price;
+    private String type;
+    private String name;
+    private String descr;
+    private String sprite;
+    private int price;
 
     public EntityDAO(String type, String name, String descr, String sprite, int price) {
-        this.Type = type;
-        this.Name = name;
-        this.Descr = descr;
-        this.Sprite = sprite;
-        this.Price = price;
+        this.type = type;
+        this.name = name;
+        this.descr = descr;
+        this.sprite = sprite;
+        this.price = price;
     }
 
     /**
-     * @return the Type
+     * @return the type
      */
     public String getType() {
-        return Type;
+        return type;
     }
 
     /**
-     * @param Type the Type to set
+     * @param Type the type to set
      */
     public void setType(String Type) {
-        this.Type = Type;
+        this.type = Type;
     }
 
     /**
-     * @return the Name
+     * @return the name
      */
     public String getName() {
-        return Name;
+        return name;
     }
 
     /**
-     * @param Name the Name to set
+     * @param Name the name to set
      */
     public void setName(String Name) {
-        this.Name = Name;
+        this.name = Name;
     }
 
     /**
-     * @return the Descr
+     * @return the descr
      */
     public String getDescr() {
-        return Descr;
+        return descr;
     }
 
     /**
-     * @param Descr the Descr to set
+     * @param Descr the descr to set
      */
     public void setDescr(String Descr) {
-        this.Descr = Descr;
+        this.descr = Descr;
     }
 
     /**
-     * @return the Sprite
+     * @return the sprite
      */
     public String getSprite() {
-        return Sprite;
+        return sprite;
     }
 
     /**
-     * @param Sprite the Sprite to set
+     * @param Sprite the sprite to set
      */
     public void setSprite(String Sprite) {
-        this.Sprite = Sprite;
+        this.sprite = Sprite;
     }
 
     /**
-     * @return the Price
+     * @return the price
      */
     public int getPrice() {
-        return Price;
+        return price;
     }
 
     /**
-     * @param Price the Price to set
+     * @param Price the price to set
      */
     public void setPrice(int Price) {
-        this.Price = Price;
+        this.price = Price;
     }
 }
