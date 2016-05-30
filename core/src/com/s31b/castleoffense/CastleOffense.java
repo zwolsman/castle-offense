@@ -30,11 +30,6 @@ public class CastleOffense extends Game {
     }
 
     @Override
-    public void render() {
-        super.render();
-        //menu.render(Gdx.graphics.getDeltaTime());
-    }
-
     public void dispose() {
         TextureGlobals.SPRITE_BATCH.dispose();
     }
