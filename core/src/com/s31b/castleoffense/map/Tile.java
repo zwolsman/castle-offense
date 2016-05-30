@@ -141,7 +141,6 @@ public class Tile {
         if (!(other instanceof Tile)) {
             return false;
         }
-        Tile t = (Tile) other;
         return this.hashCode() == other.hashCode();
     }
 
