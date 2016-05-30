@@ -69,6 +69,12 @@ public class Offensive extends Entity {
         destinationCastle = getEnemyCastle(owner);
     }
 
+    /**
+     * Returns the castle of the enemy if there is one, otherwise null.
+     *
+     * @param owner The owner of the offensive object
+     * @return
+     */
     private Castle getEnemyCastle(Player owner) {
 
         if (owner.getGame().getPlayers().size() <= 1) {
