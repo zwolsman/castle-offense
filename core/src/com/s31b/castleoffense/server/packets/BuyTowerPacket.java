@@ -14,8 +14,8 @@ public class BuyTowerPacket implements IPacket {
         this.y = y;
         this.name = name;
     }
-    int x;
-    int y;
-    String name;
+    public int x;
+    public int y;
+    public String name;
 
 }

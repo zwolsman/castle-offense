@@ -12,5 +12,5 @@ public class JoinedGamePacket implements IPacket {
     public JoinedGamePacket(String name) {
         this.name = name;
     }
-    String name;
+    public String name;
 }

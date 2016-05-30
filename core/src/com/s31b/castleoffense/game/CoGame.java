@@ -85,9 +85,9 @@ public class CoGame {
     }
 
     /**
-     * Get the current wave that is being made by the player
+     * Get the current wave that is being created by the player
      *
-     * @return The wave
+     * @return The current wave
      */
     public Wave getCurrentWave() {
         for (Wave wave : waves) {
@@ -215,7 +215,6 @@ public class CoGame {
         if (!(other instanceof CoGame)) {
             return false;
         }
-        CoGame w = (CoGame) other;
         return this.hashCode() == other.hashCode();
     }
 
