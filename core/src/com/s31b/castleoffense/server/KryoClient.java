@@ -34,7 +34,7 @@ public class KryoClient extends Listener {
     public KryoClient() {
         client = new Client();
         registerPackets();
-
+        client.addListener(this);
     }
 
     public void connect() {

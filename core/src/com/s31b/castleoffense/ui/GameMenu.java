@@ -571,7 +571,7 @@ public class GameMenu extends Listener implements Screen {
                 EntityType type = EntityType.values()[i];
                 game.getCurrentWave().addOffensive((Offensive) EntityFactory.buyEntity(type, p));
             }
-            game.getCurrentWave().endWave(p.getId());
+            game.getCurrentWave().endWave();
         }
 
     }

@@ -7,6 +7,7 @@ import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -16,10 +17,11 @@ import java.util.concurrent.Executors;
  */
 public class Wave {
 
-    private int number;
-    private ExecutorService pool = Executors.newSingleThreadExecutor();
+    private final int number;
     private Object obj = new Object();
-    private boolean player1done, player2done, waveDone;
+    private boolean waveDone;
+    
+    private int playersDone;
 
     private List<Offensive> offEntities;
     private List<Offensive> killedEntities;
@@ -35,12 +37,11 @@ public class Wave {
     }
 
     private void initWave() {
-        offEntities = new ArrayList<Offensive>();
-        killedEntities = new ArrayList<Offensive>();
-        player1done = false;
-        player2done = false;
+        offEntities = new ArrayList();
+        killedEntities = new ArrayList();
         waveDone = false;
         spawnTime = 5;
+        playersDone = 0;
     }
 
     public int getNumber() {
@@ -56,27 +57,16 @@ public class Wave {
     public void addOffensive(Offensive entity) {
         offEntities.add(entity);
     }
-
+    
     /**
-     * Ends the wave. If both players ended the wave the wave will be played.
+     * Ends the wave. If all players ended the wave the wave will be played.
      * End wave means end of turn
      *
-     * @param playerId
      */
-    public void endWave(int playerId) {
-        //TODO fix deze hardcoded troep
-        switch (playerId) {
-            case 0:
-                player1done = true;
-                break;
-            case 1:
-                player2done = true;
-                break;
-            default:
-                break;
-        }
+    public void endWave() {
+        playersDone++;
 
-        if (player1done && player2done) {
+        if (playersDone >= game.getPlayers().size()) {
             waveDone = true;
             for (Player player : game.getPlayers()) {
                 player.addGold(Globals.GOLD_INCR_PER_WAVE);
@@ -155,13 +145,23 @@ public class Wave {
             return false;
         }
         Wave w = (Wave) other;
-        return this.player1done == w.player1done
-                && this.player2done == w.player2done
+        return this.playersDone == w.playersDone
                 && this.waveDone == w.waveDone
                 && this.game.equals(w.game)
                 && this.number == w.number
                 && this.spawnTime == w.spawnTime
                 && this.timeSinceLastSpawn == w.timeSinceLastSpawn;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + this.number;
+        hash = 41 * hash + (this.waveDone ? 1 : 0);
+        hash = 41 * hash + Objects.hashCode(this.game);
+        hash = 41 * hash + Float.floatToIntBits(this.timeSinceLastSpawn);
+        hash = 41 * hash + Float.floatToIntBits(this.spawnTime);
+        return hash;
     }
 
     private void clearTarget(Offensive o) {
