@@ -115,7 +115,7 @@ public class Offensive extends Entity {
             int curX = currentTile.getX() + corner[0];
             int curY = currentTile.getY() + corner[1];
 
-            if (curX < 0 || curY < 0) {
+            if (curX < 0 || curY < 0 || curX >= Globals.TILES_X || curY >= Globals.TILES_Y) {
                 continue;
             }
             if (walkableTiles[curX][curY] == null) {
