@@ -21,6 +21,7 @@ public class imageButton extends ImageButton
         super(new SpriteDrawable(new Sprite(texture_up)),
               new SpriteDrawable(new Sprite(texture_down)));
         
+        //Add the hovers to the button
         this.addListener(new HoverListener(this));
         
         draw_down = new Image(texture_down).getDrawable();

@@ -40,7 +40,7 @@ public class BuyOffListener extends ClickListener {
                 if (offensiveType.equals(o.getName())) {    
                     Offensive off = (Offensive)EntityFactory.buyEntity(EntityType.valueOf(o.getType()), player);    
                     game.getCurrentWave().addOffensive(off);
-                    
+                    //TODO: add to listview
                     System.out.println("Added to que: " + o.getName());
                     break;
                 }
