@@ -21,7 +21,6 @@ public class Wave {
     private int playersDone;
 
     private List<Offensive> offEntities;
-    private List<Offensive> killedEntities;
 
     private final CoGame game;
 
@@ -36,7 +35,6 @@ public class Wave {
 
     private void initWave() {
         offEntities = new ArrayList();
-        killedEntities = new ArrayList();
         waveDone = false;
         spawnTime = 5;
         playersDone = 0;
@@ -55,10 +53,10 @@ public class Wave {
     public void addOffensive(Offensive entity) {
         offEntities.add(entity);
     }
-    
+
     /**
-     * Gets the list of offensive entity's to the wave that will be attacking the other
-     * players castle
+     * Gets the list of offensive entity's to the wave that will be attacking
+     * the other players castle
      */
     public List<Offensive> getOffensives() {
         return this.offEntities;
@@ -98,7 +96,7 @@ public class Wave {
         if (!waveDone) {
             return;
         }
-        
+
         System.out.println("displaying wave!");
         spawnWave();
 
@@ -107,17 +105,17 @@ public class Wave {
             if (x.isSpawned()) {
                 game.getPlayers().stream().filter(player -> x.getOwner() != player).forEach(player -> {
                     checkInRange(x);
-                    if (x.isDead()) {
-                        killedEntities.add(x);
-                        reward(x);
-                        clearTarget(x);
-                        offEntities.remove(x);
-                    } else if (!x.update()) {
-
-                        player.hitCastle();
-                        System.out.println("Hit:" + player.getCastle().getHitpoints());
-                        clearTarget(x);
-                        offEntities.remove(x);
+                    switch (x.update()) {
+                        case "Update":
+                            break;
+                        case "Null":
+                            player.hitCastle();
+                            clearTarget(x);
+                            break;
+                        case "Dead":
+                            reward(x);
+                            clearTarget(x);
+                            break;
                     }
                 });
             }
