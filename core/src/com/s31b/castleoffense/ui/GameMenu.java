@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.AudioPlayer;
-import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -32,7 +31,6 @@ import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.DefensiveDAO;
 import com.s31b.castleoffense.data.OffensiveDAO;
 import com.s31b.castleoffense.game.CoGame;
-import com.s31b.castleoffense.game.GameState;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
@@ -139,13 +137,9 @@ public class GameMenu extends Listener implements Screen {
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 if (player != null && game != null) {
                     endWave();
                 }
-                countOff = 0;
-                offPerWaveList.clear();
-                offNumber.setText(Integer.toString(countOff));
             }
         ;
         });
@@ -171,8 +165,27 @@ public class GameMenu extends Listener implements Screen {
 
         setMenuBar(); // creates the menu bar for the player
         createEntityMenu(); // creates the menu for offensive and defensive entities.
+        addActors(); // adds all the actors to the stage
 
         Gdx.input.setInputProcessor(stage);
+    }
+    
+    private void addActors(){
+        stage.addActor(background);
+        stage.addActor(menuBar);
+        stage.addActor(main);
+        stage.addActor(endWave);
+        stage.addActor(surrender);
+        stage.addActor(playerHpDesc);
+        stage.addActor(playerNameDesc);
+        stage.addActor(playerGoldDesc);
+        stage.addActor(playerName);
+        stage.addActor(playerHp);
+        stage.addActor(playerGold);
+        stage.addActor(castleHpDesc);
+        stage.addActor(castleHp);
+        stage.addActor(feedback);
+        offBought.render(stage);
     }
 
     private void setPlayerFeedback(String feedback) {
@@ -424,16 +437,10 @@ public class GameMenu extends Listener implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOffList++;
-
                 if (countOffList >= offList.size()) {
                     countOffList = 0;
                 }
-
-                offLabel.setText(offList.get(countOffList).getName());
-                offPrice.setText(Integer.toString(offList.get(countOffList).getPrice()));
-                offDescription.setText(offList.get(countOffList).getDescr());
-                offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
-                offHp.setText(Integer.toString(offList.get(countOffList).getHealthPoints()));
+                setOffInfo(offList.get(countOffList));
             }
         ;
         });
@@ -461,21 +468,6 @@ public class GameMenu extends Listener implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.addActor(background);
-        stage.addActor(menuBar);
-        stage.addActor(main);
-        stage.addActor(endWave);
-        stage.addActor(surrender);
-        stage.addActor(playerHpDesc);
-        stage.addActor(playerNameDesc);
-        stage.addActor(playerGoldDesc);
-        stage.addActor(playerName);
-        stage.addActor(playerHp);
-        stage.addActor(playerGold);
-        stage.addActor(castleHpDesc);
-        stage.addActor(castleHp);
-        stage.addActor(feedback);
-        offBought.render(stage);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
@@ -503,12 +495,29 @@ public class GameMenu extends Listener implements Screen {
         }
         batch.end();
     }
-
+    
+    private void setOffInfo(OffensiveDAO offDAO){
+        offLabel.setText(offDAO.getName());
+        offPrice.setText(Integer.toString(offDAO.getPrice()));
+        offDescription.setText(offDAO.getDescr());
+        offSpeed.setText(Integer.toString(offDAO.getSpeed()));
+        offHp.setText(Integer.toString(offDAO.getHealthPoints()));
+        int countOffBought = 0;
+        
+        for(OffensiveDAO tempDAO : offPerWaveList){
+            if(tempDAO.getName().equals(offDAO.getName())){
+                countOffBought++;
+            }
+        }
+        offNumber.setText(Integer.toString(countOffBought));
+    }
+    
     private void buyOffensive() {
         for (OffensiveDAO o : offList) {
             if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                 offPerWaveList.add(o);
                 offBought.addString(o.getName());
+                setOffInfo(o);
                 System.out.println("Added to que: " + o.getName());
                 break;
             }
@@ -548,6 +557,8 @@ public class GameMenu extends Listener implements Screen {
         p.entities = ids;
 
         Globals.client.send(p);
+        offPerWaveList.clear();
+        offNumber.setText("0");
         offBought.clearChildren();
     }
 

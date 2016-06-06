@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.game.CoGame;
@@ -62,10 +61,10 @@ public class MainMenu extends Listener implements Screen {
         buttonPlay.addListener(new StartGameListener());
 
         buttonJoin = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainJoin.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinHover.png")));
-        buttonJoin.addListener(new JoinGameListener(game));
+        buttonJoin.addListener(new JoinGameListener(game, this));
 
         buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoHover.png")));
-        buttonInfo.addListener(new InfoListener(game)); 
+        buttonInfo.addListener(new InfoListener(this)); 
         
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitHover.png")));
         buttonQuit.addListener(new ClickListener() {
@@ -82,6 +81,15 @@ public class MainMenu extends Listener implements Screen {
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
+        addActors();
+    }
+    
+    public void addActors(){
+        stage.addActor(background);
+        stage.addActor(buttonPlay);
+        stage.addActor(buttonJoin);
+        stage.addActor(buttonInfo);
+        stage.addActor(buttonQuit);
     }
     
     /**
@@ -119,18 +127,14 @@ public class MainMenu extends Listener implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.addActor(background);
-        stage.addActor(buttonPlay);
-        stage.addActor(buttonJoin);
-        stage.addActor(buttonInfo);
-        stage.addActor(buttonQuit);
+        
         stage.act();
         stage.draw();
     }
 
     @Override
     public void show() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

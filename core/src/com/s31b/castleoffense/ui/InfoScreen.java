@@ -21,10 +21,10 @@ public class InfoScreen implements Screen{
     private Image background;
     private Image infoBody;
     private imageButton buttonBack;
-    private CoGame game;
+    private MainMenu mainMenu;
     
-    public InfoScreen(CoGame game){
-        this.game = game;
+    public InfoScreen(MainMenu mainMenu){
+        this.mainMenu = mainMenu;
         this.create();
     }
      
@@ -41,21 +41,25 @@ public class InfoScreen implements Screen{
         infoBody.setPosition((Gdx.graphics.getWidth() / 2) - (infoBody.getWidth() / 2), (Gdx.graphics.getHeight()/ 2) - (infoBody.getHeight()/ 2));   
 
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
-        buttonBack.addListener(new BackListener(game)); 
+        buttonBack.addListener(new BackListener(this.mainMenu)); 
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
         
         Gdx.input.setInputProcessor(stage);
+        addActors();
+    }
+    
+    private void addActors(){
+        stage.addActor(background);
+        stage.addActor(infoBody);
+        stage.addActor(buttonBack);
     }
      
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.addActor(background);
-        stage.addActor(infoBody);
-        stage.addActor(buttonBack);
-
+        
         stage.act();
         stage.draw();
     }
