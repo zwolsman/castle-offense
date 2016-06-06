@@ -3,7 +3,6 @@ package com.s31b.castleoffense.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -18,15 +17,12 @@ import com.s31b.castleoffense.ui.listeners.BackListener;
  * @author Nick
  */
 public class LobbyScreen implements Screen{
-    private OrthographicCamera camera;
     private Stage stage;
     private Image background;
-    private Image infoBody;
     private imageButton buttonBack;
     private CastleOffense co;
     private CoGame game;
-    private Listview listView;
-    private TextDialog td;
+    private Lobbyview lobbyview;
     
     public LobbyScreen(CastleOffense castleoffense, CoGame game){
         this.co = castleoffense;
@@ -36,20 +32,19 @@ public class LobbyScreen implements Screen{
      
     public void create(){
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-       
+        
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));  
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
-        
-        listView = new Listview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
-        listView.setPaddingPercentage(22, 16, 10, 10);
-        listView.addString("lakjsdfklaf");
-        listView.addString("TESTING");
-        listView.addString("TESTING THE ");
-        listView.addString("asdfkjljadsklfja;dsf");
-        listView.addString("adfadslkf");
-        
 
+        lobbyview = new Lobbyview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
+        lobbyview.setPaddingPercentage(22, 16, 10, 10);
+        lobbyview.addString("lakjsdfklaf");
+        lobbyview.addString("TESTING");
+        lobbyview.addString("TESTING THE ");
+        lobbyview.addString("asdfkjljadsklfja;dsf");
+        lobbyview.addString("adfadslkf");
+        
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
         buttonBack.addListener(new BackListener(co, game)); 
         buttonBack.setSize(150, 60);
@@ -64,7 +59,8 @@ public class LobbyScreen implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.addActor(background);
         stage.addActor(buttonBack);
-        listView.render(stage);
+        //stage.addActor(t);
+        lobbyview.render(stage);
 
         stage.act();
         stage.draw();

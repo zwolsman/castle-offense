@@ -26,9 +26,7 @@ public class InfoScreen implements Screen{
     private imageButton buttonBack;
     private CastleOffense co;
     private CoGame game;
-    private Listview listView;
-    private TextDialog td;
-    
+
     public InfoScreen(CastleOffense castleoffense, CoGame game){
         this.co = castleoffense;
         this.game = game;
@@ -45,15 +43,12 @@ public class InfoScreen implements Screen{
         
         infoBody = new Image(new Texture(Gdx.files.internal("GUIMenu/InfoBackgroundText.png")));  
         infoBody.setSize(500, 550);
-        infoBody.setPosition((Gdx.graphics.getWidth() / 2) - (infoBody.getWidth() / 2), (Gdx.graphics.getHeight()/ 2) - (infoBody.getHeight()/ 2));
-        
-        //td = new TextDialog("TestDialog", "aaaaaaaaa", skin);   
+        infoBody.setPosition((Gdx.graphics.getWidth() / 2) - (infoBody.getWidth() / 2), (Gdx.graphics.getHeight()/ 2) - (infoBody.getHeight()/ 2));   
 
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
         buttonBack.addListener(new BackListener(co, game)); 
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
-        
         
         Gdx.input.setInputProcessor(stage);
     }
@@ -65,8 +60,6 @@ public class InfoScreen implements Screen{
         stage.addActor(background);
         stage.addActor(infoBody);
         stage.addActor(buttonBack);
-        //tage.addActor(td);
-
 
         stage.act();
         stage.draw();

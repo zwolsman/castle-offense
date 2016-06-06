@@ -133,7 +133,7 @@ public class GameMenu extends Listener implements Screen {
         feedback.setColor(Color.BLACK);
         feedback.setPosition(90, 600);
 
-        offBought = new Listview(200, 120, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 150);
+        offBought = new Listview(200, 170, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 180);
 
         endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveHover.png")));
         endWave.addListener(new ClickListener() {
@@ -513,7 +513,6 @@ public class GameMenu extends Listener implements Screen {
     }
 
     private void buyOffensive() {
-        //countOff++;
         for (OffensiveDAO o : offList) {
             if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                 offPerWaveList.add(o);
@@ -522,9 +521,6 @@ public class GameMenu extends Listener implements Screen {
                 break;
             }
         }
-//
-//        offBought.addString(offLabel.getText());
-//        offNumber.setText(Integer.toString(countOff));
     }
 
     private void buyDefensive() {
@@ -560,7 +556,7 @@ public class GameMenu extends Listener implements Screen {
         p.entities = ids;
 
         Globals.client.send(p);
-        //game.getCurrentWave().endWave(player.getId());
+        offBought.clearChildren();
     }
 
     @Override

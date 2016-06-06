@@ -2,7 +2,6 @@ package com.s31b.castleoffense.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,10 +16,7 @@ import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.player.Player;
 import com.s31b.castleoffense.server.KryoClient;
-import com.s31b.castleoffense.server.packets.CreateGamePacket;
-import com.s31b.castleoffense.server.packets.JoinGamePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
-import java.util.Scanner;
 import com.s31b.castleoffense.Globals;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -39,7 +35,6 @@ public class MainMenu extends Listener implements Screen {
     private imageButton buttonQuit;
     private imageButton buttonJoin;
     private Image background;
-    private Skin skin;
     private Stage stage;
     private CastleOffense co;
     private CoGame game;
@@ -60,7 +55,6 @@ public class MainMenu extends Listener implements Screen {
         AudioPlayer.loop("start.mp3", 0.2f);
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
         background.setHeight(Gdx.graphics.getHeight());
