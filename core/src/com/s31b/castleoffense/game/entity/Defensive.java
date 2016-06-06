@@ -136,7 +136,6 @@ public class Defensive extends Entity {
     }
 
     public void deleteTarget() {
-        System.out.println("target of tower deleted.");
         target = null;
     }
 
