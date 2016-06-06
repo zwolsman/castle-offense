@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.s31b.castleoffense.AudioPlayer;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.Globals;
@@ -31,6 +32,7 @@ import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.DefensiveDAO;
 import com.s31b.castleoffense.data.OffensiveDAO;
 import com.s31b.castleoffense.game.CoGame;
+import com.s31b.castleoffense.game.GameState;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
@@ -38,6 +40,7 @@ import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
+import com.s31b.castleoffense.server.packets.WinGamePacket;
 import com.s31b.castleoffense.ui.listeners.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +51,6 @@ import java.util.List;
  */
 public class GameMenu extends Listener implements Screen {
 
-    private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
     private Stage stage;
@@ -97,12 +99,11 @@ public class GameMenu extends Listener implements Screen {
 
     private Defensive towerToPlace = null;
 
-    public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
+    public GameMenu(CoGame game, Player player) {
         if (player.getId() > 0) {
             opponent = game.getPlayerById((player.getId() + 1) % game.getPlayers().size());
             System.out.println("Opponent: " + opponent.getName());
         }
-        this.co = castleoffense;
         this.game = game;
         this.player = player;
         this.defList = EntityFactory.getAllDefensives();
@@ -123,23 +124,25 @@ public class GameMenu extends Listener implements Screen {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
+        AudioPlayer.loop("ambient.ogg", 0.9f);
+
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/sky.png")));
         background.setWidth(Gdx.graphics.getWidth());
-        
+
         feedback = new Label("....", skin);
         feedback.setColor(Color.BLACK);
         feedback.setPosition(90, 600);
-        
-        offBought = new Listview(200, 120, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 150);
-        
+
+        offBought = new Listview(200, 170, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 180);
+
         endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveHover.png")));
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               
+
                 if (player != null && game != null) {
                     endWave();
-                } 
+                }
                 countOff = 0;
                 offPerWaveList.clear();
                 offNumber.setText(Integer.toString(countOff));
@@ -148,7 +151,7 @@ public class GameMenu extends Listener implements Screen {
         });
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
-        surrender.addListener(new SurrenderListener(co, game));
+        surrender.addListener(new SurrenderListener(player.getId()));
 
         endWave.setSize(120, 70);
         endWave.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 110);
@@ -165,18 +168,18 @@ public class GameMenu extends Listener implements Screen {
 
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
-        
+
         setMenuBar(); // creates the menu bar for the player
         createEntityMenu(); // creates the menu for offensive and defensive entities.
 
         Gdx.input.setInputProcessor(stage);
     }
-    
-    private void setPlayerFeedback(String feedback){
+
+    private void setPlayerFeedback(String feedback) {
         this.feedback.setText(feedback);
     }
-    
-    private void setMenuBar(){
+
+    private void setMenuBar() {
         menuBar = new Image(new Texture(Gdx.files.internal("GUIMenu/menuBar.png")));
         menuBar.setHeight(70);
         menuBar.setWidth(Gdx.graphics.getWidth());
@@ -225,13 +228,13 @@ public class GameMenu extends Listener implements Screen {
         castleHp.setColor(Color.BLACK);
         castleHp.setPosition(620, 490);
     }
-    
+
     private void createEntityMenu() {
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabOff.setSize(500, 150);
         backgroundTabDef.setSize(500, 150);
-        
+
         main = new Table();
         main.setSize(500, 180);
         // Put the menu in the middle (Horizontal) - the width of the button endWave
@@ -276,7 +279,7 @@ public class GameMenu extends Listener implements Screen {
         tabs.add(tab1);
         tabs.add(tab2);
     }
-    
+
     private Table fillWithDefensive() {
         Table contentDef = new Table();
         contentDef.addActor(backgroundTabDef);
@@ -318,7 +321,7 @@ public class GameMenu extends Listener implements Screen {
         buyDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-               buyDefensive();
+                buyDefensive();
             }
         ;
         });
@@ -480,16 +483,8 @@ public class GameMenu extends Listener implements Screen {
             playerGold.setText(Integer.toString(player.getGold()));
             playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
 
-            String CastleOpponentHp = "";
             if (opponent != null) {
                 castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
-            }
-
-            if (player.getCastle().getHitpoints() == 0) {
-                co.setScreen(new EndGameMenu(false, co, game));
-            }
-            if (opponent.getCastle().getHitpoints() == 0) {
-                co.setScreen(new EndGameMenu(true, co, game));
             }
         }
 
@@ -508,9 +503,8 @@ public class GameMenu extends Listener implements Screen {
         }
         batch.end();
     }
-    
-    private void buyOffensive(){
-        //countOff++;
+
+    private void buyOffensive() {
         for (OffensiveDAO o : offList) {
             if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                 offPerWaveList.add(o);
@@ -519,12 +513,9 @@ public class GameMenu extends Listener implements Screen {
                 break;
             }
         }
-//        
-//        offBought.addString(offLabel.getText());
-//        offNumber.setText(Integer.toString(countOff));
     }
-    
-    private void buyDefensive(){
+
+    private void buyDefensive() {
         if (player != null && game != null) {
             for (DefensiveDAO d : defList) {
                 if (defLabel.getText().toString().equals(d.getName())) {
@@ -538,7 +529,7 @@ public class GameMenu extends Listener implements Screen {
             playerGold.setText(Integer.toString(player.getGold()));
         }
     }
-    
+
     private void placeTower() {
         Tile t = game.getMap().getSelectedTile();
         Globals.client.send(new BuyTowerPacket(t.getX(), t.getY(), towerToPlace.getType().name()));
@@ -557,7 +548,7 @@ public class GameMenu extends Listener implements Screen {
         p.entities = ids;
 
         Globals.client.send(p);
-        //game.getCurrentWave().endWave(player.getId());
+        offBought.clearChildren();
     }
 
     @Override
@@ -593,7 +584,11 @@ public class GameMenu extends Listener implements Screen {
             }
             game.getCurrentWave().endWave();
         }
-
+        
+        if (obj instanceof WinGamePacket) {
+            WinGamePacket packet = (WinGamePacket) obj;
+            game.endGame(packet.winnerid != player.getId());
+        }
     }
 
     private void drawGhostTower() {

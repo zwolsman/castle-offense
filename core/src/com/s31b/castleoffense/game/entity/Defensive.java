@@ -1,6 +1,7 @@
 package com.s31b.castleoffense.game.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -19,6 +20,7 @@ public class Defensive extends Entity {
     private int damagePerSecond;
     private int range;
     private Offensive target;
+    private Sound sound;
 
     private Tile position;
 
@@ -28,6 +30,7 @@ public class Defensive extends Entity {
         this.range = range;
         position = new Tile(0, 0);
         target = null;
+        sound = Gdx.audio.newSound(Gdx.files.internal("start.mp3"));
     }
 
     public Defensive(DefensiveDAO data, Player owner) {
@@ -36,6 +39,7 @@ public class Defensive extends Entity {
         this.range = data.getRange();
         position = new Tile(0, 0);
         target = null;
+        sound = Gdx.audio.newSound(Gdx.files.internal("start.mp3"));
     }
 
     /**
@@ -132,7 +136,6 @@ public class Defensive extends Entity {
     }
 
     public void deleteTarget() {
-        System.out.println("target of tower deleted.");
         target = null;
     }
 
@@ -142,5 +145,6 @@ public class Defensive extends Entity {
 
     public void dealDamage() {
         target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
+        sound.play(0.9f);
     }
 }

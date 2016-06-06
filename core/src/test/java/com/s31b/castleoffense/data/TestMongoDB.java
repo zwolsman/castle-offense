@@ -37,8 +37,8 @@ public class TestMongoDB {
         CoGame g = GameManager.getInstance().createGame();
         p1 = new Player(1, "Dennis", g);
         
-        def = new DefensiveDAO("test", "test", "test", "test", 5, 10, 10);
-        off = new OffensiveDAO("test", "test", "test", "test", 5, 100, 10, 15);
+        def = new DefensiveDAO("test1", "test1", "test1", "test1", 5, 10, 10);
+        off = new OffensiveDAO("test2", "test2", "test2", "test2", 5, 100, 10, 15);
     }
     
     private int countAllEntitiesInDB(){
