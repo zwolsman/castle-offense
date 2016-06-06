@@ -41,10 +41,14 @@ public class Lobbyview extends Table {
         background.setSize(width, height);
         background.setPosition(posX, posY);
 
-        this.setSize(width - (paddingLeft + paddingRight), height - (paddingTop + paddingBottom));
-        this.setPosition(posX + paddingLeft, posY + paddingBottom);
         this.skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         this.left().top();  
+        setLayout();
+    }
+    
+    private void setLayout(){
+        this.setSize(width - (paddingLeft + paddingRight), height - (paddingTop + paddingBottom));
+        this.setPosition(posX + paddingLeft, posY + paddingBottom);
     }
 
     public void setPadding(int padTop, int PadBottom, int PadLeft, int PadRight){
@@ -52,6 +56,7 @@ public class Lobbyview extends Table {
         this.paddingBottom = PadBottom;
         this.paddingLeft = PadLeft;
         this.paddingRight = PadRight;
+        setLayout();
     }
     
     public void setPaddingPercentage(int percentageTop, int percentageBottom, int percentageLeft, int percentageRight){
