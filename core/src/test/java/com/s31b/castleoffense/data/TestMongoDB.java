@@ -68,9 +68,9 @@ public class TestMongoDB {
     
     @Test
     public void TestdDelete(){
-        /*int expectedCount = countAllEntitiesInDB() - 2;
+        int expectedCount = countAllEntitiesInDB() - 2;
         db.delete(off);
         db.delete(def);
-        assertEquals(expectedCount, countAllEntitiesInDB());*/
+        /*assertEquals(expectedCount, countAllEntitiesInDB());*/
     }
 }

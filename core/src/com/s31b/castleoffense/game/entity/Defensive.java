@@ -1,6 +1,7 @@
 package com.s31b.castleoffense.game.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -19,9 +20,20 @@ public class Defensive extends Entity {
     private int damagePerSecond;
     private int range;
     private Offensive target;
+    private Sound sound;
 
     private Tile position;
-
+    /**
+     * Constructor used for Unit Tests
+     * @param type
+     * @param name
+     * @param descr
+     * @param sprite
+     * @param owner
+     * @param price
+     * @param dps
+     * @param range 
+     */
     public Defensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int dps, int range) {
         super(type, name, descr, sprite, price, owner);
         damagePerSecond = dps;
@@ -29,13 +41,18 @@ public class Defensive extends Entity {
         position = new Tile(0, 0);
         target = null;
     }
-
+    /**
+     * Constructor for general use (From database)
+     * @param data
+     * @param owner 
+     */
     public Defensive(DefensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
         damagePerSecond = data.getDamage();
         this.range = data.getRange();
         position = new Tile(0, 0);
         target = null;
+        sound = Gdx.audio.newSound(Gdx.files.internal("start.mp3"));
     }
 
     /**
@@ -132,7 +149,6 @@ public class Defensive extends Entity {
     }
 
     public void deleteTarget() {
-        System.out.println("target of tower deleted.");
         target = null;
     }
 
@@ -142,5 +158,8 @@ public class Defensive extends Entity {
 
     public void dealDamage() {
         target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
+        ///If sound not exists don't play the sound
+        if(sound != null)
+            sound.play(0.9f);
     }
 }

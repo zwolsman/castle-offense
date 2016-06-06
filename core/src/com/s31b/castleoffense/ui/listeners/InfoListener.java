@@ -12,24 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.ui.InfoScreen;
-import com.s31b.castleoffense.ui.LobbyScreen;
 
 /**
  *
  * @author Nick
  */
 public class InfoListener extends ClickListener  {
-    private CastleOffense co;
     private CoGame game;
     
-    public InfoListener(CastleOffense co, CoGame g){
-        this.co = co;
+    public InfoListener(CoGame g){
         this.game = g;
     }
     
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        co.setScreen(new InfoScreen(co, game));
+        CastleOffense.getInstance().setScreen(new InfoScreen(game));
     }
 }

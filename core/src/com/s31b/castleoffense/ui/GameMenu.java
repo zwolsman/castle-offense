@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.AudioPlayer;
-import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -39,6 +38,7 @@ import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
+import com.s31b.castleoffense.server.packets.WinGamePacket;
 import com.s31b.castleoffense.ui.listeners.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,6 @@ import java.util.List;
  */
 public class GameMenu extends Listener implements Screen {
 
-    private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
     private Stage stage;
@@ -98,12 +97,11 @@ public class GameMenu extends Listener implements Screen {
 
     private Defensive towerToPlace = null;
 
-    public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
+    public GameMenu(CoGame game, Player player) {
         if (player.getId() > 0) {
             opponent = game.getPlayerById((player.getId() + 1) % game.getPlayers().size());
             System.out.println("Opponent: " + opponent.getName());
         }
-        this.co = castleoffense;
         this.game = game;
         this.player = player;
         this.defList = EntityFactory.getAllDefensives();
@@ -133,7 +131,7 @@ public class GameMenu extends Listener implements Screen {
         feedback.setColor(Color.BLACK);
         feedback.setPosition(90, 600);
 
-        offBought = new Listview(200, 120, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 150);
+        offBought = new Listview(200, 170, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 180);
 
         endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveHover.png")));
         endWave.addListener(new ClickListener() {
@@ -151,7 +149,8 @@ public class GameMenu extends Listener implements Screen {
         });
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
-        surrender.addListener(new SurrenderListener(co, game));
+
+        surrender.addListener(new SurrenderListener(player.getId()));
 
         endWave.setSize(120, 70);
         endWave.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 110);
@@ -483,16 +482,8 @@ public class GameMenu extends Listener implements Screen {
             playerGold.setText(Integer.toString(player.getGold()));
             playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
 
-            String CastleOpponentHp = "";
             if (opponent != null) {
                 castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
-            }
-
-            if (player.getCastle().getHitpoints() == 0) {
-                co.setScreen(new EndGameMenu(false, co, game));
-            }
-            if (opponent.getCastle().getHitpoints() == 0) {
-                co.setScreen(new EndGameMenu(true, co, game));
             }
         }
 
@@ -513,7 +504,6 @@ public class GameMenu extends Listener implements Screen {
     }
 
     private void buyOffensive() {
-        //countOff++;
         for (OffensiveDAO o : offList) {
             if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                 offPerWaveList.add(o);
@@ -522,9 +512,6 @@ public class GameMenu extends Listener implements Screen {
                 break;
             }
         }
-//
-//        offBought.addString(offLabel.getText());
-//        offNumber.setText(Integer.toString(countOff));
     }
 
     private void buyDefensive() {
@@ -560,7 +547,7 @@ public class GameMenu extends Listener implements Screen {
         p.entities = ids;
 
         Globals.client.send(p);
-        //game.getCurrentWave().endWave(player.getId());
+        offBought.clearChildren();
     }
 
     @Override
@@ -597,6 +584,12 @@ public class GameMenu extends Listener implements Screen {
             game.getCurrentWave().endWave();
         }
 
+        if (obj instanceof WinGamePacket) {
+            WinGamePacket packet = (WinGamePacket) obj;
+            Gdx.app.postRunnable(() -> {
+                game.endGame(packet.loserid != player.getId());
+            });
+        }
     }
 
     private void drawGhostTower() {
