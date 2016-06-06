@@ -5,6 +5,7 @@
  */
 package test.java.com.s31b.castleoffense.game.entity;
 
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.GameManager;
 import com.s31b.castleoffense.game.entity.Defensive;
@@ -16,6 +17,7 @@ import java.rmi.RemoteException;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import test.java.com.s31b.castleoffense.TestListener;
 
 /**
  *
@@ -30,13 +32,16 @@ public class TestDefensive {
     Player p2;
     
     @Before
-    public void SetupDefensive() throws RemoteException {
+    public void SetupDefensive() throws RemoteException, InterruptedException {
         CoGame g = GameManager.getInstance().createGame();
         p1 = new Player(0, "Gebruiker", g);
         p2 = new Player(1, "", g);
         def1 = new Defensive(EntityType.Blue, "", "", null, p1, 0, 40, 1);
         def2 = new Defensive(EntityType.Blue, "", "", null, p1, 0, 250, 20);
         def3 = new Defensive(EntityType.Blue, "", "", null, p1, 0, 500, 30);
+        
+        HeadlessApplication ha = new HeadlessApplication(new TestListener());
+        Thread.sleep(500);
     }
 
     @Test
@@ -51,6 +56,20 @@ public class TestDefensive {
         assertEquals(40, def1.getDamagePerSecond(), 0);
         assertEquals(250, def2.getDamagePerSecond(), 0);
         assertEquals(500, def3.getDamagePerSecond(), 0);
+    }
+    
+    @Test
+    public void TestSetDamagePerSecond(){
+        def1.setDamagePerSecond(-1);
+        assertEquals(-1, def1.getDamagePerSecond(), 0);
+        
+        def1.setDamagePerSecond(0);
+        assertEquals(0, def1.getDamagePerSecond(), 0);
+        
+        def1.setDamagePerSecond(1);
+        assertEquals(1, def1.getDamagePerSecond(), 0);
+        
+        def1.setDamagePerSecond(40);
     }
     
     @Test
@@ -94,14 +113,13 @@ public class TestDefensive {
     @Test
     public void TestDealDamage(){
         ///Deal Damage throw NullPointer because using Gdx.graphics.getDeltaTime()
-        /*Offensive off1 = new Offensive(EntityType.Blue, "", "", null, p2, 0, 10, 10, 10);
+        Offensive off1 = new Offensive(EntityType.Blue, "", "", null, p2, 0, 10, 10, 10);
         def1.setTarget(off1);
-        assertNull(def1.getTarget());
-        for(int i=0; i < 1000; i++){
+        for(int i=0; i < 100; i++){
             def1.dealDamage();
         }
         
-       assertEquals(0, off1.getHitpoints(), 0);*/
+       assertTrue("Expected hitpoints is not lower then 0", off1.getHitpoints() < 0);
     }
     
     @Test

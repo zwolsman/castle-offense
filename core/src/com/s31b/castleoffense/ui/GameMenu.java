@@ -92,7 +92,7 @@ public class GameMenu extends Listener implements Screen {
     private Label playerGoldDesc;
     private Label castleHp;
     private Label castleHpDesc;
-    private Label feedback;
+    private static Label feedback;
     private Listview offBought;
 
     private Defensive towerToPlace = null;
@@ -145,6 +145,7 @@ public class GameMenu extends Listener implements Screen {
         });
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
+
         surrender.addListener(new SurrenderListener(player.getId()));
 
         endWave.setSize(120, 70);
@@ -188,8 +189,8 @@ public class GameMenu extends Listener implements Screen {
         offBought.render(stage);
     }
 
-    private void setPlayerFeedback(String feedback) {
-        this.feedback.setText(feedback);
+    public static void setPlayerFeedback(String message) {
+        feedback.setText(message);
     }
 
     private void setMenuBar() {
@@ -595,10 +596,12 @@ public class GameMenu extends Listener implements Screen {
             }
             game.getCurrentWave().endWave();
         }
-        
+
         if (obj instanceof WinGamePacket) {
             WinGamePacket packet = (WinGamePacket) obj;
-            game.endGame(packet.winnerid != player.getId());
+            Gdx.app.postRunnable(() -> {
+                game.endGame(packet.loserid != player.getId());
+            });
         }
     }
 

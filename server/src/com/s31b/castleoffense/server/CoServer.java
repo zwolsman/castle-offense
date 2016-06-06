@@ -51,7 +51,7 @@ public class CoServer extends Listener {
 
     @Override
     public void received(Connection connection, Object obj) {
-
+        System.out.println(obj);
         if (obj instanceof CreateGamePacket) {
             System.out.println("Creating game. Requested ip: " + connection.getRemoteAddressTCP().getHostString());
             ServerGame g = new ServerGame(games.size());
@@ -74,9 +74,7 @@ public class CoServer extends Listener {
             for (Player p : games.get(packet.gid).getGame().getPlayers()) {
                 plPacket.players.add(p.getName());
             }
-            for (Connection c : games.get(packet.gid).getConnections()) {
-                c.sendTCP(plPacket);
-            }
+            games.get(packet.gid).broadcast(plPacket);
         }
 
         if (obj instanceof StartGamePacket) {
@@ -85,69 +83,111 @@ public class CoServer extends Listener {
         }
         if (obj instanceof BuyTowerPacket) {
             BuyTowerPacket packet = (BuyTowerPacket) obj;
-            for (ServerGame g : games) {
-                System.out.println("Checking game");
-                if (g.isInGame(connection)) {
-                    System.out.println("Found game with connection!");
-                    Player p = g.getPlayer(connection);
-                    BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.getX(), packet.getY(), p.getId(), packet.getName());
-                    for (Connection c : g.getConnections()) {
-                        c.sendTCP(boughtPacket);
-                    }
-                }
+            ServerGame game = getServerGame(connection);
+            if (game == null) {
+                return;
             }
+            Player p = game.getPlayer(connection);
+            BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.getX(), packet.getY(), p.getId(), packet.getName());
+            game.broadcast(boughtPacket);
         }
 
         if (obj instanceof EndWavePacket) {
             EndWavePacket packet = (EndWavePacket) obj;
-            for (ServerGame g : games) {
-                System.out.println("Checking game");
-                if (g.isInGame(connection)) {
-                    System.out.println("Found game with connection!");
-                    Player p = g.getPlayer(connection);
-                    packet.pid = p.getId();
-                    for (Connection c : g.getConnections()) {
-                        c.sendTCP(packet);
-                    }
-                }
+            ServerGame game = getServerGame(connection);
+
+            if (game == null) {
+                return;
+            }
+            Player p = game.getPlayer(connection);
+            packet.pid = p.getId();
+            game.broadcast(packet);
+        }
+
+        if (obj instanceof WinGamePacket) {
+            WinGamePacket packet = (WinGamePacket) obj;
+            ServerGame game = getServerGame(connection);
+            if (game == null) {
+                return;
+            }
+            game.broadcast(packet);
+        }
+    }
+
+    /**
+     * Get the server game that has the connection
+     *
+     * @param c Connection
+     * @return ServerGame if found, null if none found
+     */
+    private ServerGame getServerGame(Connection c) {
+        for (ServerGame g : games) {
+            System.out.println("Checking game");
+            if (g.isInGame(c)) {
+                return g;
             }
         }
+        System.out.println("No game found for " + c.getRemoteAddressTCP().getHostString());
+
+        return null;
     }
 
     private void startGame(int id) {
         final ServerGame game = games.get(id);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                new HeadlessApplication(game);
-            }
+        new Thread(() -> {
+            new HeadlessApplication(game);
         }).start();
     }
 
     @Override
     public void disconnected(Connection connection) {
         System.out.println("Lost connection to a client.");
+
     }
 
     private void registerPackets() {
-        server.getKryo().register(NewPlayerPacket.class);
-        server.getKryo().register(NewPlayerResponsePacket.class);
-        server.getKryo().register(StartGamePacket.class);
+        server.getKryo().register(NewPlayerPacket.class
+        );
+        server
+                .getKryo().register(NewPlayerResponsePacket.class
+                );
+        server
+                .getKryo().register(StartGamePacket.class
+                );
 
-        server.getKryo().register(JoinGamePacket.class);
-        server.getKryo().register(JoinedGamePacket.class);
+        server
+                .getKryo().register(JoinGamePacket.class
+                );
+        server
+                .getKryo().register(JoinedGamePacket.class
+                );
 
-        server.getKryo().register(CreateGamePacket.class);
-        server.getKryo().register(CreatedGamePacket.class);
+        server
+                .getKryo().register(CreateGamePacket.class
+                );
+        server
+                .getKryo().register(CreatedGamePacket.class
+                );
 
-        server.getKryo().register(PlayerListPacket.class);
-        server.getKryo().register(java.util.ArrayList.class);
+        server
+                .getKryo().register(PlayerListPacket.class
+                );
+        server
+                .getKryo().register(java.util.ArrayList.class
+                );
 
-        server.getKryo().register(BuyTowerPacket.class);
-        server.getKryo().register(BoughtTowerPacket.class);
+        server
+                .getKryo().register(BuyTowerPacket.class
+                );
+        server
+                .getKryo().register(BoughtTowerPacket.class
+                );
 
-        server.getKryo().register(EndWavePacket.class);
-        server.getKryo().register(WinGamePacket.class);
+        server
+                .getKryo().register(EndWavePacket.class
+                );
+        server
+                .getKryo().register(WinGamePacket.class
+                );
     }
 }

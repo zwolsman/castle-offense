@@ -23,16 +23,29 @@ public class Defensive extends Entity {
     private Sound sound;
 
     private Tile position;
-
+    /**
+     * Constructor used for Unit Tests
+     * @param type
+     * @param name
+     * @param descr
+     * @param sprite
+     * @param owner
+     * @param price
+     * @param dps
+     * @param range 
+     */
     public Defensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int dps, int range) {
         super(type, name, descr, sprite, price, owner);
         damagePerSecond = dps;
         this.range = range;
         position = new Tile(0, 0);
         target = null;
-        sound = Gdx.audio.newSound(Gdx.files.internal("start.mp3"));
     }
-
+    /**
+     * Constructor for general use (From database)
+     * @param data
+     * @param owner 
+     */
     public Defensive(DefensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
         damagePerSecond = data.getDamage();
@@ -145,6 +158,8 @@ public class Defensive extends Entity {
 
     public void dealDamage() {
         target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
-        sound.play(0.9f);
+        ///If sound not exists don't play the sound
+        if(sound != null)
+            sound.play(0.9f);
     }
 }

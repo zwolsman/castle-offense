@@ -229,6 +229,7 @@ public class Offensive extends Entity {
             t = TextureFactory.getTexture("blood");
         } else {
             t = TextureFactory.getTexture(super.getSprite() + "_hold_" + direction.toString().toLowerCase());
+
         }
 
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
