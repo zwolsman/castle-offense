@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.AudioPlayer;
-import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -32,7 +31,6 @@ import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.DefensiveDAO;
 import com.s31b.castleoffense.data.OffensiveDAO;
 import com.s31b.castleoffense.game.CoGame;
-import com.s31b.castleoffense.game.GameState;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
@@ -151,6 +149,7 @@ public class GameMenu extends Listener implements Screen {
         });
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
+
         surrender.addListener(new SurrenderListener(player.getId()));
 
         endWave.setSize(120, 70);
@@ -584,10 +583,12 @@ public class GameMenu extends Listener implements Screen {
             }
             game.getCurrentWave().endWave();
         }
-        
+
         if (obj instanceof WinGamePacket) {
             WinGamePacket packet = (WinGamePacket) obj;
-            game.endGame(packet.winnerid != player.getId());
+            Gdx.app.postRunnable(() -> {
+                game.endGame(packet.loserid != player.getId());
+            });
         }
     }
 
