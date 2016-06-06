@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.s31b.castleoffense.CastleOffense;
+import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.game.CoGame;
 
 /**
@@ -23,26 +24,16 @@ import com.s31b.castleoffense.game.CoGame;
  */
 public class EndGameMenu implements Screen {
 
-    private OrthographicCamera camera;
     private Skin skin;
     private Stage stage;
     private Image background;
     private Image stateImage;
     private imageButton buttonDone;
-    private Label state;
-    private String winningState;
-    private CastleOffense co;
     private CoGame game;
-    private Cursor customCursor;
 
-    public EndGameMenu(Boolean winningState, CastleOffense castleoffense, CoGame game) {
-        if (winningState == true) {
-            this.stateImage = new Image(new Texture(Gdx.files.internal("GUIMenu/YouWin.png")));
-        } else if (winningState == false) {
-            this.stateImage = new Image(new Texture(Gdx.files.internal("GUIMenu/YouLose.png")));
-        }
+    public EndGameMenu(Boolean winningState , CoGame game) {
+        this.stateImage = new Image(TextureFactory.getTexture("GUIMenu/You" + (winningState ? "Win" : "Lose")));
 
-        this.co = castleoffense;
         this.game = game;
         this.create();
     }
@@ -61,8 +52,7 @@ public class EndGameMenu implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                game.endGame();
-                co.setScreen(new MainMenu(co, game));
+                CastleOffense.getInstance().setScreen(new MainMenu(game));
             }
         ;
         });

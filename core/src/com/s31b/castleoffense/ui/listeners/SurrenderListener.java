@@ -16,16 +16,15 @@ import com.s31b.castleoffense.ui.EndGameMenu;
  * @author Nick
  */
 public class SurrenderListener extends ClickListener {
-    private CastleOffense co;
-    private CoGame game;
     
-    public SurrenderListener(CastleOffense co, CoGame g){
-        this.co = co;
-        this.game = g;
+    private final CoGame game;
+    
+    public SurrenderListener(CoGame game){
+        this.game = game;
     }
 
     @Override
     public void clicked(InputEvent event, float x, float y) {
-        co.setScreen(new EndGameMenu(false, co, game));
+        game.endGame(false);
     }
 }

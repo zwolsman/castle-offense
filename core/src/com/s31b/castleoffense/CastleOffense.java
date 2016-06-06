@@ -14,6 +14,8 @@ import com.s31b.castleoffense.ui.MainMenu;
  */
 public class CastleOffense extends Game {
 
+    private static CastleOffense instance;
+    
     Skin skin;
     CoGame game;
     OrthographicCamera camera;
@@ -26,11 +28,18 @@ public class CastleOffense extends Game {
     @Override
     public void create() {
         game = new CoGame(0);
-        this.setScreen(new MainMenu(this, game));
+        this.setScreen(new MainMenu(game));
     }
 
     @Override
     public void dispose() {
         TextureGlobals.SPRITE_BATCH.dispose();
+    }
+    
+    public static CastleOffense getInstance() {
+        if (instance == null) {
+            instance = new CastleOffense();
+        }
+        return instance;
     }
 }

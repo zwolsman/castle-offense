@@ -24,13 +24,11 @@ public class InfoScreen implements Screen{
     private Image background;
     private Image infoBody;
     private imageButton buttonBack;
-    private CastleOffense co;
     private CoGame game;
     private Listview listView;
     private TextDialog td;
     
-    public InfoScreen(CastleOffense castleoffense, CoGame game){
-        this.co = castleoffense;
+    public InfoScreen(CoGame game){
         this.game = game;
         this.create();
     }
@@ -50,7 +48,7 @@ public class InfoScreen implements Screen{
         //td = new TextDialog("TestDialog", "aaaaaaaaa", skin);   
 
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
-        buttonBack.addListener(new BackListener(co, game)); 
+        buttonBack.addListener(new BackListener(game)); 
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
         
