@@ -158,6 +158,8 @@ public class Defensive extends Entity {
 
     public void dealDamage() {
         target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
-        sound.play(0.9f);
+        ///If sound not exists don't play the sound
+        if(sound != null)
+            sound.play(0.9f);
     }
 }
