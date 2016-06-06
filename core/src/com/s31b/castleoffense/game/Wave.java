@@ -21,6 +21,7 @@ public class Wave {
     private int playersDone;
 
     private List<Offensive> offEntities;
+    private List<Offensive> killedEntities;
 
     private final CoGame game;
 
@@ -34,6 +35,7 @@ public class Wave {
     }
 
     private void initWave() {
+        killedEntities = new ArrayList();
         offEntities = new ArrayList();
         waveDone = false;
         spawnTime = 5;
@@ -109,10 +111,12 @@ public class Wave {
                         case "Update":
                             break;
                         case "Null":
+                            System.out.println("Null");
                             player.hitCastle();
                             clearTarget(x);
                             break;
                         case "Dead":
+                            System.out.println("Dead");
                             reward(x);
                             clearTarget(x);
                             break;
@@ -125,6 +129,11 @@ public class Wave {
     public void draw() {
         if (!waveDone) {
             return;
+        }
+
+        for (int i = 0; i < killedEntities.size(); i++) {
+            Offensive x = killedEntities.get(i);
+            x.draw(TextureGlobals.SPRITE_BATCH);
         }
 
         for (int i = 0; i < offEntities.size(); i++) {
@@ -165,6 +174,8 @@ public class Wave {
                 d.deleteTarget();
             }
         }
+        offEntities.remove(o);
+        killedEntities.add(o);
     }
 
     private void checkInRange(Offensive offensive) {
