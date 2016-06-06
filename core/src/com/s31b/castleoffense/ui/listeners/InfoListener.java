@@ -30,6 +30,6 @@ public class InfoListener extends ClickListener  {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        co.setScreen(new LobbyScreen(co, game));
+        co.setScreen(new InfoScreen(co, game));
     }
 }

@@ -26,7 +26,7 @@ public class InfoScreen implements Screen{
     private imageButton buttonBack;
     private CastleOffense co;
     private CoGame game;
-    private ListView listView;
+    private Listview listView;
     private TextDialog td;
     
     public InfoScreen(CastleOffense castleoffense, CoGame game){
@@ -46,15 +46,6 @@ public class InfoScreen implements Screen{
         infoBody = new Image(new Texture(Gdx.files.internal("GUIMenu/InfoBackgroundText.png")));  
         infoBody.setSize(500, 550);
         infoBody.setPosition((Gdx.graphics.getWidth() / 2) - (infoBody.getWidth() / 2), (Gdx.graphics.getHeight()/ 2) - (infoBody.getHeight()/ 2));
-       
-        listView = new ListView(200, 200, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2 );
-        listView.addString("lakjsdfklaf");
-        listView.addString("TESTING");
-        listView.addString("TESTING THE ");
-        listView.addString("asdfkjljadsklfja;dsf");
-        listView.addString("adfadslkf");
-        listView.addString("kldsjfiejiiiii");
-        listView.addString("aaa");
         
         //td = new TextDialog("TestDialog", "aaaaaaaaa", skin);   
 
@@ -74,7 +65,6 @@ public class InfoScreen implements Screen{
         stage.addActor(background);
         stage.addActor(infoBody);
         stage.addActor(buttonBack);
-        listView.render(stage);
         //tage.addActor(td);
 
 

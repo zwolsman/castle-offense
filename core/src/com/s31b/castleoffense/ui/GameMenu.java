@@ -38,6 +38,7 @@ import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
+import com.s31b.castleoffense.ui.listeners.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +92,8 @@ public class GameMenu extends Listener implements Screen {
     private Label playerGoldDesc;
     private Label castleHp;
     private Label castleHpDesc;
+    private Label feedback;
+    private Listview offBought;
 
     private Defensive towerToPlace = null;
 
@@ -122,9 +125,61 @@ public class GameMenu extends Listener implements Screen {
 
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/sky.png")));
         background.setWidth(Gdx.graphics.getWidth());
+        
+        feedback = new Label("....", skin);
+        feedback.setColor(Color.BLACK);
+        feedback.setPosition(90, 600);
+        
+        offBought = new Listview(200, 120, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 150);
+        
+        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveHover.png")));
+        endWave.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+               
+                if (player != null && game != null) {
+                    endWave();
+                } 
+                countOff = 0;
+                offPerWaveList.clear();
+                offNumber.setText(Integer.toString(countOff));
+            }
+        ;
+        });
 
+        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
+        surrender.addListener(new SurrenderListener(co, game));
+
+        endWave.setSize(120, 70);
+        endWave.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 110);
+        surrender.setSize(100, 30);
+        surrender.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 150);
+
+        float w = Gdx.graphics.getWidth();
+        float h = Gdx.graphics.getHeight();
+        camera = new OrthographicCamera(w, h);
+        camera.setToOrtho(false);
+
+        batch = TextureGlobals.SPRITE_BATCH;
+        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+
+        camera = new OrthographicCamera(w, h);
+        camera.setToOrtho(false);
+        
+        setMenuBar(); // creates the menu bar for the player
+        createEntityMenu(); // creates the menu for offensive and defensive entities.
+
+        Gdx.input.setInputProcessor(stage);
+    }
+    
+    private void setPlayerFeedback(String feedback){
+        this.feedback.setText(feedback);
+    }
+    
+    private void setMenuBar(){
         menuBar = new Image(new Texture(Gdx.files.internal("GUIMenu/menuBar.png")));
         menuBar.setHeight(70);
+        menuBar.setWidth(Gdx.graphics.getWidth());
         menuBar.setPosition(2, 450);
 
         String playerNameString = "";
@@ -169,58 +224,14 @@ public class GameMenu extends Listener implements Screen {
         castleHp = new Label(CastleHpText, skin);
         castleHp.setColor(Color.BLACK);
         castleHp.setPosition(620, 490);
-
+    }
+    
+    private void createEntityMenu() {
         backgroundTabOff = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabDef = new Image(new Texture(Gdx.files.internal("GUIMenu/board.png")));
         backgroundTabOff.setSize(500, 150);
         backgroundTabDef.setSize(500, 150);
-
-        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveHover.png")));
-        endWave.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-               
-                if (player != null && game != null) {
-                    endWave();
-                } 
-                countOff = 0;
-                offPerWaveList.clear();
-                offNumber.setText(Integer.toString(countOff));
-            }
-        ;
-        });
-
-        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
-        surrender.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                co.setScreen(new EndGameMenu(false, co, game));
-            }
-        ;
-        });
-
-        getTabPages();
-        endWave.setSize(120, 70);
-        endWave.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 130);
-        surrender.setSize(100, 30);
-        surrender.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 190);
-
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
-        camera = new OrthographicCamera(w, h);
-        camera.setToOrtho(false);
-
-        batch = TextureGlobals.SPRITE_BATCH;
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-
-        camera = new OrthographicCamera(w, h);
-        camera.setToOrtho(false);
-
-        //game.getCurrentWave().endWave(2);
-        Gdx.input.setInputProcessor(stage);
-    }
-
-    private void getTabPages() {
+        
         main = new Table();
         main.setSize(500, 180);
         // Put the menu in the middle (Horizontal) - the width of the button endWave
@@ -236,10 +247,10 @@ public class GameMenu extends Listener implements Screen {
         main.add(group);
         main.row();
 
-        // Create the tab content. Just using images here for simplicity.
+        // Create the tab content. Using 2 methods for offensive and defensive
         Stack content = new Stack();
-        final Table contentDef = getDefensive();
-        final Table contentOff = getOffensive();
+        final Table contentDef = fillWithDefensive();
+        final Table contentOff = fillWithOffensive();
 
         content.addActor(contentDef);
         content.addActor(contentOff);
@@ -265,10 +276,8 @@ public class GameMenu extends Listener implements Screen {
         tabs.add(tab1);
         tabs.add(tab2);
     }
-
-    private int tempCounter = 0;
-
-    private Table getDefensive() {
+    
+    private Table fillWithDefensive() {
         Table contentDef = new Table();
         contentDef.addActor(backgroundTabDef);
         DefensiveDAO d = defList.get(0);
@@ -309,19 +318,7 @@ public class GameMenu extends Listener implements Screen {
         buyDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                tempCounter++;
-                if (player != null && game != null) {
-                    for (DefensiveDAO d : defList) {
-                        if (defLabel.getText().toString().equals(d.getName())) {
-                            towerToPlace = (Defensive) EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
-
-                            System.out.println("Bought: " + towerToPlace.getName());
-                            break;
-                        }
-                    }
-
-                    playerGold.setText(Integer.toString(player.getGold()));
-                }
+               buyDefensive();
             }
         ;
         });
@@ -363,7 +360,7 @@ public class GameMenu extends Listener implements Screen {
         return contentDef;
     }
 
-    private Table getOffensive() {
+    private Table fillWithOffensive() {
         Table contentOff = new Table();
         contentOff.addActor(backgroundTabOff);
         OffensiveDAO o = offList.get(0);
@@ -412,17 +409,7 @@ public class GameMenu extends Listener implements Screen {
         buyOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                countOff++;
-                for (OffensiveDAO o : offList) {
-                    if (offLabel.getText().toString().equals(o.getName()) && player != null) {
-                        offPerWaveList.add(o);
-
-                        System.out.println("Added to que: " + o.getName());
-                        break;
-                    }
-                }
-
-                offNumber.setText(Integer.toString(countOff));
+                buyOffensive();
             }
         ;
         });
@@ -484,6 +471,8 @@ public class GameMenu extends Listener implements Screen {
         stage.addActor(playerGold);
         stage.addActor(castleHpDesc);
         stage.addActor(castleHp);
+        stage.addActor(feedback);
+        offBought.render(stage);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
@@ -519,7 +508,37 @@ public class GameMenu extends Listener implements Screen {
         }
         batch.end();
     }
+    
+    private void buyOffensive(){
+        //countOff++;
+        for (OffensiveDAO o : offList) {
+            if (offLabel.getText().toString().equals(o.getName()) && player != null) {
+                offPerWaveList.add(o);
+                offBought.addString(o.getName());
+                System.out.println("Added to que: " + o.getName());
+                break;
+            }
+        }
+//        
+//        offBought.addString(offLabel.getText());
+//        offNumber.setText(Integer.toString(countOff));
+    }
+    
+    private void buyDefensive(){
+        if (player != null && game != null) {
+            for (DefensiveDAO d : defList) {
+                if (defLabel.getText().toString().equals(d.getName())) {
+                    towerToPlace = (Defensive) EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
 
+                    System.out.println("Bought: " + towerToPlace.getName());
+                    break;
+                }
+            }
+
+            playerGold.setText(Integer.toString(player.getGold()));
+        }
+    }
+    
     private void placeTower() {
         Tile t = game.getMap().getSelectedTile();
         Globals.client.send(new BuyTowerPacket(t.getX(), t.getY(), towerToPlace.getType().name()));
@@ -528,8 +547,6 @@ public class GameMenu extends Listener implements Screen {
     }
 
     private void endWave() {
-        //ofPerWaveList
-
         List types = java.util.Arrays.asList(EntityType.values());
         EndWavePacket p = new EndWavePacket();
         ArrayList<Integer> ids = new ArrayList<Integer>();

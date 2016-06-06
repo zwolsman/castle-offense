@@ -25,7 +25,7 @@ public class LobbyScreen implements Screen{
     private imageButton buttonBack;
     private CastleOffense co;
     private CoGame game;
-    private ListView listView;
+    private Listview listView;
     private TextDialog td;
     
     public LobbyScreen(CastleOffense castleoffense, CoGame game){
@@ -41,43 +41,13 @@ public class LobbyScreen implements Screen{
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
         
-        listView = new ListView(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
+        listView = new Listview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
         listView.setPaddingPercentage(22, 16, 10, 10);
         listView.addString("lakjsdfklaf");
         listView.addString("TESTING");
         listView.addString("TESTING THE ");
         listView.addString("asdfkjljadsklfja;dsf");
         listView.addString("adfadslkf");
-        listView.addString("kldsjfiejiiiii");
-        listView.addString("aaa");
-         listView.addString("lakjsdfklaf");
-        listView.addString("TESTING");
-        listView.addString("TESTING THE ");
-        listView.addString("asdfkjljadsklfja;dsf");
-        listView.addString("adfadslkf");
-        listView.addString("kldsjfiejiiiii");
-        listView.addString("aaa");
-         listView.addString("lakjsdfklaf");
-        listView.addString("TESTING");
-        listView.addString("TESTING THE ");
-        listView.addString("asdfkjljadsklfja;dsf");
-        listView.addString("adfadslkf");
-        listView.addString("kldsjfiejiiiii");
-        listView.addString("aaa");
-         listView.addString("lakjsdfklaf");
-        listView.addString("TESTING");
-        listView.addString("TESTING THE ");
-        listView.addString("asdfkjljadsklfja;dsf");
-        listView.addString("adfadslkf");
-        listView.addString("kldsjfiejiiiii");
-        listView.addString("aaa");
-         listView.addString("lakjsdfklaf");
-        listView.addString("TESTING");
-        listView.addString("TESTING THE ");
-        listView.addString("asdfkjljadsklfja;dsf");
-        listView.addString("adfadslkf");
-        listView.addString("kldsjfiejiiiii");
-        listView.addString("aaa");
         
 
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
