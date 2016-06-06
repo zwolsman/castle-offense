@@ -94,7 +94,7 @@ public class GameMenu extends Listener implements Screen {
     private Label playerGoldDesc;
     private Label castleHp;
     private Label castleHpDesc;
-    private Label feedback;
+    private static Label feedback;
     private Listview offBought;
 
     private Defensive towerToPlace = null;
@@ -175,8 +175,8 @@ public class GameMenu extends Listener implements Screen {
         Gdx.input.setInputProcessor(stage);
     }
 
-    private void setPlayerFeedback(String feedback) {
-        this.feedback.setText(feedback);
+    public static void setPlayerFeedback(String message) {
+        feedback.setText(message);
     }
 
     private void setMenuBar() {

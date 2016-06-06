@@ -5,9 +5,9 @@ import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
+import com.s31b.castleoffense.ui.StatusUpdate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -97,7 +97,7 @@ public class Wave {
             return;
         }
 
-        System.out.println("displaying wave!");
+        StatusUpdate.log("displaying wave!");
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {
