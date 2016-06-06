@@ -5,6 +5,7 @@
  */
 package test.java.com.s31b.castleoffense.game;
 
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.*;
 import com.s31b.castleoffense.game.entity.Defensive;
@@ -15,6 +16,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import test.java.com.s31b.castleoffense.TestListener;
 
 /**
  *
@@ -25,8 +27,10 @@ public class TestCoGame {
     CoGame game;
 
     @Before
-    public void SetGame(){
+    public void SetGame() throws InterruptedException{
         game = new CoGame(1);
+        HeadlessApplication ha = new HeadlessApplication(new TestListener());
+        Thread.sleep(200);
     }
     
     @Test
@@ -46,6 +50,11 @@ public class TestCoGame {
     @Test
     public void TestPause(){
         game.pauseGame();
+    }
+    
+    @Test
+    public void TestEndGame(){
+        //game.endGame(true);
     }
     
     @Test
@@ -144,5 +153,30 @@ public class TestCoGame {
         assertFalse("g1 is equals with null",g1.equals(null));
         assertFalse("g1 is not equals with player",g1.equals(p1));
     }
-
+    
+    @Test
+    public void TestAddPlayer(){
+        game.addPlayer("test1");
+        assertEquals(1, game.getPlayers().size());
+        game.addPlayer("");
+        assertEquals(2, game.getPlayers().size());
+    }
+    
+    @Test
+    public void TestGetPlayerByName(){
+        game.addPlayer("test1");
+        game.addPlayer("");
+       
+        assertEquals("test1", game.getPlayerByName("test1").getName());
+        assertEquals("", game.getPlayerByName("").getName());
+    }
+    
+    @Test
+    public void TestGetPlayerById(){
+        game.addPlayer("test1");
+        game.addPlayer("");
+        
+        assertEquals("test1", game.getPlayerById(0).getName());
+        assertEquals("", game.getPlayerById(1).getName());
+    }
 }

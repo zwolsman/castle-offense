@@ -3,6 +3,7 @@ package com.s31b.castleoffense.ui.listeners;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.server.packets.StartGamePacket;
 import com.s31b.castleoffense.server.packets.WinGamePacket;
 
 /**
@@ -10,10 +11,10 @@ import com.s31b.castleoffense.server.packets.WinGamePacket;
  * @author Nick
  */
 public class SurrenderListener extends ClickListener {
-    
+
     private final int loser;
-    
-    public SurrenderListener(int loser){
+
+    public SurrenderListener(int loser) {
         this.loser = loser;
     }
 

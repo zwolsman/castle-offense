@@ -40,6 +40,6 @@ public class TestGameManager {
     @Test
     public void TestCreateGame() throws RemoteException{
         CoGame game = GameManager.getInstance().createGame();
-        assertEquals(22, game.getId());
+        assertEquals(24, game.getId());
     }
 }

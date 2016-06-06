@@ -32,9 +32,13 @@ public class TestOffensive {
         CoGame g = GameManager.getInstance().createGame();
         Player p1 = new Player(0, "Gebruiker", g);
         Player p2 = new Player(1, "Testgebruiker", g);
+        Player p3 = new Player(0, "Test3", g);
+        Player p4 = new Player(1, "Test3", g);
         o1 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p1, 400, 100, 10, 100);
         o2 = new Offensive(EntityType.Military, "Police", "Advanced lvl 3 monster", null, p1, 500, 110, 15, 110);
         o3 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p2, 600, 120, 20, 120);
+        Offensive o4 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p3, 600, 120, 20, 120);
+        Offensive o5 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p4, 600, 120, 20, 120);
     }
     
     @Test
@@ -42,6 +46,13 @@ public class TestOffensive {
         assertEquals(100, o1.getHitpoints(), 0);
         assertEquals(110, o2.getHitpoints(), 0);
         assertEquals(120, o3.getHitpoints(), 0);
+    }
+    
+    @Test
+    public void TestGetTotalHitpoints(){
+        assertEquals(100, o1.getTotalHitpoints(), 0);
+        assertEquals(110, o2.getTotalHitpoints(), 0);
+        assertEquals(120, o3.getTotalHitpoints(), 0);
     }
     
     @Test
