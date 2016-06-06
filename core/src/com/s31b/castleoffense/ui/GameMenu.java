@@ -347,16 +347,11 @@ public class GameMenu extends Listener implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countDefList++;
-
                 if (countDefList >= defList.size()) {
                     countDefList = 0;
                 }
-
-                defLabel.setText(defList.get(countDefList).getName());
-                defPrice.setText(Integer.toString(defList.get(countDefList).getPrice()));
-                defDescription.setText(defList.get(countDefList).getDescr());
-                defDps.setText(Integer.toString(defList.get(countDefList).getDamage()));
-                defRange.setText(Integer.toString(defList.get(countDefList).getRange()));
+                DefensiveDAO defDAO = defList.get(countDefList);             
+                setDefInfo(defDAO);
             }
         ;
         });
@@ -495,6 +490,14 @@ public class GameMenu extends Listener implements Screen {
             drawGhostTower();
         }
         batch.end();
+    }
+    
+    private void setDefInfo(DefensiveDAO defDAO){               
+        defLabel.setText(defDAO.getName());
+        defPrice.setText(Integer.toString(defDAO.getPrice()));
+        defDescription.setText(defDAO.getDescr());
+        defDps.setText(Integer.toString(defDAO.getDamage()));
+        defRange.setText(Integer.toString(defDAO.getRange()));
     }
     
     private void setOffInfo(OffensiveDAO offDAO){
