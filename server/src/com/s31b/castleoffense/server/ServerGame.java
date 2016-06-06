@@ -7,6 +7,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.player.Player;
+import com.s31b.castleoffense.server.packets.IPacket;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -49,6 +50,17 @@ public class ServerGame extends Listener implements ApplicationListener {
 
     public Collection<Connection> getConnections() {
         return players.keySet();
+    }
+
+    /**
+     * Send a packet to all the connected players
+     *
+     * @param packet Packet to send
+     */
+    public void broadcast(IPacket packet) {
+        for (Connection c : getConnections()) {
+            c.sendTCP(packet);
+        }
     }
 
     /**
