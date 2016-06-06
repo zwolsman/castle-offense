@@ -17,6 +17,7 @@ public class AudioPlayer {
     private static Music AUDIO_PLAYER;
 
     public static void play(String name) {
+        checkPlaying();
         AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
         AUDIO_PLAYER.play();
     }
@@ -26,26 +27,35 @@ public class AudioPlayer {
      * @param name
      * @param volume number between 1 and 100
      */
-    public static void play(String name, int volume) {
+    public static void play(String name, float volume) {
+        checkPlaying();
         if (volume > 0 && volume < 100) {
             AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
-            AUDIO_PLAYER.setVolume(((float) volume / 100));
+            AUDIO_PLAYER.setVolume(volume);
             AUDIO_PLAYER.play();
         }
     }
 
     public static void loop(String name) {
+        checkPlaying();
         AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
         AUDIO_PLAYER.setLooping(true);
         AUDIO_PLAYER.play();
     }
 
-    public static void loop(String name, int volume) {
+    public static void loop(String name, float volume) {
+        checkPlaying();
         if (volume > 0 && volume < 100) {
             AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
-            AUDIO_PLAYER.setVolume(((float) volume / 100));
+            AUDIO_PLAYER.setVolume(volume);
             AUDIO_PLAYER.setLooping(true);
             AUDIO_PLAYER.play();
+        }
+    }
+
+    private static void checkPlaying() {
+        if (AUDIO_PLAYER != null && (AUDIO_PLAYER.isPlaying() || AUDIO_PLAYER.isLooping())) {
+            AUDIO_PLAYER.dispose();
         }
     }
 }
