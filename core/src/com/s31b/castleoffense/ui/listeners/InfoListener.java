@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.ui.InfoScreen;
-import com.s31b.castleoffense.ui.LobbyScreen;
 
 /**
  *
