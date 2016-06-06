@@ -57,7 +57,7 @@ public class MainMenu extends Listener implements Screen {
         Globals.client.getClient().addListener(this);
         Globals.client.connect();
 
-        AudioPlayer.loop("start.mp3", 0.3f);
+        AudioPlayer.loop("start.mp3", 0.2f);
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
