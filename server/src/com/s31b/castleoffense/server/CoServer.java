@@ -148,6 +148,6 @@ public class CoServer extends Listener {
         server.getKryo().register(BoughtTowerPacket.class);
 
         server.getKryo().register(EndWavePacket.class);
-
+        server.getKryo().register(WinGamePacket.class);
     }
 }

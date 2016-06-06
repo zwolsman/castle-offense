@@ -39,6 +39,7 @@ import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
+import com.s31b.castleoffense.server.packets.WinGamePacket;
 import com.s31b.castleoffense.ui.listeners.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +148,7 @@ public class GameMenu extends Listener implements Screen {
         });
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
-        surrender.addListener(new SurrenderListener(game));
+        surrender.addListener(new SurrenderListener(player.getId()));
 
         endWave.setSize(120, 70);
         endWave.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 110);
@@ -584,7 +585,11 @@ public class GameMenu extends Listener implements Screen {
             }
             game.getCurrentWave().endWave();
         }
-
+        
+        if (obj instanceof WinGamePacket) {
+            WinGamePacket packet = (WinGamePacket) obj;
+            game.endGame(packet.winnerid != player.getId());
+        }
     }
 
     private void drawGhostTower() {

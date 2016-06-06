@@ -2,9 +2,11 @@ package com.s31b.castleoffense.game;
 
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
+import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
+import com.s31b.castleoffense.server.packets.WinGamePacket;
 import com.s31b.castleoffense.ui.EndGameMenu;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -128,7 +130,6 @@ public class CoGame {
 
     /**
      * Ends a game
-     * @param playerid id of player ending the game
      * @param winner is this the winning player?
      */
     public void endGame(boolean winner) {
@@ -172,7 +173,8 @@ public class CoGame {
                 if (player.getCastle().getHitpoints() > 0) {
                     getCurrentWave().update();
                 } else {
-                    endGame(false);
+                    // this player has lost the game
+                    Globals.client.send(new WinGamePacket(player.getId()));
                 }
             }
         } else {
