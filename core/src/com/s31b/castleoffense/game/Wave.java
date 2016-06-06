@@ -55,6 +55,14 @@ public class Wave {
     public void addOffensive(Offensive entity) {
         offEntities.add(entity);
     }
+    
+    /**
+     * Gets the list of offensive entity's to the wave that will be attacking the other
+     * players castle
+     */
+    public List<Offensive> getOffensives() {
+        return this.offEntities;
+    }
 
     /**
      * Ends the wave. If all players ended the wave the wave will be played. End

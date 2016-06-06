@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -23,13 +24,13 @@ import java.util.Scanner;
 import com.s31b.castleoffense.Globals;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.s31b.castleoffense.ui.listeners.*;
 
 /**
  *
  * @author Nick
  */
 public class MainMenu extends Listener implements Screen {
-
     private OrthographicCamera camera;
     private imageButton buttonPlay;
     private imageButton buttonInfo;
@@ -56,44 +57,20 @@ public class MainMenu extends Listener implements Screen {
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+        
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
 
         buttonPlay = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainStart.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainStartHover.png")));
-        buttonPlay.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                System.out.println("Creating game");
-                startGame();
-            }
-        ;
-        });
+        buttonPlay.addListener(new StartGameListener());
+       
         buttonJoin = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainJoin.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinHover.png")));
-        buttonJoin.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                System.out.println("Enter the id of the game:");
-                Scanner sc = new Scanner(System.in);
-
-                int nextId = sc.nextInt();
-                System.out.println("Trying to join game " + nextId);
-                joinGame(nextId);
-
-            }
-        ;
-        });
+        buttonJoin.addListener(new JoinGameListener());
+        
         buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoHover.png")));
-        buttonInfo.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-                co.setScreen(new InfoScreen(co, game));
-            }
-        ;
-        });
+        buttonInfo.addListener(new InfoListener(co, game)); 
+        
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitHover.png")));
         buttonQuit.addListener(new ClickListener() {
             @Override
@@ -102,31 +79,25 @@ public class MainMenu extends Listener implements Screen {
             }
         ;
         });
-
+        setButtonPos();    
         Gdx.input.setInputProcessor(stage);
-
-        /* Give main menu buttons their styling:
-        horizontal pos: half of the screen horizontally
-        Vertical pos: 35, 45, 55, 65 procent of the screen vertically */
-        buttonPlay.setPosition((Gdx.graphics.getWidth() / 2) - (buttonPlay.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 55 + 30);
-        buttonJoin.setPosition((Gdx.graphics.getWidth() / 2) - (buttonJoin.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 45 + 20);
-        buttonInfo.setPosition((Gdx.graphics.getWidth() / 2) - (buttonInfo.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 35 + 10);
-        buttonQuit.setPosition((Gdx.graphics.getWidth() / 2) - (buttonQuit.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 25);
-
+        
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
     }
-
-    private void startGame() {
-        Globals.client.send(new CreateGamePacket());
+    
+    /* Give main menu buttons their styling:
+    horizontal pos: half of the screen horizontally
+    Vertical pos: 35, 45, 55, 65 procent of the screen vertically */
+    public void setButtonPos(){
+        buttonPlay.setPosition((Gdx.graphics.getWidth() / 2) - (buttonPlay.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 55 + 30);
+        buttonJoin.setPosition((Gdx.graphics.getWidth() / 2) - (buttonJoin.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 45 + 20);
+        buttonInfo.setPosition((Gdx.graphics.getWidth() / 2) - (buttonInfo.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 35 + 10);
+        buttonQuit.setPosition((Gdx.graphics.getWidth() / 2) - (buttonQuit.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 25);
     }
-
-    private void joinGame(int id) {
-        Globals.client.send(new JoinGamePacket(id));
-    }
-
+    
     @Override
     public void received(Connection connection, Object obj) {
         if (obj instanceof PlayerListPacket) {

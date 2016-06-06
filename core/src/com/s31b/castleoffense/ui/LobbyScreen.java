@@ -17,9 +17,8 @@ import com.s31b.castleoffense.ui.listeners.BackListener;
  *
  * @author Nick
  */
-public class InfoScreen implements Screen{
+public class LobbyScreen implements Screen{
     private OrthographicCamera camera;
-    private Skin skin;
     private Stage stage;
     private Image background;
     private Image infoBody;
@@ -29,7 +28,7 @@ public class InfoScreen implements Screen{
     private Listview listView;
     private TextDialog td;
     
-    public InfoScreen(CastleOffense castleoffense, CoGame game){
+    public LobbyScreen(CastleOffense castleoffense, CoGame game){
         this.co = castleoffense;
         this.game = game;
         this.create();
@@ -37,24 +36,25 @@ public class InfoScreen implements Screen{
      
     public void create(){
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
        
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));  
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
         
-        infoBody = new Image(new Texture(Gdx.files.internal("GUIMenu/InfoBackgroundText.png")));  
-        infoBody.setSize(500, 550);
-        infoBody.setPosition((Gdx.graphics.getWidth() / 2) - (infoBody.getWidth() / 2), (Gdx.graphics.getHeight()/ 2) - (infoBody.getHeight()/ 2));
+        listView = new Listview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
+        listView.setPaddingPercentage(22, 16, 10, 10);
+        listView.addString("lakjsdfklaf");
+        listView.addString("TESTING");
+        listView.addString("TESTING THE ");
+        listView.addString("asdfkjljadsklfja;dsf");
+        listView.addString("adfadslkf");
         
-        //td = new TextDialog("TestDialog", "aaaaaaaaa", skin);   
 
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
         buttonBack.addListener(new BackListener(co, game)); 
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
-        
-        
+                
         Gdx.input.setInputProcessor(stage);
     }
      
@@ -63,10 +63,8 @@ public class InfoScreen implements Screen{
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.addActor(background);
-        stage.addActor(infoBody);
         stage.addActor(buttonBack);
-        //tage.addActor(td);
-
+        listView.render(stage);
 
         stage.act();
         stage.draw();

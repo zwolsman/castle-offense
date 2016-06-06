@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.s31b.castleoffense.ui.listeners.HoverListener;
 
 public class imageButton extends ImageButton
 {   
@@ -20,6 +21,7 @@ public class imageButton extends ImageButton
         super(new SpriteDrawable(new Sprite(texture_up)),
               new SpriteDrawable(new Sprite(texture_down)));
         
+        //Add the hovers to the button
         this.addListener(new HoverListener(this));
         
         draw_down = new Image(texture_down).getDrawable();
