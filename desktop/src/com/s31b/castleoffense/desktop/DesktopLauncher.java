@@ -12,6 +12,6 @@ public class DesktopLauncher {
         config.height = 700;
         config.resizable = false;
         config.samples = 2;
-        new LwjglApplication(new CastleOffense(), config);
+        new LwjglApplication(CastleOffense.getInstance(), config);
     }
 }

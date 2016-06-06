@@ -3,13 +3,11 @@ package com.s31b.castleoffense.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.ui.listeners.BackListener;
 
@@ -18,17 +16,14 @@ import com.s31b.castleoffense.ui.listeners.BackListener;
  * @author Nick
  */
 public class InfoScreen implements Screen{
-    private OrthographicCamera camera;
     private Skin skin;
     private Stage stage;
     private Image background;
     private Image infoBody;
     private imageButton buttonBack;
-    private CastleOffense co;
     private CoGame game;
-
-    public InfoScreen(CastleOffense castleoffense, CoGame game){
-        this.co = castleoffense;
+    
+    public InfoScreen(CoGame game){
         this.game = game;
         this.create();
     }
@@ -46,7 +41,7 @@ public class InfoScreen implements Screen{
         infoBody.setPosition((Gdx.graphics.getWidth() / 2) - (infoBody.getWidth() / 2), (Gdx.graphics.getHeight()/ 2) - (infoBody.getHeight()/ 2));   
 
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
-        buttonBack.addListener(new BackListener(co, game)); 
+        buttonBack.addListener(new BackListener(game)); 
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
         

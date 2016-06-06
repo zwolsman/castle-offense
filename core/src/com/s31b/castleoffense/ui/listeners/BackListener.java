@@ -18,17 +18,15 @@ import com.s31b.castleoffense.ui.MainMenu;
  * @author Nick
  */
 public class BackListener extends ClickListener  {
-    private CastleOffense co;
     private CoGame game;
     
-    public BackListener(CastleOffense co, CoGame g){
-        this.co = co;
+    public BackListener(CoGame g){
         this.game = g;
     }
     
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        co.setScreen(new MainMenu(co, game));
+        CastleOffense.getInstance().setScreen(new MainMenu(game));
     }
 }

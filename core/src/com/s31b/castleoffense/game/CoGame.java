@@ -1,9 +1,13 @@
 package com.s31b.castleoffense.game;
 
+import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.EntityFactory;
+import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.entity.Defensive;
 import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
+import com.s31b.castleoffense.server.packets.WinGamePacket;
+import com.s31b.castleoffense.ui.EndGameMenu;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +20,7 @@ import java.util.Objects;
  */
 public class CoGame {
 
-    private int id;
+    private final int id;
 
     private int currentWaveId;
 
@@ -26,7 +30,7 @@ public class CoGame {
     private Map map;
     private List<Wave> waves;
     private List<Defensive> towers;
-    private List<Player> players = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
 
     public CoGame(int id) {
         this.id = id;
@@ -126,11 +130,11 @@ public class CoGame {
 
     /**
      * Ends a game
+     * @param winner is this the winning player?
      */
-    public void endGame() {
+    public void endGame(boolean winner) {
         this.state = GameState.Ended;
-        System.out.println("Game ended!");
-        //System.exit(0);
+        CastleOffense.getInstance().setScreen(new EndGameMenu(winner, this));
     }
 
     /**
@@ -164,12 +168,13 @@ public class CoGame {
     }
 
     public void update() {
-        if (startTime < endTime) {
+        if (System.currentTimeMillis() < endTime) {
             for (Player player : players) {
                 if (player.getCastle().getHitpoints() > 0) {
                     getCurrentWave().update();
                 } else {
-                    endGame();
+                    // this player has lost the game
+                    Globals.client.send(new WinGamePacket(player.getId()));
                 }
             }
         } else {
@@ -202,6 +207,10 @@ public class CoGame {
 
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
+    }
+    
+    public GameState getState(){
+        return this.state;
     }
 
     @Override

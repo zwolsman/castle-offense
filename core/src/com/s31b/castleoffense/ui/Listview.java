@@ -17,10 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  */
 public class Listview extends Table {
     private Skin skin;
-    private int width;
-    private int height;
-    private int posX;
-    private int posY;
+    private final int width;
+    private final int height;
+    private final int posX;
+    private final int posY;
     private Image background;
     private ScrollPane scroll;
     private int paddingTop;

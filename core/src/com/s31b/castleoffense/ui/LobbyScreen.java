@@ -19,12 +19,10 @@ public class LobbyScreen implements Screen{
     private Stage stage;
     private Image background;
     private imageButton buttonBack;
-    private CastleOffense co;
     private CoGame game;
     private Lobbyview lobbyview;
     
-    public LobbyScreen(CastleOffense castleoffense, CoGame game){
-        this.co = castleoffense;
+    public LobbyScreen(CoGame game){
         this.game = game;
         this.create();
     }
@@ -45,7 +43,7 @@ public class LobbyScreen implements Screen{
         lobbyview.addString("adfadslkf");
         
         buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
-        buttonBack.addListener(new BackListener(co, game)); 
+        buttonBack.addListener(new BackListener(game));
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
                 

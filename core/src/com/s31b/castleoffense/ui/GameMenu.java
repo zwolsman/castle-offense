@@ -32,6 +32,7 @@ import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.DefensiveDAO;
 import com.s31b.castleoffense.data.OffensiveDAO;
 import com.s31b.castleoffense.game.CoGame;
+import com.s31b.castleoffense.game.GameState;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
@@ -39,6 +40,7 @@ import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
 import com.s31b.castleoffense.server.packets.BuyTowerPacket;
 import com.s31b.castleoffense.server.packets.EndWavePacket;
 import com.s31b.castleoffense.server.packets.PlayerListPacket;
+import com.s31b.castleoffense.server.packets.WinGamePacket;
 import com.s31b.castleoffense.ui.listeners.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +51,6 @@ import java.util.List;
  */
 public class GameMenu extends Listener implements Screen {
 
-    private CastleOffense co;
     private CoGame game;
     private OrthographicCamera camera;
     private Stage stage;
@@ -98,12 +99,11 @@ public class GameMenu extends Listener implements Screen {
 
     private Defensive towerToPlace = null;
 
-    public GameMenu(CastleOffense castleoffense, CoGame game, Player player) {
+    public GameMenu(CoGame game, Player player) {
         if (player.getId() > 0) {
             opponent = game.getPlayerById((player.getId() + 1) % game.getPlayers().size());
             System.out.println("Opponent: " + opponent.getName());
         }
-        this.co = castleoffense;
         this.game = game;
         this.player = player;
         this.defList = EntityFactory.getAllDefensives();
@@ -151,7 +151,7 @@ public class GameMenu extends Listener implements Screen {
         });
 
         surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
-        surrender.addListener(new SurrenderListener(co, game));
+        surrender.addListener(new SurrenderListener(player.getId()));
 
         endWave.setSize(120, 70);
         endWave.setPosition(Gdx.graphics.getWidth() - 140, Gdx.graphics.getHeight() - 110);
@@ -483,16 +483,8 @@ public class GameMenu extends Listener implements Screen {
             playerGold.setText(Integer.toString(player.getGold()));
             playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
 
-            String CastleOpponentHp = "";
             if (opponent != null) {
                 castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
-            }
-
-            if (player.getCastle().getHitpoints() == 0) {
-                co.setScreen(new EndGameMenu(false, co, game));
-            }
-            if (opponent.getCastle().getHitpoints() == 0) {
-                co.setScreen(new EndGameMenu(true, co, game));
             }
         }
 
@@ -592,7 +584,11 @@ public class GameMenu extends Listener implements Screen {
             }
             game.getCurrentWave().endWave();
         }
-
+        
+        if (obj instanceof WinGamePacket) {
+            WinGamePacket packet = (WinGamePacket) obj;
+            game.endGame(packet.winnerid != player.getId());
+        }
     }
 
     private void drawGhostTower() {

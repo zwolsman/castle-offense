@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.player.Player;
 import com.s31b.castleoffense.server.KryoClient;
@@ -21,6 +20,7 @@ import com.s31b.castleoffense.Globals;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.s31b.castleoffense.AudioPlayer;
+import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.ui.listeners.*;
 
 /**
@@ -36,12 +36,10 @@ public class MainMenu extends Listener implements Screen {
     private imageButton buttonJoin;
     private Image background;
     private Stage stage;
-    private CastleOffense co;
     private CoGame game;
     private Player player;
 
-    public MainMenu(CastleOffense castleoffense, CoGame game) {
-        this.co = castleoffense;
+    public MainMenu(CoGame game) {
         this.game = game;
         this.player = null;
         this.create();
@@ -64,11 +62,11 @@ public class MainMenu extends Listener implements Screen {
         buttonPlay.addListener(new StartGameListener());
 
         buttonJoin = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainJoin.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainJoinHover.png")));
-        buttonJoin.addListener(new JoinGameListener(co, game));
+        buttonJoin.addListener(new JoinGameListener(game));
 
         buttonInfo = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainInfo.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainInfoHover.png")));
-        buttonInfo.addListener(new InfoListener(co, game));
-
+        buttonInfo.addListener(new InfoListener(game)); 
+        
         buttonQuit = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonMainQuit.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonMainQuitHover.png")));
         buttonQuit.addListener(new ClickListener() {
             @Override
@@ -85,11 +83,13 @@ public class MainMenu extends Listener implements Screen {
         camera = new OrthographicCamera(w, h);
         camera.setToOrtho(false);
     }
-
-    /* Give main menu buttons their styling:
-    horizontal pos: half of the screen horizontally
-    Vertical pos: 35, 45, 55, 65 procent of the screen vertically */
-    public void setButtonPos() {
+    
+    /**
+     * Give main menu buttons their styling:
+     * horizontal pos: half of the screen horizontally
+     * Vertical pos: 35, 45, 55, 65 procent of the screen vertically 
+    */
+    public void setButtonPos(){
         buttonPlay.setPosition((Gdx.graphics.getWidth() / 2) - (buttonPlay.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 55 + 30);
         buttonJoin.setPosition((Gdx.graphics.getWidth() / 2) - (buttonJoin.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 45 + 20);
         buttonInfo.setPosition((Gdx.graphics.getWidth() / 2) - (buttonInfo.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 35 + 10);
@@ -109,7 +109,7 @@ public class MainMenu extends Listener implements Screen {
             Gdx.app.postRunnable(new Runnable() {
                 @Override
                 public void run() {
-                    co.setScreen(new GameMenu(co, game, player));
+                    CastleOffense.getInstance().setScreen(new GameMenu(game, player));
                 }
             });
         }

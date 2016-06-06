@@ -18,18 +18,16 @@ import com.s31b.castleoffense.ui.LobbyScreen;
  * @author Nick
  */
 public class JoinGameListener extends ClickListener {
-    private final CastleOffense co;
     private final CoGame game;
     
-    public JoinGameListener(CastleOffense co, CoGame g){
-        this.co = co;
+    public JoinGameListener(CoGame g){
         this.game = g;
     }
     
     @Override
     public void clicked(InputEvent event, float x, float y) {
         Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        co.setScreen(new LobbyScreen(co, game));
+        CastleOffense.getInstance().setScreen(new LobbyScreen(game));
     }
     
 
