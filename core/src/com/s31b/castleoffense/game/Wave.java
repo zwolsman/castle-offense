@@ -99,7 +99,6 @@ public class Wave {
             return;
         }
 
-        System.out.println("displaying wave!");
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {
