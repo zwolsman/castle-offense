@@ -32,8 +32,8 @@ public class TestWave {
         Thread.sleep(500);
         
         game = new CoGame(1);
-        p1 = new Player(1, "Testgebruiker", game);
-        p2 = new Player(2, "Naam", game);
+        p1 = new Player(0, "Testgebruiker", game);
+        p2 = new Player(1, "Naam", game);
         w1 = new Wave(1, game);
     }
     

@@ -3,7 +3,6 @@ package com.s31b.castleoffense.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,11 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Align;
-import com.s31b.castleoffense.TextureGlobals;
-import com.s31b.castleoffense.ui.listeners.ListviewListener;
 
 /**
  *
@@ -44,8 +38,6 @@ public class Listview extends Table {
     }
     
     private void create(){
-        //TODO: scrollbar scolls wrong (from bottom to top)
-        //TODO: add setpaddingpercentage();
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/ListviewBackground.png")));
         background.setSize(width, height);
         background.setPosition(posX, posY);
@@ -63,7 +55,6 @@ public class Listview extends Table {
         
         scroll = new ScrollPane(this, scrollStyle);
         scroll.setScrollingDisabled(true, false);
-        scroll.addListener(new ListviewListener());
         setScrollLayout();
     }
     
@@ -93,7 +84,6 @@ public class Listview extends Table {
         l.setWrap(true);
         l.setColor(Color.BLACK);
         this.add(l).row();
-        //l.addListener(new ListviewListener());
     }
     
     public void render(Stage stage){

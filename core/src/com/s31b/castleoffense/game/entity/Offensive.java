@@ -144,14 +144,18 @@ public class Offensive extends Entity {
      * Calculates the next position to move to. Will use the speed of the unit
      * for movement
      */
-    public boolean update() {
+    public String update() {
         Tile tempTile = getNextPosition();
+
+        if (isDead()) {
+            return "Dead";
+        }
 
         if (tempTile == null) {
             // TODO
             // damage enemy castle
             // remove this offensive entity from the game/wave
-            return false;
+            return "Null";
         }
 
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
@@ -212,15 +216,21 @@ public class Offensive extends Entity {
             ingameX += distance;
 
         }
-        return true;
+        return "Updated";
     }
 
     public void draw(SpriteBatch batch) {
         if (!isSpawned()) {
             return;
         }
+        Texture t;
         //TODO make this dynamic
-        Texture t = TextureFactory.getTexture(super.getSprite() + "_hold_" + direction.toString().toLowerCase());
+        if (isDead()) {
+            t = TextureFactory.getTexture("blood");
+        } else {
+            t = TextureFactory.getTexture(super.getSprite() + "_hold_" + direction.toString().toLowerCase());
+        }
+
         batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
         drawHealthBar(batch);
 
