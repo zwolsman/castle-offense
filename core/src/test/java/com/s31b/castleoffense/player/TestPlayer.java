@@ -11,6 +11,7 @@ import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.GameManager;
 import com.s31b.castleoffense.game.entity.EntityType;
 import com.s31b.castleoffense.map.Tile;
+import com.s31b.castleoffense.map.TileType;
 import com.s31b.castleoffense.player.Castle;
 import com.s31b.castleoffense.player.Player;
 import java.rmi.RemoteException;
@@ -34,16 +35,16 @@ public class TestPlayer {
         GameManager gm = GameManager.getInstance();
         g = new CoGame(1);
         
-        p1 = new Player(1, "Test gebruiker", g);
+        p1 = new Player(0, "Test gebruiker", g);
         p2 = new Player(1, "", g);
-        p3 = new Player(99999, "999999999", g);
-        p4 = new Player(-1, "kwekfkwekfkwekfewkwekwke", g);
+        p3 = new Player(1, "999999999", g);
+        p4 = new Player(0, "kwekfkwekfkwekfewkwekwke", g);
         p5 = new Player(0, "?#^(^#83", g);
     }
     
     @Test
     public void TestCreatePlayer(){
-        assertEquals(1, p1.getId());
+        assertEquals(0, p1.getId());
         assertEquals("Test gebruiker", p1.getName());
         assertEquals(g, p1.getGame());
 
@@ -51,11 +52,11 @@ public class TestPlayer {
         assertEquals("", p2.getName());
         assertEquals(g, p2.getGame());
         
-        assertEquals(99999, p3.getId());
+        assertEquals(1, p3.getId());
         assertEquals("999999999", p3.getName());
         assertEquals(g, p3.getGame());
         
-        assertEquals(-1, p4.getId());
+        assertEquals(0, p4.getId());
         assertEquals("kwekfkwekfkwekfewkwekwke", p4.getName());
         assertEquals(g, p4.getGame());
         
@@ -78,8 +79,8 @@ public class TestPlayer {
     
     @Test
     public void TestGetOffensiveSpawnPosition(){
-        assertEquals("Player 1 spawn pos", new Tile(2, 10), p1.getOffensiveSpawnPosition());
-        assertEquals("Player 2 spawn pos", new Tile(2, 10), p2.getOffensiveSpawnPosition());
+        assertEquals("Player 1 spawn pos", new Tile(0, 10, TileType.Castle, g.getMap()), p1.getOffensiveSpawnPosition());
+        assertEquals("Player 2 spawn pos", new Tile(28, 11, TileType.Castle, g.getMap()), p2.getOffensiveSpawnPosition());
     }
     
     @Test

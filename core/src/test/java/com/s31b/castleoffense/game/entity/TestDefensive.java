@@ -32,8 +32,8 @@ public class TestDefensive {
     @Before
     public void SetupDefensive() throws RemoteException {
         CoGame g = GameManager.getInstance().createGame();
-        p1 = new Player(1, "Gebruiker", g);
-        p2 = new Player(0, "", g);
+        p1 = new Player(0, "Gebruiker", g);
+        p2 = new Player(1, "", g);
         def1 = new Defensive(EntityType.Blue, "", "", null, p1, 0, 40, 1);
         def2 = new Defensive(EntityType.Blue, "", "", null, p1, 0, 250, 20);
         def3 = new Defensive(EntityType.Blue, "", "", null, p1, 0, 500, 30);
@@ -79,13 +79,16 @@ public class TestDefensive {
         Offensive off1 = new Offensive(EntityType.Blue, "", "", null, p1, 0, 0, 0, 0);
         off1.spawn();
         
-        def1.setPosition(new Tile(2, 10));
+        def1.setPosition(new Tile(0, 11));
         def2.setPosition(new Tile(50, 50));
         def3.setPosition(new Tile(5, 5));
         
-        assertTrue("off1 is in range of o1", def1.inRange(off1));
-        assertFalse("off1 is in range of o2",def2.inRange(off1));
-        assertTrue("off1 is in range of o3",def3.inRange(off1));
+        assertTrue("def1 is not in range of o1", def1.inRange(off1));
+        assertFalse("def2 is in range of o2",def2.inRange(off1));
+        assertTrue("def3 is in range of o3",def3.inRange(off1));
+        
+        def3.setPosition(new Tile(28, 11));
+        assertTrue("def3 is not in range of o3",def3.inRange(off1));
     }
     
     @Test

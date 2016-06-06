@@ -30,13 +30,10 @@ public class TestOffensive {
     @Before
     public void SetupOffensive() throws RemoteException {
         CoGame g = GameManager.getInstance().createGame();
-        Player p1 = new Player(1, "Gebruiker", g);
-        Player p2 = new Player(2, "Testgebruiker", g);
-        Player p3 = new Player(0, "Testgebruiker", g);
+        Player p1 = new Player(0, "Gebruiker", g);
+        Player p2 = new Player(1, "Testgebruiker", g);
         o1 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p1, 400, 100, 10, 100);
         o2 = new Offensive(EntityType.Military, "Police", "Advanced lvl 3 monster", null, p1, 500, 110, 15, 110);
-        o3 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p2, 600, 120, 20, 120);
-        
         o3 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p2, 600, 120, 20, 120);
     }
     
@@ -74,10 +71,9 @@ public class TestOffensive {
         o3.spawn();
         
         
-        assertEquals(new Tile(3, 10, TileType.Path, new Map()), o1.getNextPosition());
-        assertEquals(new Tile(3, 10, TileType.Path, new Map()), o2.getNextPosition());
-        assertEquals(new Tile(3, 10, TileType.Path, new Map()), o3.getNextPosition());
-        //assertEquals(new Tile(7, 1, TileType.Path, new Map()), o3.getNextPosition());
+        assertEquals(new Tile(1, 10, TileType.Path, new Map()), o1.getNextPosition());
+        assertEquals(new Tile(1, 10, TileType.Path, new Map()), o2.getNextPosition());
+        assertEquals(new Tile(28, 10, TileType.Path, new Map()), o3.getNextPosition());
     }
     @Test
     public void TestRemoveHealth(){
@@ -115,15 +111,16 @@ public class TestOffensive {
     @Test
     public void TestGetX(){
         o1.spawn();
-        assertEquals(80, o1.getX(), 0);
+        o3.spawn();
+        assertEquals(0, o1.getX(), 0);
         assertEquals(0, o2.getX(), 0);
-        assertEquals(0, o3.getX(), 0);
+        assertEquals(1120, o3.getX(), 0); ////Location 28 * tile width (40)
     }
     
     @Test
     public void TestGetY(){
         o1.spawn();
-        assertEquals(400, o1.getY(), 0);
+        assertEquals(400, o1.getY(), 0); ////Location 10 * tile height (40)
         assertEquals(0, o2.getY(), 0);
         assertEquals(0, o3.getY(), 0);
     }

@@ -33,8 +33,8 @@ public class TestEnitity {
     @BeforeClass
     public static void SetupOffensive() {
         CoGame g = new CoGame(1);
-        p1 = new Player(1, "Gebruiker1", g);
-        p2 = new Player(2, "Gebruiker2", g);
+        p1 = new Player(0, "Gebruiker1", g);
+        p2 = new Player(1, "Gebruiker2", g);
         
         o1 = new Offensive(EntityType.Military, "Militair", "Advanced lvl 3 monster", null, p1, 400, 100, 10, 100);
         EntityStartID = Entity.getNextId();
