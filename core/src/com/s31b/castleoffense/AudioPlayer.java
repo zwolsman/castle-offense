@@ -5,7 +5,6 @@
  */
 package com.s31b.castleoffense;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 /**
@@ -18,7 +17,8 @@ public class AudioPlayer {
 
     public static void play(String name) {
         checkPlaying();
-        AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
+        AUDIO_PLAYER = AudioFactory.getMusic(name);
+        AUDIO_PLAYER.setLooping(false);
         AUDIO_PLAYER.play();
     }
 
@@ -30,7 +30,8 @@ public class AudioPlayer {
     public static void play(String name, float volume) {
         checkPlaying();
         if (volume > 0 && volume < 100) {
-            AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
+            AUDIO_PLAYER = AudioFactory.getMusic(name);
+            AUDIO_PLAYER.setLooping(false);
             AUDIO_PLAYER.setVolume(volume);
             AUDIO_PLAYER.play();
         }
@@ -38,7 +39,7 @@ public class AudioPlayer {
 
     public static void loop(String name) {
         checkPlaying();
-        AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
+        AUDIO_PLAYER = AudioFactory.getMusic(name);
         AUDIO_PLAYER.setLooping(true);
         AUDIO_PLAYER.play();
     }
@@ -46,7 +47,7 @@ public class AudioPlayer {
     public static void loop(String name, float volume) {
         checkPlaying();
         if (volume > 0 && volume < 100) {
-            AUDIO_PLAYER = Gdx.audio.newMusic(Gdx.files.internal(name));
+            AUDIO_PLAYER = AudioFactory.getMusic(name);
             AUDIO_PLAYER.setVolume(volume);
             AUDIO_PLAYER.setLooping(true);
             AUDIO_PLAYER.play();

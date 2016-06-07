@@ -3,6 +3,7 @@ package com.s31b.castleoffense.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.s31b.castleoffense.AudioFactory;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
@@ -20,7 +21,8 @@ public class Defensive extends Entity {
     private int damagePerSecond;
     private int range;
     private Offensive target;
-    private Sound sound;
+    private final Sound shootSound;
+    private float deltaCounter;
 
     private Tile position;
     /**
@@ -40,6 +42,8 @@ public class Defensive extends Entity {
         this.range = range;
         position = new Tile(0, 0);
         target = null;
+        shootSound = AudioFactory.getSound("laser.wav");
+        deltaCounter = 0f;
     }
     /**
      * Constructor for general use (From database)
@@ -52,7 +56,8 @@ public class Defensive extends Entity {
         this.range = data.getRange();
         position = new Tile(0, 0);
         target = null;
-        sound = Gdx.audio.newSound(Gdx.files.internal("start.mp3"));
+        shootSound = AudioFactory.getSound("laser.wav");
+        deltaCounter = 0f;
     }
 
     /**
@@ -157,9 +162,13 @@ public class Defensive extends Entity {
     }
 
     public void dealDamage() {
-        target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
-        ///If sound not exists don't play the sound
-        if(sound != null)
-            sound.play(0.9f);
+        //target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
+        deltaCounter -= Gdx.graphics.getDeltaTime();
+        System.out.println(deltaCounter);
+        if (deltaCounter <= 0f) {
+            deltaCounter += 1f;
+            shootSound.play(0.9f);
+            target.removeHealth(damagePerSecond * 1f);
+        }
     }
 }
