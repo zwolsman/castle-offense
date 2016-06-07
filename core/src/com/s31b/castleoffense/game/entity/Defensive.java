@@ -20,7 +20,8 @@ public class Defensive extends Entity {
     private int damagePerSecond;
     private int range;
     private Offensive target;
-    private Sound sound;
+    private final Sound shootSound;
+    private float deltaCounter;
 
     private Tile position;
 
@@ -30,7 +31,8 @@ public class Defensive extends Entity {
         this.range = range;
         position = new Tile(0, 0);
         target = null;
-        sound = Gdx.audio.newSound(Gdx.files.internal("start.mp3"));
+        shootSound = Gdx.audio.newSound(Gdx.files.internal("laser.wav"));
+        deltaCounter = 0f;
     }
 
     public Defensive(DefensiveDAO data, Player owner) {
@@ -39,7 +41,8 @@ public class Defensive extends Entity {
         this.range = data.getRange();
         position = new Tile(0, 0);
         target = null;
-        sound = Gdx.audio.newSound(Gdx.files.internal("start.mp3"));
+        shootSound = Gdx.audio.newSound(Gdx.files.internal("laser.wav"));
+        deltaCounter = 0f;
     }
 
     /**
@@ -144,7 +147,13 @@ public class Defensive extends Entity {
     }
 
     public void dealDamage() {
-        target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
-        sound.play(0.9f);
+        //target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
+        deltaCounter -= Gdx.graphics.getDeltaTime();
+        System.out.println(deltaCounter);
+        if (deltaCounter <= 0f) {
+            deltaCounter += 1f;
+            shootSound.play(0.9f);
+            target.removeHealth(damagePerSecond * 1f);
+        }
     }
 }
