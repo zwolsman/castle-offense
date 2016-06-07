@@ -3,6 +3,7 @@ package com.s31b.castleoffense.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.s31b.castleoffense.AudioFactory;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
@@ -31,7 +32,7 @@ public class Defensive extends Entity {
         this.range = range;
         position = new Tile(0, 0);
         target = null;
-        shootSound = Gdx.audio.newSound(Gdx.files.internal("laser.wav"));
+        shootSound = AudioFactory.getSound("laser.wav");
         deltaCounter = 0f;
     }
 
@@ -41,7 +42,7 @@ public class Defensive extends Entity {
         this.range = data.getRange();
         position = new Tile(0, 0);
         target = null;
-        shootSound = Gdx.audio.newSound(Gdx.files.internal("laser.wav"));
+        shootSound = AudioFactory.getSound("laser.wav");
         deltaCounter = 0f;
     }
 
