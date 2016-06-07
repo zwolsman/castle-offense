@@ -4,31 +4,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane.ScrollPaneStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.s31b.castleoffense.ui.listeners.LobbyListener;
 
 /**
  *
  * @author Nick
  */
-public class Listview extends Table {
+public class Lobbyview extends Table {
     private Skin skin;
-    private final int width;
-    private final int height;
-    private final int posX;
-    private final int posY;
+    private int width;
+    private int height;
+    private int posX;
+    private int posY;
     private Image background;
-    private ScrollPane scroll;
     private int paddingTop;
     private int paddingBottom;
     private int paddingLeft;
     private int paddingRight;
 
-    public Listview(int width, int height, int posX, int posY){
+    public Lobbyview(int width, int height, int posX, int posY){
         this.width = width;
         this.height = height;
         this.posX = posX;
@@ -41,34 +40,18 @@ public class Listview extends Table {
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/ListviewBackground.png")));
         background.setSize(width, height);
         background.setPosition(posX, posY);
-        
+
+        this.setSize(width - (paddingLeft + paddingRight), height - (paddingTop + paddingBottom));
+        this.setPosition(posX + paddingLeft, posY + paddingBottom);
         this.skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
-        this.left().top();
-        
-        
-        Image ScrollBar = new Image(new Texture(Gdx.files.internal("GUIMenu/scrollbar.png")));
-        Image ScrollKnob = new Image(new Texture(Gdx.files.internal("GUIMenu/scrollKnob.png")));
-        
-        ScrollPaneStyle scrollStyle = new ScrollPaneStyle();
-        scrollStyle.vScroll = ScrollBar.getDrawable();
-        scrollStyle.vScrollKnob = ScrollKnob.getDrawable();
-        
-        scroll = new ScrollPane(this, scrollStyle);
-        scroll.setScrollingDisabled(true, false);
-        setScrollLayout();
+        this.left().top();  
     }
-    
-    private void setScrollLayout(){
-        scroll.setSize(width - (paddingLeft + paddingRight), height - (paddingTop + paddingBottom));
-        scroll.setPosition(posX + paddingLeft, posY + paddingBottom);
-    }
-    
+
     public void setPadding(int padTop, int PadBottom, int PadLeft, int PadRight){
         this.paddingTop = padTop;
         this.paddingBottom = PadBottom;
         this.paddingLeft = PadLeft;
         this.paddingRight = PadRight;
-        setScrollLayout();
     }
     
     public void setPaddingPercentage(int percentageTop, int percentageBottom, int percentageLeft, int percentageRight){
@@ -80,15 +63,18 @@ public class Listview extends Table {
     }
     
     public void addString(String text){
-        Label l = new Label(text, skin);
-        l.setWrap(true);
+        HorizontalGroup hg = new HorizontalGroup();
+        Label l = new Label("testr", skin);
         l.setColor(Color.BLACK);
-        this.add(l).row();
+        hg.addActor(l);
+        hg.addListener(new LobbyListener());
+        this.add(hg).row();
     }
     
     public void render(Stage stage){
         stage.addActor(background);
-        stage.addActor(scroll);
+        stage.addActor(this);
+        
     }
      
 }

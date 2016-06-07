@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author Marvin Zwolsman
  */
-public class PlayerListPacket {
+public class PlayerListPacket implements IPacket {
 
     public ArrayList<String> players = new ArrayList<>();
 

@@ -25,7 +25,17 @@ public class Defensive extends Entity {
     private float deltaCounter;
 
     private Tile position;
-
+    /**
+     * Constructor used for Unit Tests
+     * @param type
+     * @param name
+     * @param descr
+     * @param sprite
+     * @param owner
+     * @param price
+     * @param dps
+     * @param range 
+     */
     public Defensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int dps, int range) {
         super(type, name, descr, sprite, price, owner);
         damagePerSecond = dps;
@@ -35,7 +45,11 @@ public class Defensive extends Entity {
         shootSound = AudioFactory.getSound("laser.wav");
         deltaCounter = 0f;
     }
-
+    /**
+     * Constructor for general use (From database)
+     * @param data
+     * @param owner 
+     */
     public Defensive(DefensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
         damagePerSecond = data.getDamage();
