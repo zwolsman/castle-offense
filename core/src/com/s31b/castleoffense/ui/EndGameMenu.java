@@ -4,12 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -23,8 +21,6 @@ import com.s31b.castleoffense.game.CoGame;
  * lose)
  */
 public class EndGameMenu implements Screen {
-
-    private Skin skin;
     private Stage stage;
     private Image background;
     private Image stateImage;
@@ -40,14 +36,13 @@ public class EndGameMenu implements Screen {
 
     public void create() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
 
         stateImage.setPosition((Gdx.graphics.getWidth() / 2) - (stateImage.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 40);
 
-        buttonDone = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
+        buttonDone = new imageButton("buttonTerug");
         buttonDone.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

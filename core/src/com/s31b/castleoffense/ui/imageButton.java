@@ -11,7 +11,7 @@ import com.s31b.castleoffense.ui.listeners.HoverListener;
 
 public class imageButton extends ImageButton
 {   
-    private final ImageButtonStyle style;
+    private ImageButtonStyle style;
     private Drawable draw_down;
     private Drawable draw_up;
     private Drawable draw_hover;
@@ -25,6 +25,22 @@ public class imageButton extends ImageButton
         super(new SpriteDrawable(new Sprite(texture_up)),
               new SpriteDrawable(new Sprite(texture_down)));
         
+        create();
+    }
+    
+    public imageButton(String button)
+    {
+        super(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + ".png")))),
+              new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + "Down" + ".png")))));
+
+        texture_up = new Texture(Gdx.files.internal("GUIMenu/" + button + extension));
+        texture_down = new Texture(Gdx.files.internal("GUIMenu/" + button + "Down" + extension));
+        texture_hover = new Texture(Gdx.files.internal("GUIMenu/" + button + "Hover" + extension));
+
+        create();
+    }
+    
+    private void create(){
         //Add the hovers to the button
         this.addListener(new HoverListener(this));
         
@@ -39,26 +55,6 @@ public class imageButton extends ImageButton
         this.setStyle(style);
     }
     
-    public imageButton(String button)
-    {
-        super(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + ".png")))),
-              new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + "Down" + ".png")))));
-
-        texture_hover = new Texture(Gdx.files.internal("GUIMenu/" + button + "Hover" + extension));
-
-        //Add the hovers to the button
-        this.addListener(new HoverListener(this));
-        
-        draw_down = new Image(texture_down).getDrawable();
-        draw_up = new Image(texture_up).getDrawable();
-        draw_hover = new Image(texture_hover).getDrawable();
-        
-        style = new ImageButtonStyle();
-        style.up = draw_up;
-        style.down = draw_down;
-        
-        this.setStyle(style);
-    }
     public void hoverOn(){
         style.up = draw_hover;
     }
