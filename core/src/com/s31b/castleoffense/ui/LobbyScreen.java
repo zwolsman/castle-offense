@@ -36,7 +36,7 @@ public class LobbyScreen implements Screen{
         background.setWidth(Gdx.graphics.getWidth());
 
         lobbyview = new Lobbyview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
-        lobbyview.setPaddingPercentage(22, 16, 10, 10);
+        lobbyview.setPaddingPercentage(15, 16, 10, 10);
         lobbyview.addString("lakjsdfklaf");
         lobbyview.addString("TESTING");
         lobbyview.addString("TESTING THE ");

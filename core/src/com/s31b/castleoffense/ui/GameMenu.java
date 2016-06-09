@@ -34,11 +34,7 @@ import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
-import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
-import com.s31b.castleoffense.server.packets.BuyTowerPacket;
-import com.s31b.castleoffense.server.packets.EndWavePacket;
-import com.s31b.castleoffense.server.packets.PlayerListPacket;
-import com.s31b.castleoffense.server.packets.WinGamePacket;
+import com.s31b.castleoffense.server.packets.*;
 import com.s31b.castleoffense.ui.listeners.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -197,15 +193,16 @@ public class GameMenu extends Listener implements Screen {
         menuBar.setHeight(70);
         menuBar.setWidth(Gdx.graphics.getWidth());
         menuBar.setPosition(2, 450);
-
-        String playerNameString = "";
-        String playerHpString = "";
-        String playerGoldString = "";
+        
+        // Labels created with dot istead of empty
+        // This is because the .setText() method from libGdx changes the position if label is empty
+        String playerNameString = ".";
+        String playerHpString = ".";
+        String playerGoldString = ".";
+        String CastleHpString = ".";
 
         if (player != null && game != null) {
             playerNameString = player.getName();
-            playerHpString = Integer.toString(player.getCastle().getHitpoints());
-            playerGoldString = Integer.toString(player.getGold());
         }
 
         playerNameDesc = new Label("Naam: ", skin);
@@ -231,15 +228,10 @@ public class GameMenu extends Listener implements Screen {
 
         castleHpDesc = new Label("Levenspunten tegenstander: ", skin);
         castleHpDesc.setColor(Color.BLACK);
-        castleHpDesc.setPosition(400, 490);
-        String CastleHpText = "";
-        // Check if the opponent exists
-        if (opponent != null) {
-            CastleHpText = Integer.toString(opponent.getCastle().getHitpoints());
-        }
-        castleHp = new Label(CastleHpText, skin);
+        castleHpDesc.setPosition(450, 490);
+        castleHp = new Label(CastleHpString, skin);
         castleHp.setColor(Color.BLACK);
-        castleHp.setPosition(620, 490);
+        castleHp.setPosition(670, 490);
     }
 
     private void createEntityMenu() {
@@ -466,14 +458,15 @@ public class GameMenu extends Listener implements Screen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        if (player != null && game != null && opponent != null) {
+        if (player != null && game != null) {
             playerGold.setText(Integer.toString(player.getGold()));
             playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
-
-            if (opponent != null) {
-                castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
-            }
+            
+            if(opponent != null){
+                castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()).trim());
+            }  
         }
+        
 
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
         batch.begin();

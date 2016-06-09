@@ -37,7 +37,7 @@ public class Lobbyview extends Table {
     }
     
     private void create(){
-        background = new Image(new Texture(Gdx.files.internal("GUIMenu/ListviewBackground.png")));
+        background = new Image(new Texture(Gdx.files.internal("GUIMenu/ListviewBackgroundBig.png")));
         background.setSize(width, height);
         background.setPosition(posX, posY);
 
