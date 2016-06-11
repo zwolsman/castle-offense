@@ -175,6 +175,9 @@ public class Wave {
             }
         }
         offEntities.remove(o);
+        if (o.update() == "Dead") {
+            o.die();
+        }
         killedEntities.add(o);
     }
 

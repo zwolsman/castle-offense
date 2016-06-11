@@ -1,6 +1,7 @@
 package com.s31b.castleoffense.game.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.s31b.castleoffense.AudioFactory;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
@@ -34,6 +36,7 @@ public class Offensive extends Entity {
     private List<Tile> usedTiles = new ArrayList<>();
     private int ingameX, ingameY;
     private Direction direction = Direction.Right;
+    private Sound deathSound;
 
     private Tile currentTile = null;
 
@@ -58,6 +61,7 @@ public class Offensive extends Entity {
         movementSpeed = speed;
         killReward = reward;
         destinationCastle = getEnemyCastle(owner);
+        deathSound = AudioFactory.getSound("death.wav");
     }
 
     public Offensive(OffensiveDAO data, Player owner) {
@@ -67,6 +71,7 @@ public class Offensive extends Entity {
         movementSpeed = data.getSpeed();
         killReward = data.getReward();
         destinationCastle = getEnemyCastle(owner);
+        deathSound = AudioFactory.getSound("death.wav");
     }
 
     /**
@@ -296,6 +301,10 @@ public class Offensive extends Entity {
         retval.add(new int[]{ingameX + (Globals.TILE_WIDTH), ingameY});
         retval.add(new int[]{ingameX + (Globals.TILE_WIDTH), ingameY + (Globals.TILE_HEIGHT)});
         return retval;
+    }
+
+    public void die() {
+        deathSound.play(0.8f);
     }
 
     public float getX() {
