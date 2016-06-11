@@ -3,6 +3,7 @@ package com.s31b.castleoffense.game.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
 import com.s31b.castleoffense.AudioFactory;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.TextureFactory;
@@ -23,10 +24,13 @@ public class Defensive extends Entity {
     private Offensive target;
     private final Sound shootSound;
     private float deltaCounter;
+    private boolean shooting;
 
     private Tile position;
+
     /**
      * Constructor used for Unit Tests
+     *
      * @param type
      * @param name
      * @param descr
@@ -34,7 +38,7 @@ public class Defensive extends Entity {
      * @param owner
      * @param price
      * @param dps
-     * @param range 
+     * @param range
      */
     public Defensive(EntityType type, String name, String descr, String sprite, Player owner, int price, int dps, int range) {
         super(type, name, descr, sprite, price, owner);
@@ -44,11 +48,14 @@ public class Defensive extends Entity {
         target = null;
         shootSound = AudioFactory.getSound("laser.wav");
         deltaCounter = 0f;
+        shooting = true;
     }
+
     /**
      * Constructor for general use (From database)
+     *
      * @param data
-     * @param owner 
+     * @param owner
      */
     public Defensive(DefensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
@@ -58,6 +65,7 @@ public class Defensive extends Entity {
         target = null;
         shootSound = AudioFactory.getSound("laser.wav");
         deltaCounter = 0f;
+        shooting = true;
     }
 
     /**
@@ -96,9 +104,16 @@ public class Defensive extends Entity {
         if (Globals.DEBUG) {
             shapeRenderer.circle(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2, range * Globals.TILE_WIDTH);
         }
-        if (targetAquired() && inRange(target)) {
-            shapeRenderer.line(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2,
-                    target.getX() + Globals.TILE_WIDTH / 2, target.getY() + Globals.TILE_HEIGHT / 2);
+
+        if (targetAquired() && inRange(target) && (Globals.DEBUG || shooting)) {
+            if (Globals.DEBUG) {
+                shapeRenderer.setColor(Color.WHITE);
+            } else if (shooting) {
+                shapeRenderer.setColor(Color.CYAN);
+                shooting = !shooting;
+            }
+            shapeRenderer.rectLine(position.getX(true) + Globals.TILE_WIDTH / 2, position.getY(true) + Globals.TILE_HEIGHT / 2,
+                    target.getX() + Globals.TILE_WIDTH / 2, target.getY() + Globals.TILE_HEIGHT / 2, 2f);
         }
         shapeRenderer.end();
 
@@ -164,7 +179,9 @@ public class Defensive extends Entity {
     public void dealDamage() {
         //target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
         deltaCounter -= Gdx.graphics.getDeltaTime();
-        System.out.println(deltaCounter);
+        if (deltaCounter < 0.1f || deltaCounter > 0.9f) {
+            shooting = true;
+        }
         if (deltaCounter <= 0f) {
             deltaCounter += 1f;
             shootSound.play(0.9f);
