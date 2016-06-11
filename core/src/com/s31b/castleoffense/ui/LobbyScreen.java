@@ -6,9 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.ui.listeners.BackListener;
 
@@ -18,13 +16,15 @@ import com.s31b.castleoffense.ui.listeners.BackListener;
  */
 public class LobbyScreen implements Screen{
     private Stage stage;
+    private MainMenu mainMenu;
     private Image background;
     private imageButton buttonBack;
     private CoGame game;
     private Lobbyview lobbyview;
     
-    public LobbyScreen(CoGame game){
+    public LobbyScreen(CoGame game, MainMenu mainMenu){
         this.game = game;
+        this.mainMenu = mainMenu;
         this.create();
     }
      
@@ -36,30 +36,34 @@ public class LobbyScreen implements Screen{
         background.setWidth(Gdx.graphics.getWidth());
 
         lobbyview = new Lobbyview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
-        lobbyview.setPaddingPercentage(22, 16, 10, 10);
+        lobbyview.setPaddingPercentage(15, 16, 10, 10);
         lobbyview.addString("lakjsdfklaf");
         lobbyview.addString("TESTING");
         lobbyview.addString("TESTING THE ");
         lobbyview.addString("asdfkjljadsklfja;dsf");
         lobbyview.addString("adfadslkf");
         
-        buttonBack = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonTerug.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonTerugHover.png")));
-        buttonBack.addListener(new BackListener(game));
+        buttonBack = new imageButton("buttonTerug");
+        buttonBack.addListener(new BackListener(this.mainMenu));
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
                 
         Gdx.input.setInputProcessor(stage);
+        addActors();
     }
-     
+    
+    private void addActors(){
+        stage.addActor(background);
+        stage.addActor(buttonBack);
+        lobbyview.render(stage);
+    }
+
+    
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.addActor(background);
-        stage.addActor(buttonBack);
-        //stage.addActor(t);
-        lobbyview.render(stage);
-
+       
         stage.act();
         stage.draw();
     }

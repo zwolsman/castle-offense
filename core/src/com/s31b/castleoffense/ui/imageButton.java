@@ -1,5 +1,6 @@
 package com.s31b.castleoffense.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -10,17 +11,36 @@ import com.s31b.castleoffense.ui.listeners.HoverListener;
 
 public class imageButton extends ImageButton
 {   
-    private final ImageButtonStyle style;
+    private ImageButtonStyle style;
     private Drawable draw_down;
     private Drawable draw_up;
     private Drawable draw_hover;
+    private Texture texture_down;
+    private Texture texture_up;
+    private Texture texture_hover;
+    private String extension = ".png";
     
     public imageButton(Texture texture_up, Texture texture_down, Texture texture_hover)
     {
-
         super(new SpriteDrawable(new Sprite(texture_up)),
               new SpriteDrawable(new Sprite(texture_down)));
         
+        create();
+    }
+    
+    public imageButton(String button)
+    {
+        super(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + ".png")))),
+              new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + "Down" + ".png")))));
+
+        texture_up = new Texture(Gdx.files.internal("GUIMenu/" + button + extension));
+        texture_down = new Texture(Gdx.files.internal("GUIMenu/" + button + "Down" + extension));
+        texture_hover = new Texture(Gdx.files.internal("GUIMenu/" + button + "Hover" + extension));
+
+        create();
+    }
+    
+    private void create(){
         //Add the hovers to the button
         this.addListener(new HoverListener(this));
         
@@ -34,6 +54,7 @@ public class imageButton extends ImageButton
         
         this.setStyle(style);
     }
+    
     public void hoverOn(){
         style.up = draw_hover;
     }

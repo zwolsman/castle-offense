@@ -34,11 +34,7 @@ import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.*;
-import com.s31b.castleoffense.server.packets.BoughtTowerPacket;
-import com.s31b.castleoffense.server.packets.BuyTowerPacket;
-import com.s31b.castleoffense.server.packets.EndWavePacket;
-import com.s31b.castleoffense.server.packets.PlayerListPacket;
-import com.s31b.castleoffense.server.packets.WinGamePacket;
+import com.s31b.castleoffense.server.packets.*;
 import com.s31b.castleoffense.ui.listeners.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,23 +129,18 @@ public class GameMenu extends Listener implements Screen {
 
         offBought = new Listview(200, 170, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 180);
 
-        endWave = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNextWave.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextWaveHover.png")));
+        endWave = new imageButton("buttonNextWave");
         endWave.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
                 if (player != null && game != null) {
                     endWave();
                 }
-                countOff = 0;
-                offPerWaveList.clear();
-                offNumber.setText(Integer.toString(countOff));
             }
         ;
         });
 
-        surrender = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonSurrender.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonSurrenderHover.png")));
-
+        surrender = new imageButton("buttonSurrender");
         surrender.addListener(new SurrenderListener(player.getId()));
 
         endWave.setSize(120, 70);
@@ -170,8 +161,27 @@ public class GameMenu extends Listener implements Screen {
 
         setMenuBar(); // creates the menu bar for the player
         createEntityMenu(); // creates the menu for offensive and defensive entities.
+        addActors(); // adds all the actors to the stage
 
         Gdx.input.setInputProcessor(stage);
+    }
+    
+    private void addActors(){
+        stage.addActor(background);
+        stage.addActor(menuBar);
+        stage.addActor(main);
+        stage.addActor(endWave);
+        stage.addActor(surrender);
+        stage.addActor(playerHpDesc);
+        stage.addActor(playerNameDesc);
+        stage.addActor(playerGoldDesc);
+        stage.addActor(playerName);
+        stage.addActor(playerHp);
+        stage.addActor(playerGold);
+        stage.addActor(castleHpDesc);
+        stage.addActor(castleHp);
+        stage.addActor(feedback);
+        offBought.render(stage);
     }
 
     public static void setPlayerFeedback(String message) {
@@ -183,15 +193,16 @@ public class GameMenu extends Listener implements Screen {
         menuBar.setHeight(70);
         menuBar.setWidth(Gdx.graphics.getWidth());
         menuBar.setPosition(2, 450);
-
-        String playerNameString = "";
-        String playerHpString = "";
-        String playerGoldString = "";
+        
+        // Labels created with dot istead of empty
+        // This is because the .setText() method from libGdx changes the position if label is empty
+        String playerNameString = ".";
+        String playerHpString = ".";
+        String playerGoldString = ".";
+        String CastleHpString = ".";
 
         if (player != null && game != null) {
             playerNameString = player.getName();
-            playerHpString = Integer.toString(player.getCastle().getHitpoints());
-            playerGoldString = Integer.toString(player.getGold());
         }
 
         playerNameDesc = new Label("Naam: ", skin);
@@ -217,15 +228,10 @@ public class GameMenu extends Listener implements Screen {
 
         castleHpDesc = new Label("Levenspunten tegenstander: ", skin);
         castleHpDesc.setColor(Color.BLACK);
-        castleHpDesc.setPosition(400, 490);
-        String CastleHpText = "";
-        // Check if the opponent exists
-        if (opponent != null) {
-            CastleHpText = Integer.toString(opponent.getCastle().getHitpoints());
-        }
-        castleHp = new Label(CastleHpText, skin);
+        castleHpDesc.setPosition(450, 490);
+        castleHp = new Label(CastleHpString, skin);
         castleHp.setColor(Color.BLACK);
-        castleHp.setPosition(620, 490);
+        castleHp.setPosition(670, 490);
     }
 
     private void createEntityMenu() {
@@ -242,8 +248,8 @@ public class GameMenu extends Listener implements Screen {
 
         // Create the tab buttons
         HorizontalGroup group = new HorizontalGroup();
-        final imageButton tab1 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDef.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDefDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonDefHover.png")));
-        final imageButton tab2 = new imageButton(new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOff.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOffDown.png")), new Texture(Gdx.files.internal("GUIMenu/tabPageButtonOffHover.png")));
+        final imageButton tab1 = new imageButton("tabPageButtonDef");
+        final imageButton tab2 = new imageButton("tabPageButtonOff");
         group.addActor(tab1);
         group.addActor(tab2);
         main.add(group);
@@ -316,7 +322,7 @@ public class GameMenu extends Listener implements Screen {
         defRange.setPosition(170, 30);
         defRange.setColor(Color.BLACK);
 
-        buyDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyHover.png")));
+        buyDef = new imageButton("buttonBuy");
         buyDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -327,21 +333,16 @@ public class GameMenu extends Listener implements Screen {
         buyDef.setPosition(350, 10);
         buyDef.setSize(100, 40);
 
-        nextDef = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextHover.png")));
+        nextDef = new imageButton("buttonNext");
         nextDef.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countDefList++;
-
                 if (countDefList >= defList.size()) {
                     countDefList = 0;
                 }
-
-                defLabel.setText(defList.get(countDefList).getName());
-                defPrice.setText(Integer.toString(defList.get(countDefList).getPrice()));
-                defDescription.setText(defList.get(countDefList).getDescr());
-                defDps.setText(Integer.toString(defList.get(countDefList).getDamage()));
-                defRange.setText(Integer.toString(defList.get(countDefList).getRange()));
+                DefensiveDAO defDAO = defList.get(countDefList);             
+                setDefInfo(defDAO);
             }
         ;
         });
@@ -407,7 +408,7 @@ public class GameMenu extends Listener implements Screen {
         offNumber.setPosition(170, 10);
         offNumber.setColor(Color.BLACK);
 
-        buyOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonBuy.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonBuyHover.png")));
+        buyOff = new imageButton("buttonBuy");
         buyOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -418,21 +419,15 @@ public class GameMenu extends Listener implements Screen {
         buyOff.setPosition(350, 10);
         buyOff.setSize(100, 40);
 
-        nextOff = new imageButton(new Texture(Gdx.files.internal("GUIMenu/buttonNext.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextDown.png")), new Texture(Gdx.files.internal("GUIMenu/buttonNextHover.png")));
+        nextOff = new imageButton("buttonNext");
         nextOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 countOffList++;
-
                 if (countOffList >= offList.size()) {
                     countOffList = 0;
                 }
-
-                offLabel.setText(offList.get(countOffList).getName());
-                offPrice.setText(Integer.toString(offList.get(countOffList).getPrice()));
-                offDescription.setText(offList.get(countOffList).getDescr());
-                offSpeed.setText(Integer.toString(offList.get(countOffList).getSpeed()));
-                offHp.setText(Integer.toString(offList.get(countOffList).getHealthPoints()));
+                setOffInfo(offList.get(countOffList));
             }
         ;
         });
@@ -460,32 +455,18 @@ public class GameMenu extends Listener implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.addActor(background);
-        stage.addActor(menuBar);
-        stage.addActor(main);
-        stage.addActor(endWave);
-        stage.addActor(surrender);
-        stage.addActor(playerHpDesc);
-        stage.addActor(playerNameDesc);
-        stage.addActor(playerGoldDesc);
-        stage.addActor(playerName);
-        stage.addActor(playerHp);
-        stage.addActor(playerGold);
-        stage.addActor(castleHpDesc);
-        stage.addActor(castleHp);
-        stage.addActor(feedback);
-        offBought.render(stage);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        if (player != null && game != null && opponent != null) {
+        if (player != null && game != null) {
             playerGold.setText(Integer.toString(player.getGold()));
             playerHp.setText(Integer.toString(player.getCastle().getHitpoints()));
-
-            if (opponent != null) {
-                castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()));
-            }
+            
+            if(opponent != null){
+                castleHp.setText(Integer.toString(opponent.getCastle().getHitpoints()).trim());
+            }  
         }
+        
 
         TextureGlobals.SHAPE_RENDERER.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -502,12 +483,37 @@ public class GameMenu extends Listener implements Screen {
         }
         batch.end();
     }
-
+    
+    private void setDefInfo(DefensiveDAO defDAO){               
+        defLabel.setText(defDAO.getName());
+        defPrice.setText(Integer.toString(defDAO.getPrice()));
+        defDescription.setText(defDAO.getDescr());
+        defDps.setText(Integer.toString(defDAO.getDamage()));
+        defRange.setText(Integer.toString(defDAO.getRange()));
+    }
+    
+    private void setOffInfo(OffensiveDAO offDAO){
+        offLabel.setText(offDAO.getName());
+        offPrice.setText(Integer.toString(offDAO.getPrice()));
+        offDescription.setText(offDAO.getDescr());
+        offSpeed.setText(Integer.toString(offDAO.getSpeed()));
+        offHp.setText(Integer.toString(offDAO.getHealthPoints()));
+        int countOffBought = 0;
+        
+        for(OffensiveDAO tempDAO : offPerWaveList){
+            if(tempDAO.getName().equals(offDAO.getName())){
+                countOffBought++;
+            }
+        }
+        offNumber.setText(Integer.toString(countOffBought));
+    }
+    
     private void buyOffensive() {
         for (OffensiveDAO o : offList) {
             if (offLabel.getText().toString().equals(o.getName()) && player != null) {
                 offPerWaveList.add(o);
                 offBought.addString(o.getName());
+                setOffInfo(o);
                 System.out.println("Added to que: " + o.getName());
                 break;
             }
@@ -547,6 +553,8 @@ public class GameMenu extends Listener implements Screen {
         p.entities = ids;
 
         Globals.client.send(p);
+        offPerWaveList.clear();
+        offNumber.setText("0");
         offBought.clearChildren();
     }
 

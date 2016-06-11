@@ -45,7 +45,6 @@ public class Listview extends Table {
         this.skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         this.left().top();
         
-        
         Image ScrollBar = new Image(new Texture(Gdx.files.internal("GUIMenu/scrollbar.png")));
         Image ScrollKnob = new Image(new Texture(Gdx.files.internal("GUIMenu/scrollKnob.png")));
         
