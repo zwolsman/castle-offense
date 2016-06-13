@@ -33,6 +33,8 @@ public class MainMenu extends Listener implements Screen {
     private imageButton buttonInfo;
     private imageButton buttonQuit;
     private imageButton buttonJoin;
+    private imageButton buttonMute;
+    private imageButton buttonUnmute;
     private Image background;
     private Stage stage;
     private CoGame game;
@@ -52,9 +54,13 @@ public class MainMenu extends Listener implements Screen {
         //AudioPlayer.loop("start.mp3", 0.2f);
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
-        background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
+        background = new Image(new Texture(Gdx.files.internal("GUIMenu/castleOffenseBackground.png")));
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
+        
+        buttonUnmute = new imageButton("buttonUnmuted");
+        buttonUnmute.addListener(new MuteListener(buttonUnmute));
+        buttonUnmute.setSize(60, 60);
 
         buttonPlay = new imageButton("buttonMainStart");
         buttonPlay.addListener(new StartGameListener());
@@ -89,6 +95,7 @@ public class MainMenu extends Listener implements Screen {
         stage.addActor(buttonJoin);
         stage.addActor(buttonInfo);
         stage.addActor(buttonQuit);
+        stage.addActor(buttonUnmute);
     }
 
     /**
@@ -101,6 +108,9 @@ public class MainMenu extends Listener implements Screen {
         buttonJoin.setPosition((Gdx.graphics.getWidth() / 2) - (buttonJoin.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 45 + 20);
         buttonInfo.setPosition((Gdx.graphics.getWidth() / 2) - (buttonInfo.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 35 + 10);
         buttonQuit.setPosition((Gdx.graphics.getWidth() / 2) - (buttonQuit.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 25);
+        
+        // set mute button on pos 50,50
+        buttonUnmute.setPosition(50, 50);
     }
 
     @Override

@@ -20,39 +20,31 @@ public class imageButton extends ImageButton
     private Texture texture_hover;
     private String extension = ".png";
     
-    public imageButton(Texture texture_up, Texture texture_down, Texture texture_hover)
-    {
-        super(new SpriteDrawable(new Sprite(texture_up)),
-              new SpriteDrawable(new Sprite(texture_down)));
-        
-        create();
-    }
-    
     public imageButton(String button)
     {
         super(new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + ".png")))),
               new SpriteDrawable(new Sprite(new Texture(Gdx.files.internal("GUIMenu/" + button + "Down" + ".png")))));
-
+        
+        //Add the hovers to the button
+        this.addListener(new HoverListener(this));
+        
+        style = new ImageButtonStyle();
+        this.setStyle(style);
+        
+        create(button);
+    }
+    
+    private void create(String button){
         texture_up = new Texture(Gdx.files.internal("GUIMenu/" + button + extension));
         texture_down = new Texture(Gdx.files.internal("GUIMenu/" + button + "Down" + extension));
         texture_hover = new Texture(Gdx.files.internal("GUIMenu/" + button + "Hover" + extension));
-
-        create();
-    }
-    
-    private void create(){
-        //Add the hovers to the button
-        this.addListener(new HoverListener(this));
         
         draw_down = new Image(texture_down).getDrawable();
         draw_up = new Image(texture_up).getDrawable();
         draw_hover = new Image(texture_hover).getDrawable();
         
-        style = new ImageButtonStyle();
         style.up = draw_up;
         style.down = draw_down;
-        
-        this.setStyle(style);
     }
     
     public void hoverOn(){
@@ -61,5 +53,9 @@ public class imageButton extends ImageButton
     
     public void hoverOf(){
         style.up = draw_up;
+    }
+    
+    public void setImage(String button){
+        create(button);
     }
 }

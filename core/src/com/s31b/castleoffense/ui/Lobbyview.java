@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.s31b.castleoffense.ui.listeners.LobbyListener;
 
 /**
@@ -17,10 +18,10 @@ import com.s31b.castleoffense.ui.listeners.LobbyListener;
  */
 public class Lobbyview extends Table {
     private Skin skin;
-    private int width;
-    private int height;
-    private int posX;
-    private int posY;
+    private final int width;
+    private final int height;
+    private final int posX;
+    private final int posY;
     private Image background;
     private int paddingTop;
     private int paddingBottom;
@@ -69,8 +70,9 @@ public class Lobbyview extends Table {
     
     public void addString(String text){
         HorizontalGroup hg = new HorizontalGroup();
-        Label l = new Label("testr", skin);
+        Label l = new Label(text, skin);
         l.setColor(Color.BLACK);
+        l.setAlignment(Align.left);
         hg.addActor(l);
         hg.addListener(new LobbyListener());
         this.add(hg).row();
