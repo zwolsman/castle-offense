@@ -16,13 +16,15 @@ public class LobbyListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         // Get the ID and join the game
-        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-        System.out.println("Enter the id of the game:");
-        Scanner sc = new Scanner(System.in);
+        if( getTapCount() == 2) { // put breakpoint here
+            Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            System.out.println("Enter the id of the game:");
+            Scanner sc = new Scanner(System.in);
 
-        int nextId = sc.nextInt();
-        System.out.println("Trying to join game " + nextId);
-        joinGame(nextId);
+            int nextId = sc.nextInt();
+            System.out.println("Trying to join game " + nextId);
+            joinGame(nextId);
+        }
     }
     
     private void joinGame(int id) {

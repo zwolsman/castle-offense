@@ -72,10 +72,9 @@ public class Lobbyview extends Table {
         HorizontalGroup hg = new HorizontalGroup();
         Label l = new Label(text, skin);
         l.setColor(Color.BLACK);
-        l.setAlignment(Align.left);
         hg.addActor(l);
         hg.addListener(new LobbyListener());
-        this.add(hg).row();
+        this.add(hg).align(Align.topLeft).row();
     }
     
     public void render(Stage stage){
