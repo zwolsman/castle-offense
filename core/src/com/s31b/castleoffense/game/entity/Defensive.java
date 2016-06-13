@@ -46,9 +46,9 @@ public class Defensive extends Entity {
         this.range = range;
         position = new Tile(0, 0);
         target = null;
-        shootSound = AudioFactory.getSound("laser.wav");
         deltaCounter = 0f;
         shooting = true;
+        shootSound = null;
     }
 
     /**
@@ -184,7 +184,9 @@ public class Defensive extends Entity {
         }
         if (deltaCounter <= 0f) {
             deltaCounter += 1f;
-            shootSound.play(0.9f);
+            if(shootSound != null){
+                shootSound.play(0.9f);
+            }
             target.removeHealth(damagePerSecond * 1f);
         }
     }
