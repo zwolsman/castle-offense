@@ -24,6 +24,11 @@ public class CoServer extends Listener {
     static Server server;
     static int tcpPort = 9999;
     static ArrayList<ServerGame> games = new ArrayList<>();
+    private static int id = 0;
+
+    public static int getNextGameId() {
+        return id++;
+    }
 
     public CoServer() {
         server = new Server();
@@ -57,7 +62,7 @@ public class CoServer extends Listener {
             if (packet.getName().isEmpty()) {
                 packet.setName("<NO NAME>");
             }
-            ServerGame g = new ServerGame(games.size(), packet.getName());
+            ServerGame g = new ServerGame(getNextGameId(), packet.getName());
             g.addPlayer(connection, "creator");
             games.add(g);
             connection.sendTCP(new PlayerListPacket("creator"));
@@ -72,14 +77,14 @@ public class CoServer extends Listener {
                 System.out.println("No game found with id!");
                 return;
             }
-            games.get(packet.gid).addPlayer(connection, "joiner");
+            getServerGame(packet.gid).addPlayer(connection, "joiner");
             PlayerListPacket plPacket = new PlayerListPacket();
-            for (Player p : games.get(packet.gid).getGame().getPlayers()) {
+            for (Player p : getServerGame(packet.gid).getGame().getPlayers()) {
                 plPacket.players.add(p.getName());
             }
-            games.get(packet.gid).broadcast(plPacket);
+            getServerGame(packet.gid).broadcast(plPacket);
 
-            for (Defensive tower : games.get(packet.gid).getGame().getAllTowers()) {
+            for (Defensive tower : getServerGame(packet.gid).getGame().getAllTowers()) {
                 connection.sendTCP(new BoughtTowerPacket(tower.getPosition().getX(), tower.getPosition().getY(), tower.getId(), tower.getName()));
             }
             return;
@@ -127,6 +132,8 @@ public class CoServer extends Listener {
                 return;
             }
             game.broadcast(packet);
+
+            games.remove(game);
             return;
         }
 
@@ -157,6 +164,16 @@ public class CoServer extends Listener {
             }
         }
         System.out.println("No game found for " + c.getRemoteAddressTCP().getHostString());
+
+        return null;
+    }
+
+    private ServerGame getServerGame(int id) {
+        for (ServerGame g : games) {
+            if (g.getId() == id) {
+                return g;
+            }
+        }
 
         return null;
     }
