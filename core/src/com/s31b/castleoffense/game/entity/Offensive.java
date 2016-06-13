@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.s31b.castleoffense.AudioFactory;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.Settings;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.OffensiveDAO;
@@ -62,10 +63,12 @@ public class Offensive extends Entity {
         killReward = reward;
         destinationCastle = getEnemyCastle(owner);
     }
+
     /**
      * Constructor for general use (From database)
+     *
      * @param data
-     * @param owner 
+     * @param owner
      */
     public Offensive(OffensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
@@ -311,7 +314,9 @@ public class Offensive extends Entity {
     }
 
     public void die() {
-        deathSound.play(0.8f);
+        if (!Settings.isMuted()) {
+            deathSound.play(1f);
+        }
     }
 
     public float getX() {

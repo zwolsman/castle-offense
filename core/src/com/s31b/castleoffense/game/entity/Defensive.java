@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 import com.s31b.castleoffense.AudioFactory;
 import com.s31b.castleoffense.Globals;
+import com.s31b.castleoffense.Settings;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.data.DefensiveDAO;
@@ -184,8 +185,8 @@ public class Defensive extends Entity {
         }
         if (deltaCounter <= 0f) {
             deltaCounter += 1f;
-            if(shootSound != null){
-                shootSound.play(0.9f);
+            if (shootSound != null && !Settings.isMuted()) {
+                shootSound.play(0.7f);
             }
             target.removeHealth(damagePerSecond * 1f);
         }

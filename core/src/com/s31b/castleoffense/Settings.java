@@ -11,7 +11,7 @@ package com.s31b.castleoffense;
  */
 public class Settings {
 
-    private static boolean mute = false;
+    private static boolean mute = true;
 
     public static boolean isMuted() {
         return mute;
