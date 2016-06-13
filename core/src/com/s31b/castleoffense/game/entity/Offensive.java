@@ -180,9 +180,9 @@ public class Offensive extends Entity {
             return;
         }
 
-        if (tempTile == null) {
-            getEnemyCastle(owner).loseHitpoints(1);
+        if (tempTile == null && !isAtEnemyCastle) {
             isAtEnemyCastle = true;
+            getEnemyCastle(owner).loseHitpoints(1);
             return;
         }
 
