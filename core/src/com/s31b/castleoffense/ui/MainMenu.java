@@ -18,7 +18,6 @@ import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import com.s31b.castleoffense.Globals;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.s31b.castleoffense.AudioPlayer;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.ui.listeners.*;
 

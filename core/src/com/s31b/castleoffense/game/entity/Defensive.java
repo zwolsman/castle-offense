@@ -23,11 +23,15 @@ public class Defensive extends Entity {
     private int damagePerSecond;
     private int range;
     private Offensive target;
-    private final Sound shootSound;
+    private Sound shootSound = null;
     private float deltaCounter;
     private boolean shooting;
 
     private Tile position;
+
+    public Tile getPosition() {
+        return position;
+    }
 
     /**
      * Constructor used for Unit Tests
@@ -64,7 +68,6 @@ public class Defensive extends Entity {
         this.range = data.getRange();
         position = new Tile(0, 0);
         target = null;
-        shootSound = AudioFactory.getSound("laser.wav");
         deltaCounter = 0f;
         shooting = true;
     }
@@ -99,6 +102,10 @@ public class Defensive extends Entity {
     }
 
     public void draw() {
+
+        if (shootSound == null) {
+            shootSound = AudioFactory.getSound("laser.wav");
+        }
         TextureGlobals.SPRITE_BATCH.end();
         ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
