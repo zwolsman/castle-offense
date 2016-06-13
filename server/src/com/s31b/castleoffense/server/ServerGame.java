@@ -26,6 +26,10 @@ public class ServerGame extends Listener implements ApplicationListener {
         this.name = name;
     }
 
+    public int getId() {
+        return game.getId();
+    }
+
     public ServerGame() {
     }
 
