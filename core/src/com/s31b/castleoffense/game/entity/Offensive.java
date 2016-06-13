@@ -263,6 +263,10 @@ public class Offensive extends Entity {
     }
 
     public void drawHealthBar(SpriteBatch batch) {
+
+        if (isDead()) {
+            return;
+        }
         double totalHitPoints = this.getTotalHitpoints();
 
         double widthPerHitPoints = Globals.TILE_WIDTH / totalHitPoints;
