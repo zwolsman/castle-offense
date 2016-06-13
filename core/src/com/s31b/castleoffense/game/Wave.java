@@ -111,12 +111,10 @@ public class Wave {
                         case "Update":
                             break;
                         case "Null":
-                            System.out.println("Null");
                             player.hitCastle();
                             clearTarget(x);
                             break;
                         case "Dead":
-                            System.out.println("Dead");
                             reward(x);
                             clearTarget(x);
                             break;
