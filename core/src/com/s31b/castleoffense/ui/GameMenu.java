@@ -185,7 +185,9 @@ public class GameMenu extends Listener implements Screen {
     }
 
     public static void setPlayerFeedback(String message) {
-        feedback.setText(message);
+        if(feedback != null){
+            feedback.setText(message);
+        }
     }
 
     private void setMenuBar() {

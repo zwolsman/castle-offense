@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -18,7 +17,6 @@ import com.s31b.castleoffense.server.packets.PlayerListPacket;
 import com.s31b.castleoffense.Globals;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import com.s31b.castleoffense.AudioPlayer;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.ui.listeners.*;
 
@@ -63,7 +61,7 @@ public class MainMenu extends Listener implements Screen {
         buttonUnmute.setSize(60, 60);
 
         buttonPlay = new imageButton("buttonMainStart");
-        buttonPlay.addListener(new StartGameListener());
+        buttonPlay.addListener(new StartGameListener(this.stage));
 
         buttonJoin = new imageButton("buttonMainJoin");
         buttonJoin.addListener(new JoinGameListener(game, this));
