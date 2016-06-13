@@ -2,7 +2,6 @@ package com.s31b.castleoffense.game;
 
 import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.Globals;
-import com.s31b.castleoffense.TextureGlobals;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
 import com.s31b.castleoffense.ui.StatusUpdate;
@@ -21,7 +20,6 @@ public class Wave {
     private int playersDone;
 
     private List<Offensive> offEntities;
-    private List<Offensive> killedEntities;
 
     private final CoGame game;
 
@@ -35,10 +33,9 @@ public class Wave {
     }
 
     private void initWave() {
-        killedEntities = new ArrayList();
         offEntities = new ArrayList();
         waveDone = false;
-        spawnTime = 5;
+        spawnTime = 2;
         playersDone = 0;
     }
 
@@ -59,6 +56,8 @@ public class Wave {
     /**
      * Gets the list of offensive entity's to the wave that will be attacking
      * the other players castle
+     *
+     * @return returns the list of offensive entities
      */
     public List<Offensive> getOffensives() {
         return this.offEntities;
@@ -84,8 +83,8 @@ public class Wave {
      * Spawn the wave with spawn delay for each offensive entity
      */
     private void spawnWave() {
+
         for (Offensive entity : offEntities) {
-            timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
 
             if (timeSinceLastSpawn > spawnTime && !entity.isSpawned()) {
                 entity.spawn();
@@ -98,26 +97,19 @@ public class Wave {
         if (!waveDone) {
             return;
         }
-
+        timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
         StatusUpdate.log("displaying wave!");
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {
-            Offensive x = offEntities.get(i);
-            if (x.isSpawned()) {
-                game.getPlayers().stream().filter(player -> x.getOwner() != player).forEach(player -> {
-                    checkInRange(x);
-                    switch (x.update()) {
-                        case "Update":
-                            break;
-                        case "Null":
-                            player.hitCastle();
-                            clearTarget(x);
-                            break;
-                        case "Dead":
-                            reward(x);
-                            clearTarget(x);
-                            break;
+            Offensive offensive = offEntities.get(i);
+
+            if (offensive.isSpawned()) {
+                offensive.update();
+                game.getPlayers().stream().filter(player -> offensive.getOwner() != player).forEach(player -> {
+                    checkInRange(offensive);
+                    if (offensive.isDead()) {
+                        reward(offensive);
                     }
                 });
             }
@@ -129,14 +121,9 @@ public class Wave {
             return;
         }
 
-        for (int i = 0; i < killedEntities.size(); i++) {
-            Offensive x = killedEntities.get(i);
-            x.draw(TextureGlobals.SPRITE_BATCH);
-        }
-
         for (int i = 0; i < offEntities.size(); i++) {
             Offensive x = offEntities.get(i);
-            x.draw(TextureGlobals.SPRITE_BATCH);
+            x.draw();
         }
     }
 
@@ -164,21 +151,6 @@ public class Wave {
         return hash;
     }
 
-    private void clearTarget(Offensive o) {
-        List<Defensive> defensives = game.getAllTowers();
-        for (int i = 0; i < defensives.size(); i++) {
-            Defensive d = defensives.get(i);
-            if (d.targetAquired() && d.getTarget() == o) {
-                d.deleteTarget();
-            }
-        }
-        offEntities.remove(o);
-        if (o.update() == "Dead") {
-            o.die();
-        }
-        killedEntities.add(o);
-    }
-
     private void checkInRange(Offensive offensive) {
         List<Defensive> defensives = game.getAllTowers();
         for (int i = 0; i < defensives.size(); i++) {
@@ -194,10 +166,6 @@ public class Wave {
     }
 
     public void reward(Offensive o) {
-        for (Player player : game.getPlayers()) {
-            if (o.getOwner() != player) {
-                player.addGold(o.getKillReward());
-            }
-        }
+        o.getDamageSource().getOwner().addGold(o.getKillReward());
     }
 }

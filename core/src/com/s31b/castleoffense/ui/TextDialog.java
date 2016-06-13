@@ -37,7 +37,10 @@ public class TextDialog extends Dialog {
     
     @Override
     protected void result(Object object){
-//        Globals.client.send(new CreateGamePacket(name));
+        startGame(input.getText());
     }
-  
+    
+    private void startGame(String gameName) {
+        Globals.client.send(new CreateGamePacket(gameName));
+    }
 }
