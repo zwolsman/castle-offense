@@ -52,6 +52,7 @@ public class KryoClient extends Listener {
     }
 
     public void send(IPacket o) {
+        System.out.println("Sending packet " + o.getClass().getName());
         client.sendTCP(o);
     }
 
@@ -74,6 +75,9 @@ public class KryoClient extends Listener {
 
         client.getKryo().register(EndWavePacket.class);
         client.getKryo().register(WinGamePacket.class);
+        client.getKryo().register(GameListPacket.class);
+        client.getKryo().register(RequestGameListPacket.class);
+
     }
 
     @Override
@@ -83,6 +87,6 @@ public class KryoClient extends Listener {
 
     @Override
     public void disconnected(Connection connection) {
-        System.out.println("Lost connection with server: " + connection.getRemoteAddressTCP().getHostString());
+        System.out.println("Lost connection with server");
     }
 }
