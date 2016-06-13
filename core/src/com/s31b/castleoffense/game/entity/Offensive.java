@@ -41,7 +41,7 @@ public class Offensive extends Entity {
     private Tile currentTile = null;
 
     /**
-     * Initialize a new offensive object
+     * Initialize a new offensive object for UNIT TEST
      *
      * @param type The type of the entity.
      * @param name The name of the entity
@@ -61,9 +61,12 @@ public class Offensive extends Entity {
         movementSpeed = speed;
         killReward = reward;
         destinationCastle = getEnemyCastle(owner);
-        deathSound = AudioFactory.getSound("death.wav");
     }
-
+    /**
+     * Constructor for general use (From database)
+     * @param data
+     * @param owner 
+     */
     public Offensive(OffensiveDAO data, Player owner) {
         super(EntityType.getTypeFromString(data.getType()), data.getName(), data.getDescr(), data.getSprite(), data.getPrice(), owner);
         hitpoints = data.getHealthPoints();
