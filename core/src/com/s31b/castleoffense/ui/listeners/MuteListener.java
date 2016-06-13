@@ -1,8 +1,8 @@
 package com.s31b.castleoffense.ui.listeners;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.s31b.castleoffense.Settings;
 import com.s31b.castleoffense.ui.imageButton;
 
 /**
@@ -11,21 +11,24 @@ import com.s31b.castleoffense.ui.imageButton;
  */
 public class MuteListener extends ClickListener{
     imageButton mute;
-    Boolean muted = false;
     
     public MuteListener(imageButton buttonMute){
         this.mute = buttonMute;
+        changeImage();
     }
     
     @Override
     public void clicked(InputEvent event, float x, float y) {
-        if(muted == true){
-            mute.setImage("buttonMuted");
-            muted = false;
+        Settings.toggleMute();
+        changeImage();
+    }
+    
+    private void changeImage(){
+        if(Settings.isMuted()){
+            mute.setImage("buttonMuted"); 
         }
-        else if(muted == false){
+        else if(!Settings.isMuted()){
             mute.setImage("buttonUnmuted");
-            muted = true;
         }
     }
     
