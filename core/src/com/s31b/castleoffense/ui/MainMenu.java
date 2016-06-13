@@ -49,8 +49,7 @@ public class MainMenu extends Listener implements Screen {
         Globals.client.getClient().addListener(this);
         Globals.client.connect();
 
-        AudioPlayer.loop("start.mp3", 0.2f);
-
+        //AudioPlayer.loop("start.mp3", 0.2f);
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
@@ -64,8 +63,8 @@ public class MainMenu extends Listener implements Screen {
         buttonJoin.addListener(new JoinGameListener(game, this));
 
         buttonInfo = new imageButton("buttonMainInfo");
-        buttonInfo.addListener(new InfoListener(this)); 
-        
+        buttonInfo.addListener(new InfoListener(this));
+
         buttonQuit = new imageButton("buttonMainQuit");
         buttonQuit.addListener(new ClickListener() {
             @Override
@@ -83,21 +82,21 @@ public class MainMenu extends Listener implements Screen {
         camera.setToOrtho(false);
         addActors();
     }
-    
-    public void addActors(){
+
+    public void addActors() {
         stage.addActor(background);
         stage.addActor(buttonPlay);
         stage.addActor(buttonJoin);
         stage.addActor(buttonInfo);
         stage.addActor(buttonQuit);
     }
-    
+
     /**
-     * Give main menu buttons their styling:
-     * horizontal pos: half of the screen horizontally
-     * Vertical pos: 35, 45, 55, 65 procent of the screen vertically 
-    */
-    public void setButtonPos(){
+     * Give main menu buttons their styling: horizontal pos: half of the screen
+     * horizontally Vertical pos: 35, 45, 55, 65 procent of the screen
+     * vertically
+     */
+    public void setButtonPos() {
         buttonPlay.setPosition((Gdx.graphics.getWidth() / 2) - (buttonPlay.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 55 + 30);
         buttonJoin.setPosition((Gdx.graphics.getWidth() / 2) - (buttonJoin.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 45 + 20);
         buttonInfo.setPosition((Gdx.graphics.getWidth() / 2) - (buttonInfo.getWidth() / 2), Gdx.graphics.getHeight() / 100 * 35 + 10);
@@ -127,7 +126,7 @@ public class MainMenu extends Listener implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
+
         stage.act();
         stage.draw();
     }
