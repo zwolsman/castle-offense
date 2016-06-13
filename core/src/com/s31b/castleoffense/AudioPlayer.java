@@ -19,7 +19,9 @@ public class AudioPlayer {
         checkPlaying();
         AUDIO_PLAYER = AudioFactory.getMusic(name);
         AUDIO_PLAYER.setLooping(false);
-        AUDIO_PLAYER.play();
+        if (!Settings.isMuted()) {
+            AUDIO_PLAYER.play();
+        }
     }
 
     /**
@@ -33,7 +35,9 @@ public class AudioPlayer {
             AUDIO_PLAYER = AudioFactory.getMusic(name);
             AUDIO_PLAYER.setLooping(false);
             AUDIO_PLAYER.setVolume(volume);
-            AUDIO_PLAYER.play();
+            if (!Settings.isMuted()) {
+                AUDIO_PLAYER.play();
+            }
         }
     }
 
@@ -41,7 +45,9 @@ public class AudioPlayer {
         checkPlaying();
         AUDIO_PLAYER = AudioFactory.getMusic(name);
         AUDIO_PLAYER.setLooping(true);
-        AUDIO_PLAYER.play();
+        if (!Settings.isMuted()) {
+            AUDIO_PLAYER.play();
+        }
     }
 
     public static void loop(String name, float volume) {
@@ -50,7 +56,9 @@ public class AudioPlayer {
             AUDIO_PLAYER = AudioFactory.getMusic(name);
             AUDIO_PLAYER.setVolume(volume);
             AUDIO_PLAYER.setLooping(true);
-            AUDIO_PLAYER.play();
+            if (!Settings.isMuted()) {
+                AUDIO_PLAYER.play();
+            }
         }
     }
 
