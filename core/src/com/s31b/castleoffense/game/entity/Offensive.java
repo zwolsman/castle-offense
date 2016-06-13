@@ -38,6 +38,9 @@ public class Offensive extends Entity {
     private int ingameX, ingameY;
     private Direction direction = Direction.Right;
     private Sound deathSound;
+    private boolean didPlaySound = false;
+    private boolean isAtEnemyCastle = false;
+    private Defensive damageSrc;
 
     private Tile currentTile = null;
 
@@ -94,6 +97,10 @@ public class Offensive extends Entity {
         return owner.getGame().getPlayerById((owner.getId() + 1) % owner.getGame().getPlayers().size()).getCastle();
     }
 
+    public boolean isAtEnemyCastle() {
+        return isAtEnemyCastle;
+    }
+
     public double getHitpoints() {
         return hitpoints;
     }
@@ -142,6 +149,13 @@ public class Offensive extends Entity {
 
     public void removeHealth(double amount) {
         hitpoints -= amount;
+        draw();
+    }
+
+    public void dealDamage(double amount, Defensive source) {
+        damageSrc = source;
+        hitpoints -= amount;
+        draw();
     }
 
     public boolean isDead() {
@@ -155,18 +169,21 @@ public class Offensive extends Entity {
      * Calculates the next position to move to. Will use the speed of the unit
      * for movement
      */
-    public String update() {
+    public void update() {
         Tile tempTile = getNextPosition();
 
         if (isDead()) {
-            return "Dead";
+            if (!Settings.isMuted() && !didPlaySound) {
+                didPlaySound = true;
+                deathSound.play(1f);
+            }
+            return;
         }
 
         if (tempTile == null) {
-            // TODO
-            // damage enemy castle
-            // remove this offensive entity from the game/wave
-            return "Null";
+            getEnemyCastle(owner).loseHitpoints(1);
+            isAtEnemyCastle = true;
+            return;
         }
 
         float distance = Gdx.graphics.getDeltaTime() * movementSpeed;
@@ -227,10 +244,9 @@ public class Offensive extends Entity {
             ingameX += distance;
 
         }
-        return "Updated";
     }
 
-    public void draw(SpriteBatch batch) {
+    public void draw() {
         if (!isSpawned()) {
             return;
         }
@@ -240,11 +256,10 @@ public class Offensive extends Entity {
             t = TextureFactory.getTexture("blood");
         } else {
             t = TextureFactory.getTexture(super.getSprite() + "_hold_" + direction.toString().toLowerCase());
-
         }
 
-        batch.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
-        drawHealthBar(batch);
+        TextureGlobals.SPRITE_BATCH.draw(t, ingameX, ingameY, Globals.TILE_WIDTH, Globals.TILE_HEIGHT);
+        drawHealthBar(TextureGlobals.SPRITE_BATCH);
 
         if (Globals.DEBUG) {
             ShapeRenderer shapeRenderer = TextureGlobals.SHAPE_RENDERER;
@@ -313,18 +328,16 @@ public class Offensive extends Entity {
         return retval;
     }
 
-    public void die() {
-        if (!Settings.isMuted()) {
-            deathSound.play(1f);
-        }
-    }
-
     public float getX() {
         return ingameX;
     }
 
     public float getY() {
         return ingameY;
+    }
+
+    public Defensive getDamageSource() {
+        return this.damageSrc;
     }
 }
 

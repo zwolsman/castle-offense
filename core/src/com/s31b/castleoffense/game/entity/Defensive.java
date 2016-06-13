@@ -155,7 +155,7 @@ public class Defensive extends Entity {
     }
 
     public boolean targetAquired() {
-        return target != null;
+        return target != null && !target.isDead() && !target.isAtEnemyCastle();
     }
 
     public boolean inRange(Offensive o) {
@@ -185,7 +185,6 @@ public class Defensive extends Entity {
     }
 
     public void dealDamage() {
-        //target.removeHealth(damagePerSecond * Gdx.graphics.getDeltaTime());
         deltaCounter -= Gdx.graphics.getDeltaTime();
         if (deltaCounter < 0.1f || deltaCounter > 0.9f) {
             shooting = true;
@@ -195,7 +194,7 @@ public class Defensive extends Entity {
             if (shootSound != null && !Settings.isMuted()) {
                 shootSound.play(0.7f);
             }
-            target.removeHealth(damagePerSecond * 1f);
+            target.dealDamage(damagePerSecond * 1f, this);
         }
     }
 }
