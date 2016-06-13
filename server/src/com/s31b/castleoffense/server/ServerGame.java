@@ -18,19 +18,18 @@ import java.util.HashMap;
 public class ServerGame extends Listener implements ApplicationListener {
 
     private CoGame game;
-    //private final ArrayList<Connection> connectedPlayers = new ArrayList<Connection>();
+    private String name;
+    private final HashMap<Connection, Player> players = new HashMap<>();
 
-    private final HashMap<Connection, Player> players = new HashMap<Connection, Player>();
-
-    public ServerGame(int id) {
-        game = new CoGame(id);
+    public ServerGame(int id, String name) {
+        this.game = new CoGame(id);
+        this.name = name;
     }
 
     public ServerGame() {
     }
 
     public void addPlayer(Connection c, String name) {
-        //connectedPlayers.add(c);
         players.put(c, game.addPlayer(name));
     }
 
@@ -41,7 +40,16 @@ public class ServerGame extends Listener implements ApplicationListener {
      * @return
      */
     public Boolean isInGame(Connection c) {
-        return players.containsKey(c); //return connectedPlayers.contains(c);
+        return players.containsKey(c);
+    }
+
+    /**
+     * Gets the name of for in the lobby
+     *
+     * @return the name of the game
+     */
+    public String getName() {
+        return this.name;
     }
 
     public Player getPlayer(Connection c) {
@@ -92,7 +100,6 @@ public class ServerGame extends Listener implements ApplicationListener {
 
     @Override
     public void resize(int width, int height) {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -102,17 +109,14 @@ public class ServerGame extends Listener implements ApplicationListener {
 
     @Override
     public void pause() {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void resume() {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void dispose() {
-        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

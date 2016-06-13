@@ -1,5 +1,3 @@
-/*
- */
 package com.s31b.castleoffense.server;
 
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
@@ -19,7 +17,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author fhict
+ * @author Marvin Zwolsman
  */
 public class CoServer extends Listener {
 
@@ -39,12 +37,9 @@ public class CoServer extends Listener {
     }
 
     public void start() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                server.start();
-                System.out.println("Started server!");
-            }
+        new Thread(() -> {
+            server.start();
+            System.out.println("Started server!");
         }).start();
     }
 
@@ -57,12 +52,18 @@ public class CoServer extends Listener {
     public void received(Connection connection, Object obj) {
         System.out.println(obj);
         if (obj instanceof CreateGamePacket) {
-            System.out.println("Creating game. Requested ip: " + connection.getRemoteAddressTCP().getHostString());
-            ServerGame g = new ServerGame(games.size());
+            CreateGamePacket packet = (CreateGamePacket) obj;
+
+            if (packet.getName().isEmpty()) {
+                packet.setName("<NO NAME>");
+            }
+            System.out.println("Creating game. Requested ip: " + connection.getRemoteAddressTCP().getHostString() + ", game name: " + packet.getName());
+            ServerGame g = new ServerGame(games.size(), packet.getName());
             g.addPlayer(connection, "creator");
             games.add(g);
             connection.sendTCP(new PlayerListPacket("creator"));
             System.out.println("Created game with id: " + g.getGame().getId());
+            return;
         }
 
         if (obj instanceof JoinGamePacket) {
@@ -83,11 +84,13 @@ public class CoServer extends Listener {
             for (Defensive tower : games.get(packet.gid).getGame().getAllTowers()) {
                 connection.sendTCP(new BoughtTowerPacket(tower.getPosition().getX(), tower.getPosition().getY(), tower.getId(), tower.getName()));
             }
+            return;
         }
 
         if (obj instanceof StartGamePacket) {
             StartGamePacket packet = (StartGamePacket) obj;
             startGame(packet.gid);
+            return;
         }
         if (obj instanceof BuyTowerPacket) {
             BuyTowerPacket packet = (BuyTowerPacket) obj;
@@ -103,6 +106,7 @@ public class CoServer extends Listener {
             game.getGame().addTower(tower);
 
             game.broadcast(boughtPacket);
+            return;
         }
 
         if (obj instanceof EndWavePacket) {
@@ -115,6 +119,7 @@ public class CoServer extends Listener {
             Player p = game.getPlayer(connection);
             packet.pid = p.getId();
             game.broadcast(packet);
+            return;
         }
 
         if (obj instanceof WinGamePacket) {
@@ -124,7 +129,25 @@ public class CoServer extends Listener {
                 return;
             }
             game.broadcast(packet);
+            return;
         }
+
+        if (obj instanceof RequestGameListPacket) {
+            System.out.println("Got a request for the games");
+
+            GameListPacket packet = new GameListPacket();
+            int id = 0;
+            for (ServerGame game : games) {
+                packet.games.add(game.getName());
+                packet.ids.add(id++);
+                packet.max.add(2);
+            }
+            System.out.println("Sending game list");
+            connection.sendTCP(packet);
+            return;
+        }
+
+        System.out.println("Unhandeld packet");
     }
 
     /**
@@ -202,5 +225,12 @@ public class CoServer extends Listener {
         server
                 .getKryo().register(WinGamePacket.class
                 );
+        server
+                .getKryo().register(GameListPacket.class
+                );
+        server
+                .getKryo().register(RequestGameListPacket.class
+                );
+
     }
 }
