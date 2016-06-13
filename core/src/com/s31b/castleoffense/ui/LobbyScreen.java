@@ -7,96 +7,118 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.CoGame;
+import com.s31b.castleoffense.server.packets.GameListPacket;
+import com.s31b.castleoffense.server.packets.RequestGameListPacket;
 import com.s31b.castleoffense.ui.listeners.BackListener;
 
 /**
  *
  * @author Nick
  */
-public class LobbyScreen implements Screen{
+public class LobbyScreen extends Listener implements Screen {
+
     private Stage stage;
-    private MainMenu mainMenu;
+    private final MainMenu mainMenu;
     private Image background;
     private imageButton buttonBack;
-    private CoGame game;
+    private final CoGame game;
     private Lobbyview lobbyview;
-    
-    public LobbyScreen(CoGame game, MainMenu mainMenu){
+    private GameListPacket lastPacket;
+
+    public LobbyScreen(CoGame game, MainMenu mainMenu) {
         this.game = game;
         this.mainMenu = mainMenu;
         this.create();
     }
-     
-    public void create(){
+
+    public void create() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-        
-        background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));  
+
+        background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
         background.setHeight(Gdx.graphics.getHeight());
         background.setWidth(Gdx.graphics.getWidth());
 
-        lobbyview = new Lobbyview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight()/ 2) - (550 / 2));
+        lobbyview = new Lobbyview(500, 550, (Gdx.graphics.getWidth() / 2) - (500 / 2), (Gdx.graphics.getHeight() / 2) - (550 / 2));
         lobbyview.setPaddingPercentage(15, 16, 10, 10);
-        lobbyview.addString("lakjsdfklaf");
-        lobbyview.addString("TESTING");
-        lobbyview.addString("TESTING THE ");
-        lobbyview.addString("asdfkjljadsklfja;dsf");
-        lobbyview.addString("adfadslkf");
-        
+
         buttonBack = new imageButton("buttonTerug");
         buttonBack.addListener(new BackListener(this.mainMenu));
         buttonBack.setSize(150, 60);
         buttonBack.setPosition(Gdx.graphics.getWidth() - 170, Gdx.graphics.getHeight() - 80);
-                
+
         Gdx.input.setInputProcessor(stage);
         addActors();
+        Globals.client.getClient().addListener(this);
+        requestGames();
     }
-    
-    private void addActors(){
+
+    private void addActors() {
         stage.addActor(background);
         stage.addActor(buttonBack);
         lobbyview.render(stage);
     }
 
-    
+    float timePassed = 0;
+
     @Override
     public void render(float delta) {
+        timePassed += Gdx.graphics.getDeltaTime();
+
+        if (timePassed > 60) {
+            requestGames();
+            timePassed = 0;
+        }
         Gdx.gl.glClearColor(1, 1, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-       
+
         stage.act();
         stage.draw();
+
     }
-     
+
+    private void requestGames() {
+        System.out.println("Requesting games");
+        lobbyview.clearChildren();
+        Globals.client.send(new RequestGameListPacket());
+    }
+
+    @Override
+    public void received(Connection connection, Object obj) {
+        if (obj instanceof GameListPacket) {
+            System.out.println("Received game list");
+            lastPacket = (GameListPacket) obj;
+            for (String name : lastPacket.games) {
+                lobbyview.addString(name);
+            }
+        }
+    }
+
     @Override
     public void show() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void resize(int i, int i1) {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void pause() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void resume() {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void hide() {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public void dispose() {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    
 }
