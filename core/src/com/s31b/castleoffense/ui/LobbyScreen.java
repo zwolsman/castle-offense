@@ -81,7 +81,6 @@ public class LobbyScreen extends Listener implements Screen {
     }
 
     private void requestGames() {
-        System.out.println("Requesting games");
         lobbyview.clearChildren();
         Globals.client.send(new RequestGameListPacket());
     }
@@ -89,7 +88,6 @@ public class LobbyScreen extends Listener implements Screen {
     @Override
     public void received(Connection connection, Object obj) {
         if (obj instanceof GameListPacket) {
-            System.out.println("Received game list");
             lastPacket = (GameListPacket) obj;
             for (String name : lastPacket.games) {
                 lobbyview.addString(name);

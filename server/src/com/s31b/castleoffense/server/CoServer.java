@@ -57,12 +57,10 @@ public class CoServer extends Listener {
             if (packet.getName().isEmpty()) {
                 packet.setName("<NO NAME>");
             }
-            System.out.println("Creating game. Requested ip: " + connection.getRemoteAddressTCP().getHostString() + ", game name: " + packet.getName());
             ServerGame g = new ServerGame(games.size(), packet.getName());
             g.addPlayer(connection, "creator");
             games.add(g);
             connection.sendTCP(new PlayerListPacket("creator"));
-            System.out.println("Created game with id: " + g.getGame().getId());
             return;
         }
 
@@ -133,8 +131,6 @@ public class CoServer extends Listener {
         }
 
         if (obj instanceof RequestGameListPacket) {
-            System.out.println("Got a request for the games");
-
             GameListPacket packet = new GameListPacket();
             int id = 0;
             for (ServerGame game : games) {
@@ -142,12 +138,9 @@ public class CoServer extends Listener {
                 packet.ids.add(id++);
                 packet.max.add(2);
             }
-            System.out.println("Sending game list");
             connection.sendTCP(packet);
             return;
         }
-
-        System.out.println("Unhandeld packet");
     }
 
     /**
