@@ -81,7 +81,6 @@ public class CoServer extends Listener {
             games.get(packet.gid).broadcast(plPacket);
 
             for (Defensive tower : games.get(packet.gid).getGame().getAllTowers()) {
-                System.out.println("Found placed tower already for game " + packet.gid);
                 connection.sendTCP(new BoughtTowerPacket(tower.getPosition().getX(), tower.getPosition().getY(), tower.getId(), tower.getName()));
             }
         }
@@ -96,8 +95,6 @@ public class CoServer extends Listener {
             if (game == null) {
                 return;
             }
-
-            System.out.println("Bought tower for game " + games.indexOf(game));
             Player p = game.getPlayer(connection);
             BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.getX(), packet.getY(), p.getId(), packet.getName());
 
