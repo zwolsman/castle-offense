@@ -130,6 +130,7 @@ public class CoGame {
 
     /**
      * Ends a game
+     *
      * @param winner is this the winning player?
      */
     public void endGame(boolean winner) {
@@ -168,18 +169,12 @@ public class CoGame {
     }
 
     public void update() {
-        if (System.currentTimeMillis() < endTime) {
-            for (Player player : players) {
-                if (player.getCastle().getHitpoints() > 0) {
-                    getCurrentWave().update();
-                } else {
-                    // this player has lost the game
-                    Globals.client.send(new WinGamePacket(player.getId()));
-                }
-            }
-        } else {
-            for (int i = 0; i < players.size(); i++) {
-                this.getCurrentWave().endWave();
+        for (Player player : players) {
+            if (player.getCastle().getHitpoints() > 0) {
+                getCurrentWave().update();
+            } else {
+                // this player has lost the game
+                Globals.client.send(new WinGamePacket(player.getId()));
             }
         }
     }
@@ -208,8 +203,8 @@ public class CoGame {
     public List<Player> getPlayers() {
         return Collections.unmodifiableList(players);
     }
-    
-    public GameState getState(){
+
+    public GameState getState() {
         return this.state;
     }
 
