@@ -314,7 +314,7 @@ public class Offensive extends Entity {
     }
 
     public void die() {
-        if (!Settings.isMuted()) {
+        if (deathSound != null && !Settings.isMuted()) {
             deathSound.play(1f);
         }
     }
