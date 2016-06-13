@@ -6,6 +6,10 @@ import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.s31b.castleoffense.EntityFactory;
+import com.s31b.castleoffense.game.entity.Defensive;
+import com.s31b.castleoffense.game.entity.EntityType;
+import com.s31b.castleoffense.map.Tile;
 import com.s31b.castleoffense.player.Player;
 import com.s31b.castleoffense.server.packets.*;
 import java.io.IOException;
@@ -75,6 +79,11 @@ public class CoServer extends Listener {
                 plPacket.players.add(p.getName());
             }
             games.get(packet.gid).broadcast(plPacket);
+
+            for (Defensive tower : games.get(packet.gid).getGame().getAllTowers()) {
+                System.out.println("Found placed tower already for game " + packet.gid);
+                connection.sendTCP(new BoughtTowerPacket(tower.getPosition().getX(), tower.getPosition().getY(), tower.getId(), tower.getName()));
+            }
         }
 
         if (obj instanceof StartGamePacket) {
@@ -87,8 +96,15 @@ public class CoServer extends Listener {
             if (game == null) {
                 return;
             }
+
+            System.out.println("Bought tower for game " + games.indexOf(game));
             Player p = game.getPlayer(connection);
             BoughtTowerPacket boughtPacket = new BoughtTowerPacket(packet.getX(), packet.getY(), p.getId(), packet.getName());
+
+            Defensive tower = (Defensive) EntityFactory.buyEntity(EntityType.getTypeFromString(packet.getName()), p);
+            tower.setPosition(new Tile(packet.getX(), packet.getY()));
+            game.getGame().addTower(tower);
+
             game.broadcast(boughtPacket);
         }
 
