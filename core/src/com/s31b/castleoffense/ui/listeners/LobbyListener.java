@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.server.packets.JoinGamePacket;
-import java.util.Scanner;
+import com.s31b.castleoffense.ui.LobbyGroup;
 
 /**
  *
@@ -16,14 +16,9 @@ public class LobbyListener extends ClickListener {
     @Override
     public void clicked(InputEvent event, float x, float y) {
         // Get the ID and join the game
-        if( getTapCount() == 2) { // put breakpoint here
+        if( getTapCount() == 2) { // put breakpoint here         
             Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-            System.out.println("Enter the id of the game:");
-            Scanner sc = new Scanner(System.in);
-
-            int nextId = sc.nextInt();
-            System.out.println("Trying to join game " + nextId);
-            joinGame(nextId);
+            joinGame(((LobbyGroup)event.getListenerActor()).getGameId());
         }
     }
     

@@ -69,13 +69,13 @@ public class Lobbyview extends Table {
         setPadding(padTop, padBottom, padLeft, padRight);
     }
 
-    public void addString(String text) {
-        HorizontalGroup hg = new HorizontalGroup();
-        Label l = new Label(text, skin);
+    public void addGame(String title, int gameId) {
+        LobbyGroup lg = new LobbyGroup(gameId);
+        Label l = new Label(title, skin);
         l.setColor(Color.BLACK);
-        hg.addActor(l);
-        hg.addListener(new LobbyListener());
-        this.add(hg).align(Align.topLeft).row();
+        lg.addActor(l);
+        lg.addListener(new LobbyListener());
+        this.add(lg).align(Align.topLeft).row();
     }
 
     public void render(Stage stage) {

@@ -90,7 +90,7 @@ public class LobbyScreen extends Listener implements Screen {
         if (obj instanceof GameListPacket) {
             lastPacket = (GameListPacket) obj;
             for (String name : lastPacket.games) {
-                lobbyview.addString(name);
+                lobbyview.addGame(name, lastPacket.ids.get(lastPacket.games.indexOf(name)));
             }
         }
     }
