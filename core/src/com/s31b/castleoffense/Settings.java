@@ -11,14 +11,25 @@ package com.s31b.castleoffense;
  */
 public class Settings {
 
+    private static Settings instance;
     private static boolean mute = false;
 
-    public static boolean isMuted() {
+    protected Settings() {
+        //
+    }
+
+    public static Settings getInstance() {
+        if (instance == null) {
+            instance = new Settings();
+        }
+        return instance;
+    }
+
+    public boolean isMuted() {
         return mute;
     }
 
-    public static void toggleMute() {
+    public void toggleMute() {
         mute = !mute;
-        AudioPlayer.mute(mute);
     }
 }

@@ -9,27 +9,27 @@ import com.s31b.castleoffense.ui.imageButton;
  *
  * @author Nick
  */
-public class MuteListener extends ClickListener{
+public class MuteListener extends ClickListener {
+
     imageButton mute;
-    
-    public MuteListener(imageButton buttonMute){
+
+    public MuteListener(imageButton buttonMute) {
         this.mute = buttonMute;
         changeImage();
     }
-    
+
     @Override
     public void clicked(InputEvent event, float x, float y) {
-        Settings.toggleMute();
+        Settings.getInstance().toggleMute();
         changeImage();
     }
-    
-    private void changeImage(){
-        if(Settings.isMuted()){
-            mute.setImage("buttonMuted"); 
-        }
-        else if(!Settings.isMuted()){
+
+    private void changeImage() {
+        if (Settings.getInstance().isMuted()) {
+            mute.setImage("buttonMuted");
+        } else if (!Settings.getInstance().isMuted()) {
             mute.setImage("buttonUnmuted");
         }
     }
-    
+
 }

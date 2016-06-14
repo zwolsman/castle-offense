@@ -173,7 +173,7 @@ public class Offensive extends Entity {
         Tile tempTile = getNextPosition();
 
         if (isDead()) {
-            if (!Settings.isMuted() && !didPlaySound && deathSound != null) {
+            if (!Settings.getInstance().isMuted() && !didPlaySound && deathSound != null) {
                 didPlaySound = true;
                 deathSound.play(1f);
             }

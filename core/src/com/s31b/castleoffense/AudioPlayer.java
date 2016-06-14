@@ -18,7 +18,7 @@ public class AudioPlayer {
 
     public static void play(String name) {
         checkPlaying();
-        if (!Settings.isMuted()) {
+        if (!Settings.getInstance().isMuted()) {
             AUDIO_PLAYER = AudioFactory.getMusic(name);
             AUDIO_PLAYER.setLooping(false);
             AUDIO_PLAYER.play();
@@ -32,7 +32,7 @@ public class AudioPlayer {
      */
     public static void play(String name, float volume) {
         checkPlaying();
-        if (volume > 0 && volume < 100 && !Settings.isMuted()) {
+        if (volume > 0 && volume < 100 && !Settings.getInstance().isMuted()) {
             AUDIO_PLAYER = AudioFactory.getMusic(name);
             AUDIO_PLAYER.setLooping(false);
             AUDIO_PLAYER.setVolume(volume);
@@ -42,7 +42,7 @@ public class AudioPlayer {
 
     public static void loop(String name) {
         checkPlaying();
-        if (!Settings.isMuted()) {
+        if (!Settings.getInstance().isMuted()) {
             AUDIO_PLAYER = AudioFactory.getMusic(name);
             AUDIO_PLAYER.setLooping(true);
             AUDIO_PLAYER.play();
@@ -51,7 +51,7 @@ public class AudioPlayer {
 
     public static void loop(String name, float volume) {
         checkPlaying();
-        if (volume > 0 && volume < 100 && !Settings.isMuted()) {
+        if (volume > 0 && volume < 100 && !Settings.getInstance().isMuted()) {
             AUDIO_PLAYER = AudioFactory.getMusic(name);
             AUDIO_PLAYER.setVolume(volume);
             AUDIO_PLAYER.setLooping(true);
@@ -63,15 +63,6 @@ public class AudioPlayer {
     private static void checkPlaying() {
         if (AUDIO_PLAYER != null && (AUDIO_PLAYER.isPlaying() || AUDIO_PLAYER.isLooping())) {
             AUDIO_PLAYER.dispose();
-        }
-    }
-
-    public static void mute(boolean bool) {
-        if (bool) {
-            lastVolume = AUDIO_PLAYER.getVolume();
-            AUDIO_PLAYER.setVolume(0f);
-        } else {
-            AUDIO_PLAYER.setVolume(lastVolume);
         }
     }
 }

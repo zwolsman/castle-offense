@@ -191,7 +191,7 @@ public class Defensive extends Entity {
         }
         if (deltaCounter <= 0f) {
             deltaCounter += 1f;
-            if (shootSound != null && !Settings.isMuted()) {
+            if (shootSound != null && !Settings.getInstance().isMuted()) {
                 shootSound.play(0.7f);
             }
             target.dealDamage(damagePerSecond * 1f, this);
