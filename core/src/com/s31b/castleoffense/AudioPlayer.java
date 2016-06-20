@@ -80,6 +80,7 @@ public class AudioPlayer {
     }
 
     private static void checkPlaying() {
+        System.out.println(Settings.getInstance().isMuted());
         if (AUDIO_PLAYER != null && (AUDIO_PLAYER.isPlaying() || AUDIO_PLAYER.isLooping())) {
             AUDIO_PLAYER.dispose();
         }
