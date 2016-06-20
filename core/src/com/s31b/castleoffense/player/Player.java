@@ -42,20 +42,15 @@ public class Player {
      *
      * @return bought offensive entity, or null if not enough money
      */
-    public boolean buyOffensiveEntity(EntityType type) {
-        float price = EntityFactory.getEntityPriceByType(type);
-        if (price < this.gold) {
+    public Offensive buyOffensiveEntity(EntityType type) {
+        Offensive entity = (Offensive) EntityFactory.buyEntity(type, this);
+        float price = entity.getPrice();
+        if (price <= this.gold) {
             this.gold -= price;
-            Offensive entity = (Offensive) EntityFactory.buyEntity(type, this);
-            if (entity == null) {
-                return false;
-            }
-
             game.getCurrentWave().addOffensive(entity);
-            return true;
+            return entity;
         }
-
-        return false;
+        return null;
     }
 
     /**
@@ -63,20 +58,16 @@ public class Player {
      *
      * @return bought defensive entity, or null if not enough money
      */
-    public boolean buyDefensiveEntity(EntityType type, Tile location) throws RemoteException {
-        float price = EntityFactory.getEntityPriceByType(type);
+    public Defensive buyDefensiveEntity(EntityType type) {
+        Defensive entity = (Defensive) EntityFactory.buyEntity(type, this);
+        float price = entity.getPrice();
         if (price <= this.gold) {
             this.gold -= price;
-            Defensive entity = (Defensive) EntityFactory.buyEntity(type, this);
-            if (entity == null) {
-                return false;
-            }
 
             game.addTower(entity);
-            return true;
+            return entity;
         }
-
-        return false;
+        return null;
     }
 
     public void addPoints(int amount) {

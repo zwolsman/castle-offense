@@ -31,7 +31,6 @@ public class MainMenu extends Listener implements Screen {
     private imageButton buttonInfo;
     private imageButton buttonQuit;
     private imageButton buttonJoin;
-    private imageButton buttonMute;
     private imageButton buttonUnmute;
     private Image background;
     private Stage stage;
