@@ -79,6 +79,19 @@ public class Wave {
         }
     }
 
+    public boolean didSpawnWave() {
+
+        if (offEntities.isEmpty()) {
+            return false;
+        }
+        for (Offensive entity : offEntities) {
+            if (!entity.isSpawned()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Spawn the wave with spawn delay for each offensive entity
      */
