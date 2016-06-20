@@ -94,12 +94,7 @@ public class CoGame {
      * @return The current wave
      */
     public Wave getCurrentWave() {
-        for (Wave wave : waves) {
-            if (wave.getNumber() == currentWaveId) {
-                return wave;
-            }
-        }
-        return null;
+        return waves.get(waves.size() - 1);
     }
 
     public int getId() {
@@ -144,8 +139,7 @@ public class CoGame {
      * @return
      */
     public Wave nextWave() {
-        currentWaveId++;
-        Wave wave = new Wave(currentWaveId, this);
+        Wave wave = new Wave(currentWaveId++, this);
         waves.add(wave);
         return wave;
     }
@@ -171,7 +165,19 @@ public class CoGame {
     public void update() {
         for (Player player : players) {
             if (player.getCastle().getHitpoints() > 0) {
-                getCurrentWave().update();
+                boolean didSpawnAll = true;
+
+                for (int i = 0; i < waves.size(); i++) {
+                    Wave w = waves.get(i);
+                    w.update();
+                    if (!w.didSpawnWave()) {
+                        didSpawnAll = false;
+                    }
+                }
+                if (didSpawnAll && waves.size() > 0) {
+                    System.out.println("Next wave!");
+                    nextWave();
+                }
             } else {
                 // this player has lost the game
                 Globals.client.send(new WinGamePacket(player.getId()));
@@ -184,8 +190,10 @@ public class CoGame {
      */
     public void draw() {
         map.draw();
-        getCurrentWave().draw();
-
+        for (int i = 0; i < waves.size(); i++) {
+            Wave w = waves.get(i);
+            w.draw();
+        }
         for (Defensive tower : getAllTowers()) {
             tower.draw();
         }

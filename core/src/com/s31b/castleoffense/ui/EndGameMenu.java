@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.s31b.castleoffense.AudioPlayer;
 import com.s31b.castleoffense.CastleOffense;
 import com.s31b.castleoffense.TextureFactory;
 import com.s31b.castleoffense.game.CoGame;
@@ -21,13 +22,14 @@ import com.s31b.castleoffense.game.CoGame;
  * lose)
  */
 public class EndGameMenu implements Screen {
+
     private Stage stage;
     private Image background;
     private Image stateImage;
     private imageButton buttonDone;
     private CoGame game;
 
-    public EndGameMenu(Boolean winningState , CoGame game) {
+    public EndGameMenu(Boolean winningState, CoGame game) {
         this.stateImage = new Image(TextureFactory.getTexture("GUIMenu/You" + (winningState ? "Win" : "Lose")));
 
         this.game = game;
@@ -35,6 +37,7 @@ public class EndGameMenu implements Screen {
     }
 
     public void create() {
+        AudioPlayer.stop();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
         background.setHeight(Gdx.graphics.getHeight());

@@ -77,15 +77,20 @@ public class CoServer extends Listener {
                 System.out.println("No game found with id!");
                 return;
             }
-            getServerGame(packet.gid).addPlayer(connection, "joiner");
-            PlayerListPacket plPacket = new PlayerListPacket();
-            for (Player p : getServerGame(packet.gid).getGame().getPlayers()) {
-                plPacket.players.add(p.getName());
-            }
-            getServerGame(packet.gid).broadcast(plPacket);
+            ServerGame sGame = getServerGame(packet.gid);
 
-            for (Defensive tower : getServerGame(packet.gid).getGame().getAllTowers()) {
-                connection.sendTCP(new BoughtTowerPacket(tower.getPosition().getX(), tower.getPosition().getY(), tower.getId(), tower.getName()));
+            if (sGame != null) {
+                sGame.addPlayer(connection, "joiner");
+                PlayerListPacket plPacket = new PlayerListPacket();
+                for (Player p : getServerGame(packet.gid).getGame().getPlayers()) {
+                    plPacket.players.add(p.getName());
+                }
+                getServerGame(packet.gid).broadcast(plPacket);
+
+                for (Defensive tower : getServerGame(packet.gid).getGame().getAllTowers()) {
+                    connection.sendTCP(new BoughtTowerPacket(tower.getPosition().getX(), tower.getPosition().getY(), tower.getId(), tower.getName()));
+                }
+                return;
             }
             return;
         }
@@ -141,9 +146,12 @@ public class CoServer extends Listener {
             GameListPacket packet = new GameListPacket();
             int id = 0;
             for (ServerGame game : games) {
-                packet.games.add(game.getName());
-                packet.ids.add(id++);
-                packet.max.add(2);
+
+                if (game.getPlayers().size() < 2) {
+                    packet.games.add(game.getName());
+                    packet.ids.add(id++);
+                    packet.max.add(2);
+                }
             }
             connection.sendTCP(packet);
             return;
