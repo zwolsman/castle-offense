@@ -100,16 +100,16 @@ public class TestPlayer {
 
         ////Add tower on location 5,5
         float resultPrice1 = p1.getGold() - EntityPrice;
-        assertNull("Buying tower failed.", p1.buyDefensiveEntity(EntityType.Tower_Blue));
+        assertNotNull("Buying tower failed.", p1.buyDefensiveEntity(EntityType.Tower_Blue));
         assertEquals("Bought tower but money is not correct.", resultPrice1, p1.getGold(), 0);
         assertEquals("Games has not added the tower.", 1, g.getAllTowers().size());
 
         ///Can't add tower location 5,5 is already a tower
-        //assertFalse("Tower location already exists", p1.buyDefensiveEntity(EntityType.Defensive_Tower1, new Tile(5, 5)));
+        //assertNull("Tower location already exists but tower added", p1.buyDefensiveEntity(EntityType.Tower_Blue));
 
          ////Add tower on location 5,4
          float resultPrice2 = p1.getGold() - EntityPrice;
-        assertNull("Buying tower failed.", p1.buyDefensiveEntity(EntityType.Tower_Blue));
+        assertNotNull("Buying tower failed.", p1.buyDefensiveEntity(EntityType.Tower_Blue));
         assertEquals("Bought tower but money is not correct.", resultPrice2, p1.getGold(), 0);
         assertEquals("Game has not added the tower.", 2, g.getAllTowers().size());
     }

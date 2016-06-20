@@ -53,12 +53,14 @@ public class TestWave {
         ///This unit will die
         Offensive off2 = new Offensive(EntityType.Blue, "", "", "", p1, 0, 0, 0, 40);
         
-        Defensive def1 = new Defensive(EntityType.Blue, "", "", null, p1, 0, 40, 1);
+        Defensive def1 = new Defensive(EntityType.Blue, "", "", null, p2, 0, 40, 1);
         def1.setPosition(new Tile(5, 5));
         game.addTower(def1);
         
-        int expected_gold_p1 = p1.getGold();
-        int expected_gold_p2 = p2.getGold() + off2.getKillReward();
+        off2.dealDamage(5, def1);
+        
+        int expected_gold_p1 = p1.getGold() + Globals.GOLD_INCR_PER_WAVE;
+        int expected_gold_p2 = p2.getGold() + off2.getKillReward() + Globals.GOLD_INCR_PER_WAVE;
         
         w1.addOffensive(off1);
         w1.addOffensive(off2);
@@ -72,8 +74,8 @@ public class TestWave {
         w1.endWave();
         assertTrue("offensive is not spawned", off1.isSpawned());
         assertTrue("offensive is not dead", off2.isDead());
-        //assertEquals("Player 1 gold", expected_gold_p1, p1.getGold());
-        //assertEquals("Player 2 gold", expected_gold_p2, p2.getGold());
+        assertEquals("Player 1 gold", expected_gold_p1, p1.getGold());
+        assertEquals("Player 2 gold", expected_gold_p2, p2.getGold());
     }
     
     @Test
@@ -139,10 +141,12 @@ public class TestWave {
     
     @Test
     public void TestReward(){
-        int expectedMoney = p2.getGold() + 15;
+        int expectedMoney = p1.getGold() + 15;
+        
         Offensive o1 = new Offensive(EntityType.Police, "test", "test", "", p1, 100, 100, 10, 15);
+        o1.dealDamage(1, new Defensive(EntityType.Blue, "", "", null, p1, 5, 5, 5));
         w1.reward(o1);
         
-        assertEquals(expectedMoney, p2.getGold());
+        assertEquals(expectedMoney, p1.getGold());
     }
 }
