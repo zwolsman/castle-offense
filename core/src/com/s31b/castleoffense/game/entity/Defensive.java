@@ -26,6 +26,7 @@ public class Defensive extends Entity {
     private Sound shootSound = null;
     private float deltaCounter;
     private boolean shooting;
+    private float attackSpeed;
 
     private Tile position;
 
@@ -54,6 +55,7 @@ public class Defensive extends Entity {
         deltaCounter = 0f;
         shooting = true;
         shootSound = null;
+        attackSpeed = 1f;
     }
 
     /**
@@ -70,6 +72,7 @@ public class Defensive extends Entity {
         target = null;
         deltaCounter = 0f;
         shooting = true;
+        attackSpeed = 1f;
     }
 
     /**
@@ -186,15 +189,15 @@ public class Defensive extends Entity {
 
     public void dealDamage() {
         deltaCounter -= Gdx.graphics.getDeltaTime();
-        if (deltaCounter < 0.1f || deltaCounter > 0.9f) {
+        if (deltaCounter < 0.1f || deltaCounter > (attackSpeed - 0.1f)) {
             shooting = true;
         }
         if (deltaCounter <= 0f) {
-            deltaCounter += 1f;
+            deltaCounter += attackSpeed;
             if (shootSound != null && !Settings.getInstance().isMuted()) {
                 shootSound.play(0.7f);
             }
-            target.dealDamage(damagePerSecond * 1f, this);
+            target.dealDamage(damagePerSecond * attackSpeed, this);
         }
     }
 }
