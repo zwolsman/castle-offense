@@ -34,7 +34,7 @@ public class Player {
 
     private void initPlayer() {
         points = 0;
-        gold = 100;
+        gold = 300;
         offensiveSpawnPosition = game.getMap().getSpawnPoints().get(id);
         castle = new Castle(this);
         offensives = new ArrayList<Offensive>();

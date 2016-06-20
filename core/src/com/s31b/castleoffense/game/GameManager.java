@@ -15,7 +15,7 @@ public class GameManager {
     private static GameManager instance = null;
 
     private static final int playerRowAmount = 2;
-    private static final int goldPerWave = 1000;
+    private static final int goldPerWave = 200;
     private static final int tilesPerRegion = 400;
     private static final int prepareDurationInMs = 60000;
     private static final int windowWidth = 640;
