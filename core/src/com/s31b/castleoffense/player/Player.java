@@ -4,7 +4,9 @@ import com.s31b.castleoffense.EntityFactory;
 import com.s31b.castleoffense.game.CoGame;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.map.Tile;
-import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A player instance
@@ -18,7 +20,7 @@ public class Player {
     private int points;
     private int gold;
     private Tile offensiveSpawnPosition;
-
+    private List<Offensive> offensives;
     private Castle castle;
 
     private final CoGame game;
@@ -32,9 +34,10 @@ public class Player {
 
     private void initPlayer() {
         points = 0;
-        gold = 100;
+        gold = 300;
         offensiveSpawnPosition = game.getMap().getSpawnPoints().get(id);
         castle = new Castle(this);
+        offensives = new ArrayList<Offensive>();
     }
 
     /**
@@ -47,7 +50,7 @@ public class Player {
         float price = entity.getPrice();
         if (price <= this.gold) {
             this.gold -= price;
-            game.getCurrentWave().addOffensive(entity);
+            offensives.add(entity);
             return entity;
         }
         return null;
@@ -112,6 +115,10 @@ public class Player {
 
     public CoGame getGame() {
         return this.game;
+    }
+
+    public List<Offensive> getOffensives() {
+        return Collections.unmodifiableList(offensives);
     }
 
     @Override
