@@ -593,6 +593,7 @@ public class GameMenu extends Listener implements Screen {
                 Player p = game.getPlayerByName(name);
                 if (p == null) {
                     System.out.println("Got opponent, name: " + name);
+                    StatusUpdate.log("Tegenstander geariveerd");
                     opponent = game.addPlayer(name);
                 }
             }
