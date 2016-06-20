@@ -1,6 +1,9 @@
 
 package com.s31b.castleoffense.ui;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -19,6 +22,7 @@ public class TextDialog extends Dialog {
         text(description);  
         input = new TextField("", skin);     
         button("Ok");
+        setEnterListener();
         this.addActor(input); 
     }
     
@@ -42,5 +46,17 @@ public class TextDialog extends Dialog {
     
     private void startGame(String gameName) {
         Globals.client.send(new CreateGamePacket(gameName));
+    }
+    
+    private void setEnterListener(){
+        this.addListener(new InputListener() {
+        @Override
+        public boolean keyUp(InputEvent event, int keycode) {
+            if (keycode == Input.Keys.ENTER) {
+                startGame(input.getText());
+            }
+            return true;
+        }
+    });
     }
 }
