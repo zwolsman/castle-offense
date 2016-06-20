@@ -141,9 +141,12 @@ public class CoServer extends Listener {
             GameListPacket packet = new GameListPacket();
             int id = 0;
             for (ServerGame game : games) {
-                packet.games.add(game.getName());
-                packet.ids.add(id++);
-                packet.max.add(2);
+
+                if (game.getPlayers().size() < 2) {
+                    packet.games.add(game.getName());
+                    packet.ids.add(id++);
+                    packet.max.add(2);
+                }
             }
             connection.sendTCP(packet);
             return;
