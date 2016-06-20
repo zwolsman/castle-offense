@@ -77,13 +77,11 @@ public class AudioPlayer {
         if (mute) {
             if (AUDIO_PLAYER != null && (AUDIO_PLAYER.isPlaying() || AUDIO_PLAYER.isLooping())) {
                 AUDIO_PLAYER.dispose();
-                System.out.println("stopping music");
             }
         } else if (PLAYING != null) {
             AUDIO_PLAYER = AudioFactory.getMusic(PLAYING);
             AUDIO_PLAYER.setLooping(LOOPING);
             AUDIO_PLAYER.play();
-            System.out.println("resuming music");
         }
     }
 
