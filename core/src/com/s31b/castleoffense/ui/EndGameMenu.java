@@ -37,6 +37,7 @@ public class EndGameMenu implements Screen {
     }
 
     public void create() {
+        AudioPlayer.stop();
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/TMOTDbackground.jpg")));
         background.setHeight(Gdx.graphics.getHeight());
@@ -48,7 +49,6 @@ public class EndGameMenu implements Screen {
         buttonDone.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                AudioPlayer.stop();
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
                 CastleOffense.getInstance().setScreen(new MainMenu(game));
             }
