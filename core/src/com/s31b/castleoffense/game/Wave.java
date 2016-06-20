@@ -111,7 +111,7 @@ public class Wave {
             return;
         }
         timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
-        StatusUpdate.log("displaying wave!");
+        StatusUpdate.log("Ronde aan het afspelen");
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {
