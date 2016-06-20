@@ -129,7 +129,7 @@ public class GameMenu extends Listener implements Screen {
 
         feedback = new Label("....", skin);
         feedback.setColor(Color.BLACK);
-        feedback.setPosition(100, 575);
+        feedback.setPosition(80, 575);
 
         offBought = new Listview(200, 170, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 180);
 
