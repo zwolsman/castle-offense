@@ -38,6 +38,7 @@ public class Offensive extends Entity {
     private int ingameX, ingameY;
     private Direction direction = Direction.Right;
     private Sound deathSound;
+    private boolean rewarded = false;
     private boolean didPlaySound = false;
     private boolean isAtEnemyCastle = false;
     private Defensive damageSrc;
@@ -114,6 +115,7 @@ public class Offensive extends Entity {
     }
 
     public int getKillReward() {
+        rewarded = true;
         return killReward;
     }
 
@@ -342,6 +344,10 @@ public class Offensive extends Entity {
 
     public Defensive getDamageSource() {
         return this.damageSrc;
+    }
+
+    public Boolean checkRewarded() {
+        return rewarded;
     }
 }
 

@@ -107,8 +107,9 @@ public class Wave {
             if (offensive.isSpawned()) {
                 offensive.update();
                 game.getPlayers().stream().filter(player -> offensive.getOwner() != player).forEach(player -> {
-                    checkInRange(offensive);
-                    if (offensive.isDead()) {
+                    if (!offensive.isDead()) {
+                        checkInRange(offensive);
+                    } else if (offensive.checkRewarded()) {
                         reward(offensive);
                     }
                 });
