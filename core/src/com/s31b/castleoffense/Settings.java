@@ -31,6 +31,10 @@ public class Settings {
 
     public void toggleMute() {
         mute = !mute;
-        AudioPlayer.mute();
+        AudioPlayer.mute(mute);
+    }
+
+    public void stopMusic() {
+        AudioPlayer.stop();
     }
 }

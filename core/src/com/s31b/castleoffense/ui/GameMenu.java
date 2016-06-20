@@ -118,18 +118,18 @@ public class GameMenu extends Listener implements Screen {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         AudioPlayer.loop("ambient.ogg", 0.9f);
-
+        
         buttonUnmute = new imageButton("buttonUnmuted");
         buttonUnmute.addListener(new MuteListener(buttonUnmute));
         buttonUnmute.setSize(40, 40);
         buttonUnmute.setPosition(20, 650);
-
+        
         background = new Image(new Texture(Gdx.files.internal("GUIMenu/sky.png")));
         background.setWidth(Gdx.graphics.getWidth());
 
         feedback = new Label("....", skin);
         feedback.setColor(Color.BLACK);
-        feedback.setPosition(80, 700);
+        feedback.setPosition(100, 575);
 
         offBought = new Listview(200, 170, Gdx.graphics.getWidth() - 400, Gdx.graphics.getHeight() - 180);
 
@@ -497,8 +497,8 @@ public class GameMenu extends Listener implements Screen {
         defDps.setText(Integer.toString(defDAO.getDamage()));
         defRange.setText(Integer.toString(defDAO.getRange()));
     }
-
-    private void setOffInfo(OffensiveDAO off) {
+    
+    private void setOffInfo(OffensiveDAO off){
         offLabel.setText(off.getName());
         offPrice.setText(Float.toString(off.getPrice()));
         offDescription.setText(off.getDescr());
@@ -506,12 +506,12 @@ public class GameMenu extends Listener implements Screen {
         offHp.setText(Double.toString(off.getHealthPoints()));
         updateBoughtCount(EntityType.valueOf(off.getType()));
     }
-
-    private void updateBoughtCount(EntityType offType) {
+    
+    private void updateBoughtCount(EntityType offType){
         int countOffBought = 0;
-
-        for (Offensive tempOff : game.getCurrentWave().getOffensives()) {
-            if (tempOff.getType().equals(offType)) {
+        
+        for(Offensive tempOff : game.getCurrentWave().getOffensives()){
+            if(tempOff.getType().equals(offType)){
                 countOffBought++;
             }
         }
@@ -519,16 +519,18 @@ public class GameMenu extends Listener implements Screen {
     }
 
     private void buyOffensive() {
-        for (OffensiveDAO o : offList) {
-            if (offLabel.getText().toString().equals(o.getName()) && player != null) {
-                player.buyOffensiveEntity(EntityType.valueOf(o.getType()));
-
-                if (player.getGold() >= o.getPrice()) {
-                    updateBoughtCount(EntityType.valueOf(o.getType()));
-                    offBought.addString(o.getName());
+        if (game != null && player != null) {
+            for (OffensiveDAO o : offList) {
+                if (offLabel.getText().toString().equals(o.getName())) {
+                    Offensive tempO = player.buyOffensiveEntity(EntityType.valueOf(o.getType()));
+                    if (tempO != null) {
+                        offBought.addString(tempO.getName());
+                        System.out.println("Added to queue: " + o.getName());
+                    } else {
+                        StatusUpdate.log("De " + o.getName() + " kan niet gekocht worden");
+                    }
+                    break;
                 }
-                System.out.println("Added to que: " + o.getName());
-                break;
             }
         }
     }
@@ -537,13 +539,15 @@ public class GameMenu extends Listener implements Screen {
         if (player != null && game != null) {
             for (DefensiveDAO d : defList) {
                 if (defLabel.getText().toString().equals(d.getName())) {
-                    towerToPlace = (Defensive) EntityFactory.buyEntity(EntityType.valueOf(d.getType()), player);
-
-                    System.out.println("Bought: " + towerToPlace.getName());
+                    towerToPlace = player.buyDefensiveEntity(EntityType.valueOf(d.getType()));
+                    if (towerToPlace != null) {
+                        System.out.println("Bought: " + towerToPlace.getName());
+                    } else {
+                        StatusUpdate.log("De " + d.getName() + " kan niet gekocht worden");
+                    }
                     break;
                 }
             }
-
             playerGold.setText(Integer.toString(player.getGold()));
         }
     }
@@ -560,7 +564,7 @@ public class GameMenu extends Listener implements Screen {
         EndWavePacket p = new EndWavePacket();
         ArrayList<Integer> ids = new ArrayList<Integer>();
         for (Offensive o : game.getCurrentWave().getOffensives()) {
-            int id = types.indexOf(EntityType.getTypeFromString(o.getType().toString()));
+            int id = types.indexOf(o.getType());
             ids.add(id);
         }
         p.entities = ids;
