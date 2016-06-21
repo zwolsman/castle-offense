@@ -31,5 +31,6 @@ public class StartGameListener extends ClickListener {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
         TextDialog td = new TextDialog("Spel naam", "Voer de naam van het spel in:", skin);
         td.show(stage);
+        td.setPosition((stage.getWidth() / 2) - (td.getWidth() / 2), (stage.getHeight() / 2) - (td.getHeight() / 2));
     }
 }

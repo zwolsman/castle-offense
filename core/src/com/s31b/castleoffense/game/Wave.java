@@ -79,6 +79,19 @@ public class Wave {
         }
     }
 
+    public boolean didSpawnWave() {
+
+        if (offEntities.isEmpty()) {
+            return false;
+        }
+        for (Offensive entity : offEntities) {
+            if (!entity.isSpawned()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Spawn the wave with spawn delay for each offensive entity
      */
@@ -98,7 +111,7 @@ public class Wave {
             return;
         }
         timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
-        StatusUpdate.log("displaying wave!");
+        StatusUpdate.log("Ronde aan het afspelen");
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {

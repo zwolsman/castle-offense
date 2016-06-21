@@ -10,6 +10,7 @@ import com.s31b.castleoffense.player.Player;
 import com.s31b.castleoffense.server.packets.IPacket;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -121,6 +122,10 @@ public class ServerGame extends Listener implements ApplicationListener {
 
     @Override
     public void dispose() {
+    }
+
+    List<Player> getPlayers() {
+        return game.getPlayers();
     }
 
 }

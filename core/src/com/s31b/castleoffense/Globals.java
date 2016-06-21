@@ -15,7 +15,7 @@ public class Globals {
     //Base Prices
     public static final int PRICE_OFFENSIVE = 5;
     public static final int PRICE_DEFENSIVE = 200;
-    public static final int GOLD_INCR_PER_WAVE = 20;
+    public static final int GOLD_INCR_PER_WAVE = 200;
 
     // Base DPS
     public static final int DAMAGE_PER_SECOND = 10;
