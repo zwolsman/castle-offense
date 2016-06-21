@@ -253,7 +253,7 @@ public class Offensive extends Entity {
     }
 
     public void draw() {
-        if (!isSpawned()) {
+        if (!isSpawned() || isAtEnemyCastle) {
             return;
         }
         Texture t;
