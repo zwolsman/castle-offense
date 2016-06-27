@@ -556,9 +556,7 @@ public class GameMenu extends Listener implements Screen {
             for (DefensiveDAO d : defList) {
                 if (defLabel.getText().toString().equals(d.getName())) {
                     towerToPlace = player.buyDefensiveEntity(EntityType.valueOf(d.getType()));
-                    if (towerToPlace != null) {
-                        System.out.println("Bought: " + towerToPlace.getName());
-                    } else {
+                    if (towerToPlace == null) {
                         StatusUpdate.log("De " + d.getName() + " kan niet gekocht worden");
                     }
                     break;

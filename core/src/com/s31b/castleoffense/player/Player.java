@@ -68,7 +68,6 @@ public class Player {
         if (price <= this.gold) {
             this.gold -= price;
 
-            game.addTower(entity);
             return entity;
         }
         return null;
