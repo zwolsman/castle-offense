@@ -149,6 +149,9 @@ public class CoGame {
         Wave wave = new Wave(++currentWaveId, this);
         waves.add(wave);
         this.state = GameState.InGame;
+        for (Player player : players) {
+            player.clearOffensives();
+        }
         StatusUpdate.log("Richt de volgende ronde in!");
         GameMenu.setEnabled(true);
         return wave;

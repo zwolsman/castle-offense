@@ -7,6 +7,7 @@ import com.s31b.castleoffense.map.Tile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A player instance
@@ -37,7 +38,7 @@ public class Player {
         gold = 300;
         offensiveSpawnPosition = game.getMap().getSpawnPoints().get(id);
         castle = new Castle(this);
-        offensives = new ArrayList<Offensive>();
+        offensives = new ArrayList<>();
     }
 
     /**
@@ -121,6 +122,10 @@ public class Player {
         return Collections.unmodifiableList(offensives);
     }
 
+    public void clearOffensives() {
+        this.offensives = new ArrayList<>();
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other == null) {
@@ -133,12 +138,19 @@ public class Player {
             return false;
         }
         Player p = (Player) other;
-        return this.game == p.game
-                && this.castle.equals(p.castle)
-                && this.gold == p.gold
-                && this.id == p.id
-                && this.name == p.name
-                && this.offensiveSpawnPosition.equals(p.offensiveSpawnPosition)
-                && this.points == p.points;
+        return this.hashCode() == p.hashCode();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + this.id;
+        hash = 79 * hash + Objects.hashCode(this.name);
+        hash = 79 * hash + this.points;
+        hash = 79 * hash + this.gold;
+        hash = 79 * hash + Objects.hashCode(this.offensiveSpawnPosition);
+        hash = 79 * hash + Objects.hashCode(this.castle);
+        hash = 79 * hash + Objects.hashCode(this.game);
+        return hash;
     }
 }

@@ -197,6 +197,9 @@ public class GameMenu extends Listener implements Screen {
     }
 
     public static void setEnabled(boolean enabled) {
+        if (endWave == null || buyOff == null || buyDef == null) {
+            return;
+        }
         if (enabled) {
             endWave.setTouchable(Touchable.enabled);
             buyOff.setTouchable(Touchable.enabled);
