@@ -183,13 +183,9 @@ public class Offensive extends Entity {
         }
 
         if (tempTile == null && !isAtEnemyCastle) {
+            hitpoints = 0;
             isAtEnemyCastle = true;
             getEnemyCastle(owner).loseHitpoints(1);
-            return;
-        }
-
-        if (tempTile == null) {
-            hitpoints = 0;
             return;
         }
 
