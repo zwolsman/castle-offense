@@ -138,6 +138,7 @@ public class GameMenu extends Listener implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (player != null && game != null) {
+                    StatusUpdate.log("Wachten op de andere speler...");
                     endWave();
                 }
             }

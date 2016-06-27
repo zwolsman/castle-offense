@@ -189,6 +189,7 @@ public class Offensive extends Entity {
         }
 
         if (tempTile == null) {
+            hitpoints = 0;
             return;
         }
 

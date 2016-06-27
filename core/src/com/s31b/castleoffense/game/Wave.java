@@ -79,13 +79,13 @@ public class Wave {
         }
     }
 
-    public boolean didSpawnWave() {
+    public boolean didDisplayWave() {
 
         if (offEntities.isEmpty()) {
             return false;
         }
         for (Offensive entity : offEntities) {
-            if (!entity.isSpawned()) {
+            if (!entity.isDead()) {
                 return false;
             }
         }

@@ -8,6 +8,7 @@ import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import com.s31b.castleoffense.server.packets.WinGamePacket;
 import com.s31b.castleoffense.ui.EndGameMenu;
+import com.s31b.castleoffense.ui.StatusUpdate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -123,6 +124,10 @@ public class CoGame {
         initializeGame(); // removes all data of current game and starts over in wave 1
     }
 
+    public void startPlayingWaveState() {
+        this.state = GameState.WavePlaying;
+    }
+
     /**
      * Ends a game
      *
@@ -131,6 +136,7 @@ public class CoGame {
     public void endGame(boolean winner) {
         this.state = GameState.Ended;
         CastleOffense.getInstance().setScreen(new EndGameMenu(winner, this));
+        initializeGame(); // resets the values for the next game.
     }
 
     /**
@@ -139,13 +145,15 @@ public class CoGame {
      * @return
      */
     public Wave nextWave() {
-        Wave wave = new Wave(currentWaveId++, this);
+        Wave wave = new Wave(++currentWaveId, this);
         waves.add(wave);
+        this.state = GameState.InGame;
+        StatusUpdate.log("Richt de volgende ronde in!");
         return wave;
     }
 
     /**
-     * Add a tower to the game ofr a specific player
+     * Add a tower to the game
      *
      * @param tower The tower that the player bought
      */
@@ -165,22 +173,27 @@ public class CoGame {
     public void update() {
         for (Player player : players) {
             if (player.getCastle().getHitpoints() > 0) {
-                boolean didSpawnAll = true;
+                boolean didDisplay = false;
 
-                for (int i = 0; i < waves.size(); i++) {
+                Wave lastWave = waves.get(waves.size() - 1);
+                lastWave.update();
+                if (lastWave.didDisplayWave()) {
+                    didDisplay = true;
+                }
+                /*for (int i = 0; i < waves.size(); i++) {
                     Wave w = waves.get(i);
                     w.update();
                     if (!w.didSpawnWave()) {
                         didSpawnAll = false;
                     }
-                }
-                if (didSpawnAll && waves.size() > 0) {
-                    System.out.println("Next wave!");
+                }*/
+                if (didDisplay && waves.size() > 0) {
                     nextWave();
                 }
             } else {
                 // this player has lost the game
                 Globals.client.send(new WinGamePacket(player.getId()));
+                this.state = GameState.Ended;
             }
         }
     }
