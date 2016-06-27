@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.s31b.castleoffense.Globals;
 import com.s31b.castleoffense.game.entity.*;
 import com.s31b.castleoffense.player.Player;
+import com.s31b.castleoffense.ui.GameMenu;
 import com.s31b.castleoffense.ui.StatusUpdate;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,7 @@ public class Wave {
         }
         timeSinceLastSpawn += Gdx.graphics.getDeltaTime();
         StatusUpdate.log("Ronde aan het afspelen");
+        GameMenu.setEnabled(false);
         spawnWave();
 
         for (int i = 0; i < offEntities.size(); i++) {

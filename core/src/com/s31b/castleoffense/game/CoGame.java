@@ -8,6 +8,7 @@ import com.s31b.castleoffense.map.Map;
 import com.s31b.castleoffense.player.Player;
 import com.s31b.castleoffense.server.packets.WinGamePacket;
 import com.s31b.castleoffense.ui.EndGameMenu;
+import com.s31b.castleoffense.ui.GameMenu;
 import com.s31b.castleoffense.ui.StatusUpdate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -149,6 +150,7 @@ public class CoGame {
         waves.add(wave);
         this.state = GameState.InGame;
         StatusUpdate.log("Richt de volgende ronde in!");
+        GameMenu.setEnabled(true);
         return wave;
     }
 
@@ -180,13 +182,7 @@ public class CoGame {
                 if (lastWave.didDisplayWave()) {
                     didDisplay = true;
                 }
-                /*for (int i = 0; i < waves.size(); i++) {
-                    Wave w = waves.get(i);
-                    w.update();
-                    if (!w.didSpawnWave()) {
-                        didSpawnAll = false;
-                    }
-                }*/
+
                 if (didDisplay && waves.size() > 0) {
                     nextWave();
                 }

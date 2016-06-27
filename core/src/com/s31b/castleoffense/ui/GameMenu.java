@@ -189,23 +189,23 @@ public class GameMenu extends Listener implements Screen {
         stage.addActor(buttonUnmute);
         offBought.render(stage);
     }
-    
+
     public static void setPlayerFeedback(String message) {
         if (feedback != null) {
             feedback.setText(message);
         }
     }
-    
-    public static void disableUI(){
-        endWave.setTouchable(Touchable.disabled);
-        buyOff.setTouchable(Touchable.disabled);
-        buyDef.setTouchable(Touchable.disabled);
-    }
-    
-     public static void enableUI(){
-        endWave.setTouchable(Touchable.enabled);
-        buyOff.setTouchable(Touchable.enabled);
-        buyDef.setTouchable(Touchable.enabled);
+
+    public static void setEnabled(boolean enabled) {
+        if (enabled) {
+            endWave.setTouchable(Touchable.enabled);
+            buyOff.setTouchable(Touchable.enabled);
+            buyDef.setTouchable(Touchable.enabled);
+        } else {
+            endWave.setTouchable(Touchable.disabled);
+            buyOff.setTouchable(Touchable.disabled);
+            buyDef.setTouchable(Touchable.disabled);
+        }
     }
 
     private void setMenuBar() {
