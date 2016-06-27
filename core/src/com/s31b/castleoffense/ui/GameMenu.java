@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -57,10 +58,10 @@ public class GameMenu extends Listener implements Screen {
     private int countOff = 0;
     private int countDefList = 0;
     private int countOffList = 0;
-    private imageButton endWave;
+    private static imageButton endWave;
     private imageButton surrender;
-    private imageButton buyOff;
-    private imageButton buyDef;
+    private static imageButton buyOff;
+    private static imageButton buyDef;
     private imageButton nextDef;
     private imageButton nextOff;
     private imageButton buttonUnmute;
@@ -110,7 +111,6 @@ public class GameMenu extends Listener implements Screen {
 
         this.create();
         Globals.client.getClient().addListener(this);
-
     }
 
     public void create() {
@@ -189,11 +189,23 @@ public class GameMenu extends Listener implements Screen {
         stage.addActor(buttonUnmute);
         offBought.render(stage);
     }
-
+    
     public static void setPlayerFeedback(String message) {
         if (feedback != null) {
             feedback.setText(message);
         }
+    }
+    
+    public static void disableUI(){
+        endWave.setTouchable(Touchable.disabled);
+        buyOff.setTouchable(Touchable.disabled);
+        buyDef.setTouchable(Touchable.disabled);
+    }
+    
+     public static void enableUI(){
+        endWave.setTouchable(Touchable.enabled);
+        buyOff.setTouchable(Touchable.enabled);
+        buyDef.setTouchable(Touchable.enabled);
     }
 
     private void setMenuBar() {

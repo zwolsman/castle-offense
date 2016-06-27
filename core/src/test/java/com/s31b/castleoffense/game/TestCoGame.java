@@ -38,7 +38,7 @@ public class TestCoGame {
         CoGame g = GameManager.getInstance().createGame();
         
         Wave currentWave = g.getCurrentWave();
-        assertEquals(new Wave(1, g), currentWave);
+        assertEquals(new Wave(0, g), currentWave);
         assertEquals(0, g.getAllTowers().size());
     }
     
@@ -63,11 +63,11 @@ public class TestCoGame {
         game.restartGame();
         ///Next wave wave = 2
         game.nextWave();
-        ///Check IF THE wave is 2
-        assertEquals(new Wave(2, game), game.getCurrentWave());
+        ///Check IF THE wave is 1
+        assertEquals(new Wave(0, game), game.getCurrentWave());
         game.restartGame();
         ///Restarting game wave would be set to 1
-        assertEquals(new Wave(1, game), game.getCurrentWave());
+        assertEquals(new Wave(0, game), game.getCurrentWave());
     }
     
     @Test
@@ -80,27 +80,27 @@ public class TestCoGame {
         game.restartGame();
         ///Check wave is 1
         /////Error : Wave is not resetted
-        assertEquals(new Wave(1, game), game.getCurrentWave());
+        assertEquals(new Wave(0, game), game.getCurrentWave());
     }
     
     @Test
     public void TestNextWave(){
         game.nextWave();
+        assertEquals(new Wave(0, game), game.getCurrentWave());
+        
+        game.nextWave();
+        assertEquals(new Wave(1, game), game.getCurrentWave());
+        
+        game.nextWave();
         assertEquals(new Wave(2, game), game.getCurrentWave());
         
         game.nextWave();
-        assertEquals(new Wave(3, game), game.getCurrentWave());
-        
-        game.nextWave();
-        assertEquals(new Wave(4, game), game.getCurrentWave());
-        
         game.nextWave();
         game.nextWave();
         game.nextWave();
         game.nextWave();
         game.nextWave();
-        game.nextWave();
-        assertEquals(new Wave(10, game), game.getCurrentWave());
+        assertEquals(new Wave(8, game), game.getCurrentWave());
     }
     
     @Test 
